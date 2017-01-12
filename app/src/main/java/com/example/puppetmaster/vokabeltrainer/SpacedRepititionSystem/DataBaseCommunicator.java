@@ -15,7 +15,7 @@ public class DataBaseCommunicator {
 
 
     public void DataBaseCommunicator(String dbname){
-        database = this.openOrCreateDatabase(dbname, Context.MODE_PRIVATE, null);
+       // database = this.openOrCreateDatabase(dbname, Context.MODE_PRIVATE, null);
     }
 
     public void updateVocab(Vocab vocab){
