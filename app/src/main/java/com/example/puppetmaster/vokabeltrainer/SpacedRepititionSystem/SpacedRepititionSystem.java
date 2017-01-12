@@ -1,5 +1,7 @@
 package com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem;
 
+import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.SRSDataBaseCommunicator;
+
 import org.json.JSONObject;
 
 /**
@@ -11,8 +13,8 @@ import org.json.JSONObject;
 public class SpacedRepititionSystem {
 
     private Vocab currentVocab;
-    private DataBaseCommunicator dbCommunicator;
     private Notifier notifier;
+    private SRSDataBaseCommunicator dbCommunicator;
 
     public void SpacedRepititionSystem(){
         //TODO
