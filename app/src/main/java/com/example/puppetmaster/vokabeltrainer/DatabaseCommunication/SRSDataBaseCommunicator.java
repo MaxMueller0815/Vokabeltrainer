@@ -1,5 +1,6 @@
 package com.example.puppetmaster.vokabeltrainer.DatabaseCommunication;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -16,7 +17,7 @@ public class SRSDataBaseCommunicator {
 
 
     public void DataBaseCommunicator(String dbname){
-        // database = this.openOrCreateDatabase(dbname, Context.MODE_PRIVATE, null);
+         //database = this.openOrCreateDatabase(dbname, Context.MODE_PRIVATE, null);
     }
 
     public void updateVocab(Vocab vocab){
