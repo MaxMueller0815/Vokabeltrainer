@@ -16,7 +16,7 @@ public class SRSDataBaseCommunicator {
     private SQLiteDatabase database;
 
 
-    public void DataBaseCommunicator(String dbname){
+    public SRSDataBaseCommunicator(String dbname){
          //database = this.openOrCreateDatabase(dbname, Context.MODE_PRIVATE, null);
     }
 
@@ -24,11 +24,10 @@ public class SRSDataBaseCommunicator {
         //TODO
     }
 
-    public Vocab getVocab(int id){
-        return new Vocab();
+ //   public Vocab getVocab(int id){
 
         //TODO
-    }
+   // }
 
     public String getAllVocab(){
         return "true";

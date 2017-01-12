@@ -18,7 +18,7 @@ public class Vocab {
     private int countCorrect;
     private int countFalse;
 
-    public void Vocab(int id, String english, String german, int unitId, int srsLevel,
+    public Vocab(int id, String english, String german, int unitId, int srsLevel,
                       Date lastRevision, Date nextRevision, int countCorrect, int countFalse){
 
         this.id = id;
