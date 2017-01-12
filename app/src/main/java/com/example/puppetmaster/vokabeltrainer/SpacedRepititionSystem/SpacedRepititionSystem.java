@@ -4,6 +4,7 @@ import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.SRSDataBase
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -18,20 +19,24 @@ public class SpacedRepititionSystem {
     private Notifier notifier;
     private SRSDataBaseCommunicator dbCommunicator;
 
-    public void SpacedRepititionSystem(){
-        //TODO
+    public SpacedRepititionSystem(){
+        notifier = new Notifier();
+        dbCommunicator = new SRSDataBaseCommunicator();
+        initCurrentVocab();
     }
 
     public Vocab getVocabRequest(){
         return currentVocab;
     }
 
-    public void initCurrentVocab(int id, String english, String german, int unitId, int srsLevel,
-                                 Date lastRevision, Date nextRevision, int countCorrect, int countFalse){
+    public void initCurrentVocab(){
 
-        currentVocab = new Vocab(id, english, german, unitId, srsLevel, lastRevision, nextRevision, countCorrect, countFalse);
+        ArrayList<Vocab> allVocab = new ArrayList<Vocab>();
+        allVocab = dbCommunicator.getAllVocab();
 
-
+        for (int i = 0; i<allVocab.size(); i++ ){
+            //TODO vokabel mit der höchsten dringlichkeit suchen und und zwischenspeichern
+        }
     }
 
     public String getSrsAsJson(){
