@@ -9,8 +9,8 @@ import java.util.Date;
 public class Vocab {
 
     private int id;
-    private String term;
-    private String translation;
+    private String english;
+    private String german;
     private int unitId;
     private int srsLevel;
     private Date lastRevision;
@@ -18,12 +18,12 @@ public class Vocab {
     private int countCorrect;
     private int countFalse;
 
-    public void Vocab(int id, String term, String translation, int unitId, int srsLevel,
+    public void Vocab(int id, String english, String german, int unitId, int srsLevel,
                       Date lastRevision, Date nextRevision, int countCorrect, int countFalse){
 
         this.id = id;
-        this.term = term;
-        this.translation = translation;
+        this.english = english;
+        this.german = german;
         this.unitId = unitId;
         this.srsLevel = srsLevel;
         this.lastRevision = lastRevision;
