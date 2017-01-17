@@ -1,42 +1,30 @@
 package com.example.puppetmaster.vokabeltrainer;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.TextView;
 
-import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.DataBaseHelper;
+import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
 
 import java.io.IOException;
 
+
 public class StartScreen extends AppCompatActivity {
+    private Cursor testCursor;
+    private MyDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
 
-        DataBaseHelper myDbHelper = new DataBaseHelper(this);
-        myDbHelper = new DataBaseHelper(this);
+        db = new MyDatabase(this);
 
-        try {
-
-            myDbHelper.createDataBase();
-
-        } catch (IOException ioe) {
-
-            throw new Error("Unable to create database");
-
-        }
-
-        try {
-
-            myDbHelper.openDataBase();
-
-        }catch(SQLException sqle){
-
-            throw sqle;
-
-        }
+        String listString = db.getTopics();
+        TextView myTopics = (TextView) findViewById(R.id.tv_topics);
+        myTopics.setText(listString);
     }
 }
