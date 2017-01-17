@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class MyDatabase extends SQLiteAssetHelper {
 
     private static final String DATABASE_NAME = "vocabDB.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     public MyDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -24,7 +24,7 @@ public class MyDatabase extends SQLiteAssetHelper {
         //super(context, DATABASE_NAME, context.getExternalFilesDir(null).getAbsolutePath(), null, DATABASE_VERSION);
 
         // call this method to force a database overwrite every time the version number increments:
-        //setForcedUpgrade();
+        setForcedUpgrade();
 
         // call this method to force a database overwrite if the version number
         // is below a certain threshold:
@@ -35,7 +35,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        String [] sqlSelect = {"*"};
+        String [] sqlSelect = {"title"};
         String sqlTables = "topic";
 
         qb.setTables(sqlTables);
