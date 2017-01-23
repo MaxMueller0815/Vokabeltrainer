@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Created by florian on 11.01.17.
@@ -17,27 +18,38 @@ import java.util.Date;
 
 public class SpacedRepititionSystem {
 
-    private Vocab currentVocab;
     private Notifier notifier;
     private SRSDataBaseCommunicator dbCommunicator;
+
+    private ArrayList<Vocab> currentRequestList = new ArrayList<Vocab>();
+    private Vocab currentVocab;
+
+    private int currentRequestListLength = 5;
 
     public SpacedRepititionSystem(Context context){
         notifier = new Notifier();
         dbCommunicator = new SRSDataBaseCommunicator(context);
-        initCurrentVocab();
+        initCurrentRequestList();
     }
 
     public Vocab getVocabRequest(){
         return currentVocab;
     }
 
-    public void initCurrentVocab(){
+    public void initCurrentRequestList(){
 
+        HashMap<Long, Vocab> helperVocabHashMap = new HashMap<Long, Vocab>();
         ArrayList<Vocab> allVocab = new ArrayList<Vocab>();
+
         allVocab = dbCommunicator.getAllVocab();
 
         for (int i = 0; i<allVocab.size(); i++ ){
-            //TODO vokabel mit der höchsten dringlichkeit suchen und und zwischenspeichern
+            Vocab vocab = allVocab.get(i);
+            long revisionDifference = vocab.getRevisionDifference();
+
+            if(revisionDifference > 0){
+                helperVocabHashMap.put(revisionDifference, vocab);
+            }
         }
     }
 

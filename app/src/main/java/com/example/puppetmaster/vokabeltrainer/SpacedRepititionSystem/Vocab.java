@@ -1,6 +1,10 @@
 package com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by florian on 11.01.17.
@@ -8,6 +12,7 @@ import java.util.Date;
 
 public class Vocab {
 
+    private String dateFormatString = "yyyy-MM-dd'T'HH:mm";
     private int id;
     private String english;
     private String german;
@@ -19,15 +24,17 @@ public class Vocab {
     private int countFalse;
 
     public Vocab(int id, String english, String german, int unitId, int srsLevel,
-                      Date lastRevision, Date nextRevision, int countCorrect, int countFalse){
+                      String lastRevision, String nextRevision, int countCorrect, int countFalse) throws ParseException {
+
+        DateFormat format = new SimpleDateFormat(dateFormatString, Locale.ENGLISH);
 
         this.id = id;
         this.english = english;
         this.german = german;
         this.unitId = unitId;
         this.srsLevel = srsLevel;
-        this.lastRevision = lastRevision;
-        this.nextRevision = nextRevision;
+        this.lastRevision = format.parse(lastRevision);
+        this.nextRevision = format.parse(nextRevision);
         this.countCorrect = countCorrect;
         this.countFalse = countFalse;
 
@@ -66,8 +73,12 @@ public class Vocab {
         return id;
     }
 
-    public int getRevisionDifference(){
-        return 0;
+    public long getRevisionDifference(){
+
+        long nextRevisionAsLong = nextRevision.getTime();
+        long currentTime = new Date().getTime();
+        return nextRevisionAsLong - currentTime;
+
     }
 
 }
