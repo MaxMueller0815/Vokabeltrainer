@@ -82,6 +82,15 @@ public class MyDatabase extends SQLiteAssetHelper {
         }
         return unitsList;
     }
+    public void updateSingleVocab(int id){
+        SQLiteDatabase db = getReadableDatabase();
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+        /*
+        * TODO die einzelne Vokabel in der Datenbank updaten
+        *
+        * */
+    }
 
     public ArrayList<Vocab> getVocabOfUnit(int unitID) {
         SQLiteDatabase db = getReadableDatabase();

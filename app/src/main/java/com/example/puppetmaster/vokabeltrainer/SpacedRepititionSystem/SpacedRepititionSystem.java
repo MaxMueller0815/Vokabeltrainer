@@ -41,8 +41,40 @@ public class SpacedRepititionSystem {
         }
     }
 
-    public boolean checkAnswer(String answer){
-        return false;
+    /*
+    *   manage the srs level of the requested vocab depending on the answer
+    * */
+
+    public void handleAnswer(int language, Vocab vocab, String answer){
+        if(checkAnswer(language, vocab, answer)){
+            vocab.increaseSrsLevel();
+            vocab.increaseCountCorrect();
+        }else{
+            vocab.decreaseSrsLevel();
+            vocab.increaseCountFalse();
+        }
+
+        dbCommunicator.updateVocab(vocab);
+
+    }
+
+/*
+*       check if the given answer is right or wrong
+*       use int parameter to select the language of the GIVEN ANSWER
+ *
+ *       1 = ENGLISH
+ *       2 = GERMAN
+*
+*
+* */
+    public boolean checkAnswer(int language, Vocab vocab, String answer){
+        if(language == 1){
+            return vocab.getEnglish().equals(answer);
+        }else if(language == 2){
+            return vocab.getGerman().equals(answer);
+        }else{
+            return false;
+        }
     }
 
 }

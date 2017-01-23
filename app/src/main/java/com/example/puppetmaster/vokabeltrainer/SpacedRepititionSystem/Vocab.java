@@ -32,6 +32,35 @@ public class Vocab {
         this.countFalse = countFalse;
 
     }
+    public void increaseCountCorrect(){
+        countCorrect += 1;
+    }
+    public void increaseCountFalse(){
+        countFalse += 1;
+    }
+    public void increaseSrsLevel(){
+        srsLevel += 1;
+    }
+
+    public void decreaseSrsLevel(){
+        if(srsLevel > 0){
+            srsLevel -= 1;
+        }else{
+            srsLevel = 0;
+        }
+    }
+
+    public String getEnglish(){
+        return english;
+    }
+
+    public String getGerman(){
+        return german;
+    }
+
+    public int getSrsLevel(){
+        return srsLevel;
+    }
 
     public int getId(){
         return id;
