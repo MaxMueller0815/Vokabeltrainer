@@ -1,5 +1,7 @@
 package com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem;
 
+import android.content.Context;
+
 import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.SRSDataBaseCommunicator;
 
 import org.json.JSONObject;
@@ -19,9 +21,9 @@ public class SpacedRepititionSystem {
     private Notifier notifier;
     private SRSDataBaseCommunicator dbCommunicator;
 
-    public SpacedRepititionSystem(){
+    public SpacedRepititionSystem(Context context){
         notifier = new Notifier();
-        dbCommunicator = new SRSDataBaseCommunicator();
+        dbCommunicator = new SRSDataBaseCommunicator(context);
         initCurrentVocab();
     }
 
@@ -37,12 +39,6 @@ public class SpacedRepititionSystem {
         for (int i = 0; i<allVocab.size(); i++ ){
             //TODO vokabel mit der höchsten dringlichkeit suchen und und zwischenspeichern
         }
-    }
-
-    public String getSrsAsJson(){
-        return "true";
-
-        //TODO
     }
 
     public boolean checkAnswer(String answer){

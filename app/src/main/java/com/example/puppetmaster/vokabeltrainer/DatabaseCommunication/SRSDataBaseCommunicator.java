@@ -1,8 +1,10 @@
 package com.example.puppetmaster.vokabeltrainer.DatabaseCommunication;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.view.View;
 
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 
@@ -14,14 +16,10 @@ import java.util.ArrayList;
 
 public class SRSDataBaseCommunicator {
 
-    private Cursor cursor;
-    private SQLiteDatabase database;
     private MyDatabase myDatabase;
 
-    private ArrayList<Vocab> allVocab = new ArrayList<Vocab>();
-
-    public SRSDataBaseCommunicator(){
-         //database = this.openOrCreateDatabase(dbname, Context.MODE_PRIVATE, null);
+    public SRSDataBaseCommunicator(Context context){
+        myDatabase = new MyDatabase(context);
     }
 
     public void updateVocab(Vocab vocab){
@@ -35,8 +33,8 @@ public class SRSDataBaseCommunicator {
 
     public ArrayList<Vocab> getAllVocab(){
 
-        //TODO Datenbank auslesen und alle benötigten Vokabeln in eine ArrayList speichern
-        // benötigte Vokabeln aus den Einstellungen auslesen
+        ArrayList<Vocab> allVocab = new ArrayList<Vocab>();
+        allVocab = myDatabase.getListOfAllVocab();
 
         return allVocab;
 

@@ -107,4 +107,32 @@ public class MyDatabase extends SQLiteAssetHelper {
 
         return vocabList;
     }
+
+    /*
+        return all vocabulary as a representation of the spaced repetition system
+    * */
+    public ArrayList<Vocab> getListOfAllVocab(){
+        SQLiteDatabase db = getReadableDatabase();
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        String [] sqlSelect = {"*"};
+        String sqlTables = "srs";
+
+        qb.setTables(sqlTables);
+        Cursor c = qb.query(db, sqlSelect, null, null,
+                null, null, null);
+        ArrayList<Vocab> listOfAllVocab = new ArrayList<>();
+
+        try {
+            c.moveToFirst();
+            while(!c.isAfterLast()) {
+                listOfAllVocab.add(new Vocab(c.getInt(0), c.getString(1), c.getString(2), c.getInt(3), c.getInt(4), new Date(0), new Date(1), c.getInt(7), c.getInt(8)));
+                c.moveToNext();
+            }
+        } finally {
+            c.close();
+        }
+
+        return listOfAllVocab;
+    }
+
 }
