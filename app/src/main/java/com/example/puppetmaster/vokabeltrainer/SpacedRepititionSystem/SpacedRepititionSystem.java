@@ -7,8 +7,10 @@ import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.SRSDataBase
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.SortedSet;
 
 /**
  * Created by florian on 11.01.17.
@@ -33,13 +35,22 @@ public class SpacedRepititionSystem {
     }
 
     public Vocab getVocabRequest(){
+        
+        if(currentRequestList.size() == 0){
+            initCurrentRequestList();
+        }
+
+        currentVocab = currentRequestList.get(0);
+        currentRequestList.remove(0);
+
         return currentVocab;
     }
 
     public void initCurrentRequestList(){
-
+        // HashMap helps to sort the vocab by the datedifference (currentdate - nextRevision)
         HashMap<Long, Vocab> helperVocabHashMap = new HashMap<Long, Vocab>();
         ArrayList<Vocab> allVocab = new ArrayList<Vocab>();
+        ArrayList<Long> revisionDifferences = new ArrayList<Long>();
 
         allVocab = dbCommunicator.getAllVocab();
 
@@ -49,8 +60,17 @@ public class SpacedRepititionSystem {
 
             if(revisionDifference > 0){
                 helperVocabHashMap.put(revisionDifference, vocab);
+                revisionDifferences.add(revisionDifference);
             }
         }
+
+        Collections.sort(revisionDifferences);
+
+        for (int i = 1; i <= currentRequestListLength; i++){
+            Vocab vocabToAdd = helperVocabHashMap.get(revisionDifferences.get(revisionDifferences.size()-i));
+            currentRequestList.add(vocabToAdd);
+        }
+
     }
 
     /*
