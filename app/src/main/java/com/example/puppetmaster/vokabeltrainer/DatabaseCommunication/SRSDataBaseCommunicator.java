@@ -16,7 +16,7 @@ public class SRSDataBaseCommunicator {
 
     private Cursor cursor;
     private SQLiteDatabase database;
-    private DataBaseHelper dbhelper;
+    private MyDatabase myDatabase;
 
     private ArrayList<Vocab> allVocab = new ArrayList<Vocab>();
 
