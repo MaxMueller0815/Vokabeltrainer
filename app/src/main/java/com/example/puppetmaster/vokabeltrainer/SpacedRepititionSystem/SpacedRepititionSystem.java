@@ -16,7 +16,16 @@ import java.util.SortedSet;
  * Created by florian on 11.01.17.
  */
 
-//TODO push notifications
+    /*
+    *   TOODS:
+    *
+    *   push notifications
+    *   time stamps entsprechend neu setzen
+    *   sprachauswahl bei der abfrage (hier oder an anderer stelle)
+    *
+    *
+    *
+    * */
 
 public class SpacedRepititionSystem {
 
@@ -34,6 +43,11 @@ public class SpacedRepititionSystem {
         initCurrentRequestList();
     }
 
+    /*
+    *       use current request list for the next vocab to request
+    *       if the list is empty init a new list, otherwise request one vocab and delete it from the list
+    *
+    * */
     public Vocab getVocabRequest(){
         
         if(currentRequestList.size() == 0){
@@ -45,7 +59,12 @@ public class SpacedRepititionSystem {
 
         return currentVocab;
     }
-
+/*
+*       generates a list of vocab to request with the declared size
+*
+*
+*
+* */
     public void initCurrentRequestList(){
         // HashMap helps to sort the vocab by the datedifference (currentdate - nextRevision)
         HashMap<Long, Vocab> helperVocabHashMap = new HashMap<Long, Vocab>();
@@ -65,12 +84,13 @@ public class SpacedRepititionSystem {
         }
 
         Collections.sort(revisionDifferences);
-
-        for (int i = 1; i <= currentRequestListLength; i++){
-            Vocab vocabToAdd = helperVocabHashMap.get(revisionDifferences.get(revisionDifferences.size()-i));
-            currentRequestList.add(vocabToAdd);
+        
+        for(int i = 0; i < revisionDifferences.size(); i++){
+            for (int j = 1; j <= currentRequestListLength; j++){
+                Vocab vocabToAdd = helperVocabHashMap.get(revisionDifferences.get(revisionDifferences.size()-j));
+                currentRequestList.add(vocabToAdd);
+            }
         }
-
     }
 
     /*
