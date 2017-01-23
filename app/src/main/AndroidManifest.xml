@@ -23,11 +23,6 @@
             android:name=".TopicsActivity"
             android:label="@string/title_activity_units"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".DashboardActivity"
-            android:label="@string/title_activity_dashboard"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".ToolbarActivity"></activity>
     </application>
 
 </manifest>

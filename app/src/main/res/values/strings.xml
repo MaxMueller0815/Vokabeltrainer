@@ -3,9 +3,12 @@
     <string name="app_name">Vokabeltrainer</string>
     <string name="title_activity_units">Kapitelübersicht</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_dashboard">DashboardActivity</string>
-    <string name="action_settings">Settings</string>
-    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="gesamt">Gesamt</string>
+    <string name="gelernt">Gelernt</string>
+    <string name="ausstehend">Ausstehend</string>
+    <string name="prozent">Prozent</string>
+
+
+    <string name="action_settings">Einstellungen</string>
+
 </resources>

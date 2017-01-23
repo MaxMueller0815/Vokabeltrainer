@@ -6,23 +6,27 @@
         android:enabled="true"
         android:icon="@drawable/ic_home_white_24px"
         android:title="Start"
+        app:showAsAction="always"
         />
     <item
         android:id="@+id/action_vocab"
         android:enabled="true"
         android:icon="@drawable/ic_book_white_24px"
         android:title="Vokabeln"
+        app:showAsAction="always"
         />
     <item
         android:id="@+id/action_game"
         android:enabled="true"
         android:icon="@drawable/ic_casino_white_24px"
         android:title="Spiel"
+        app:showAsAction="always"
          />
     <item
         android:id="@+id/action_profile"
         android:enabled="true"
         android:icon="@drawable/ic_account_circle_white_24px"
         android:title="Profil"
+        app:showAsAction="always"
          />
 </menu>
