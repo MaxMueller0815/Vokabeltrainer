@@ -22,6 +22,7 @@ import java.util.SortedSet;
     *   push notifications
     *   time stamps entsprechend neu setzen
     *   sprachauswahl bei der abfrage (hier oder an anderer stelle)
+    *   time stamps setzen wenn eine neue unit angefangen wird
     *
     *
     *
@@ -84,7 +85,7 @@ public class SpacedRepititionSystem {
         }
 
         Collections.sort(revisionDifferences);
-        
+
         for(int i = 0; i < revisionDifferences.size(); i++){
             for (int j = 1; j <= currentRequestListLength; j++){
                 Vocab vocabToAdd = helperVocabHashMap.get(revisionDifferences.get(revisionDifferences.size()-j));
@@ -105,6 +106,9 @@ public class SpacedRepititionSystem {
             vocab.decreaseSrsLevel();
             vocab.increaseCountFalse();
         }
+
+        vocab.setLastRevision(new Date());
+
 
         dbCommunicator.updateVocab(vocab);
 

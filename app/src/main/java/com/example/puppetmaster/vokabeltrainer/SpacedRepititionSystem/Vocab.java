@@ -57,6 +57,14 @@ public class Vocab {
         }
     }
 
+    public void setLastRevision(Date currentdate){
+        this.lastRevision = currentdate;
+    }
+
+    public void setNextRevision(Date nextRevision){
+        this.nextRevision = nextRevision;
+    }
+
     public String getEnglish(){
         return english;
     }
