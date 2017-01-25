@@ -6,12 +6,12 @@
     android:viewportHeight="200">
 
     <path
-        android:fillColor="#50E3C2"
+        android:fillColor="#42E9C4"
         android:fillType="evenOdd"
         android:strokeWidth="1"
         android:pathData="M 0 0 H 400 V 200 H 0 V 0 Z" />
     <path
-        android:fillColor="#045240"
+        android:fillColor="#004D40"
         android:fillType="evenOdd"
         android:strokeWidth="1"
         android:pathData="M247.2,100.375 C246.2,99.875 245.1,99.875 244.1,100.375 L200.3,125.775

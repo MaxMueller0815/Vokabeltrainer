@@ -1,5 +1,6 @@
 package com.example.puppetmaster.vokabeltrainer;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,14 +8,12 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
-
 import java.util.ArrayList;
-
 import static com.example.puppetmaster.vokabeltrainer.UIHelper.convertDpToPixel;
 
 public class TopicsActivity extends AppCompatActivity {
@@ -23,25 +22,10 @@ public class TopicsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topics);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        final LinearLayout topicsLayout = (LinearLayout) findViewById(R.id.ll_topics_layout);
         MyDatabase db = new MyDatabase(this);
-        setupCards(db.getTopics(), topicsLayout);
+        setupCards(db.getTopics(), (LinearLayout) findViewById(R.id.ll_topics_layout));
     }
-
-    private View.OnClickListener myListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-        Intent mIntent = new Intent(v.getContext(), UnitsActivity.class);
-        Bundle mBundle = new Bundle();
-        mBundle.putInt("SELECTED_TOPIC", (int) v.getTag());
-        mIntent.putExtras(mBundle);
-        Log.d("Inhalt des Bundles", mIntent.toString());
-        startActivity(mIntent);
-        }
-    };
 
     private void setupCards(ArrayList<Topic> listOfTopics, LinearLayout parentElement) {
         for (int i = 0; i < listOfTopics.size(); i++) {
@@ -50,7 +34,6 @@ public class TopicsActivity extends AppCompatActivity {
             CardView.LayoutParams cardParams = new CardView.LayoutParams(CardView.LayoutParams.MATCH_PARENT, CardView.LayoutParams.WRAP_CONTENT);
             int margin = convertDpToPixel(16, getApplicationContext());
             cardParams.setMargins(0, 0, 0, margin);
-
             card.setLayoutParams(cardParams);
             card.setUseCompatPadding(true);
 
@@ -61,7 +44,7 @@ public class TopicsActivity extends AppCompatActivity {
             cardLayout.setOrientation(LinearLayout.VERTICAL);
 
             ImageView topicImage = new ImageView(this);
-            LinearLayout.LayoutParams imgParams = new LinearLayout.LayoutParams(CardView.LayoutParams.MATCH_PARENT, 500);
+            LinearLayout.LayoutParams imgParams = new LinearLayout.LayoutParams(CardView.LayoutParams.MATCH_PARENT, CardView.LayoutParams.WRAP_CONTENT);
             topicImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
             topicImage.setLayoutParams(imgParams);
             switch(listOfTopics.get(i).getId()) {
@@ -99,4 +82,16 @@ public class TopicsActivity extends AppCompatActivity {
             parentElement.addView(card);
         }
     }
+
+    private View.OnClickListener myListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent nextAction = new Intent(v.getContext(), UnitsActivity.class);
+            Bundle mBundle = new Bundle();
+            mBundle.putInt("SELECTED_TOPIC", (int) v.getTag());
+            nextAction.putExtras(mBundle);
+            System.out.println(v.getTag());
+            startActivity(nextAction);
+        }
+    };
 }

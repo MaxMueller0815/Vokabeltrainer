@@ -18,10 +18,10 @@ public class StartScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
 
-        Button btnShowNext = (Button) findViewById(R.id.bt_switch_to_topics);
-        btnShowNext.setOnClickListener(new View.OnClickListener() {
+        Button btnShowSRSTest = (Button) findViewById(R.id.btn_srs_test);
+        btnShowSRSTest.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent itn = new Intent(v.getContext(), TopicsActivity.class);
+                Intent itn = new Intent(v.getContext(), SRSTesterActivity.class);
                 v.getContext().startActivity(itn);
             }
         });
@@ -38,9 +38,11 @@ public class StartScreen extends AppCompatActivity {
                                 //fragment = new FavouriteFragment();
                                 break;
                             case R.id.action_vocab:
-
+                                Intent itn = new Intent(getApplicationContext(), TopicsActivity.class);
+                                startActivity(itn);
                                 break;
                             case R.id.action_game:
+
                                 break;
                             case R.id.action_profile:
                                 break;
@@ -50,6 +52,5 @@ public class StartScreen extends AppCompatActivity {
                         return true;
                     }
                 });
-    }
     }
 }
