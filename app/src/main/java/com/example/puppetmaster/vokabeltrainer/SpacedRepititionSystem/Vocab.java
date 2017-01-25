@@ -85,7 +85,7 @@ public class Vocab {
 
         long nextRevisionAsLong = nextRevision.getTime();
         long currentTime = new Date().getTime();
-        return nextRevisionAsLong - currentTime;
+        return currentTime - nextRevisionAsLong;
 
     }
 
