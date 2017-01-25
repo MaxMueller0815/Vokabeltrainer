@@ -1,5 +1,6 @@
 package com.example.puppetmaster.vokabeltrainer.DatabaseCommunication;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,26 +12,24 @@ import com.example.puppetmaster.vokabeltrainer.Topic;
 import com.example.puppetmaster.vokabeltrainer.Unit;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class MyDatabase extends SQLiteAssetHelper {
 
     private static final String DATABASE_NAME = "vocabDB.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     public MyDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-
+        setForcedUpgrade();
         // you can use an alternate constructor to specify a database location
         // (such as a folder on the sd card)
         // you must ensure that this folder is available and you have permission
         // to write to it
         //super(context, DATABASE_NAME, context.getExternalFilesDir(null).getAbsolutePath(), null, DATABASE_VERSION);
-
         // call this method to force a database overwrite every time the version number increments:
-        setForcedUpgrade();
-
         // call this method to force a database overwrite if the version number
         // is below a certain threshold:
         //setForcedUpgrade(2);
@@ -73,7 +72,6 @@ public class MyDatabase extends SQLiteAssetHelper {
         try {
             c.moveToFirst();
             while(!c.isAfterLast()) {
-                Log.d("Wert ID:", Integer.toString(c.getInt(0)));
                 unitsList.add(new Unit(c.getInt(0), c.getString(1), c.getInt(2)));
                 c.moveToNext();
             }
@@ -82,9 +80,22 @@ public class MyDatabase extends SQLiteAssetHelper {
         }
         return unitsList;
     }
+
     public void updateSingleVocab(int id){
-        SQLiteDatabase db = getReadableDatabase();
-        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        Vocab currentVocab;
+        for(Vocab vocab : getListOfAllVocab()) {
+            if(vocab.getId() == id) {
+                currentVocab = vocab;
+            }
+        }
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+//        contentValues.put("id", .);
+//        contentValues.put("phone", phone);
+//        contentValues.put("email", email);
+//        contentValues.put("street", street);
+//        contentValues.put("place", place);
+        db.insert("srs", null, contentValues);
 
         /*
         * TODO die einzelne Vokabel in der Datenbank updaten
@@ -107,10 +118,14 @@ public class MyDatabase extends SQLiteAssetHelper {
         try {
             c.moveToFirst();
             while(!c.isAfterLast()) {
-                vocabList.add(new Vocab(c.getInt(0), c.getString(1), c.getString(2), c.getInt(3), c.getInt(4), new Date(0), new Date(1), c.getInt(7), c.getInt(8)));
+                try {
+                    vocabList.add(new Vocab(c.getInt(0), c.getString(1), c.getString(2), c.getInt(3), c.getInt(4), c.getString(5), c.getString(6), c.getInt(7), c.getInt(8)));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 c.moveToNext();
             }
-        } finally {
+        }  finally {
             c.close();
         }
 
@@ -134,7 +149,12 @@ public class MyDatabase extends SQLiteAssetHelper {
         try {
             c.moveToFirst();
             while(!c.isAfterLast()) {
-                listOfAllVocab.add(new Vocab(c.getInt(0), c.getString(1), c.getString(2), c.getInt(3), c.getInt(4), new Date(0), new Date(1), c.getInt(7), c.getInt(8)));
+                try {
+                    listOfAllVocab.add(new Vocab(c.getInt(0), c.getString(1), c.getString(2), c.getInt(3), c.getInt(4), c.getString(5), c.getString(6), c.getInt(7), c.getInt(8)));
+                    Log.d("Added", listOfAllVocab.get(listOfAllVocab.size() - 1) + "");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 c.moveToNext();
             }
         } finally {
