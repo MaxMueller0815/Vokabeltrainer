@@ -23,7 +23,7 @@ public class SRSDataBaseCommunicator {
     }
 
     public void updateVocab(Vocab vocab){
-        myDatabase.updateSingleVocab(vocab.getId());
+        myDatabase.updateSingleVocab(vocab);
     }
 
  //   public Vocab getVocab(int id){

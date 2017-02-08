@@ -81,10 +81,10 @@ public class MyDatabase extends SQLiteAssetHelper {
         return unitsList;
     }
 
-    public void updateSingleVocab(int id){
+    public void updateSingleVocab(Vocab updatedVocab){
         Vocab currentVocab;
         for(Vocab vocab : getListOfAllVocab()) {
-            if(vocab.getId() == id) {
+            if(vocab.getId() == updatedVocab.getId()) {
                 currentVocab = vocab;
             }
         }
