@@ -9,7 +9,7 @@
         app:showAsAction="always"
         />
     <item
-        android:id="@+id/action_vocab"
+        android:id="@+id/action_topics"
         android:enabled="true"
         android:icon="@drawable/ic_book_white_24px"
         android:title="Vokabeln"
