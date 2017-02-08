@@ -1,13 +1,20 @@
 package com.example.puppetmaster.vokabeltrainer;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
+
+import com.example.puppetmaster.vokabeltrainer.Fragments.GameFragment;
+import com.example.puppetmaster.vokabeltrainer.Fragments.HomeFragment;
+import com.example.puppetmaster.vokabeltrainer.Fragments.ProfileFragment;
+import com.example.puppetmaster.vokabeltrainer.Fragments.TopicsFragment;
+
+import static android.R.attr.fragment;
 
 
 public class StartScreen extends AppCompatActivity {
@@ -17,38 +24,42 @@ public class StartScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
+        getFragmentManager().beginTransaction()
+                .replace(R.id.container, new HomeFragment())
+                .commit();
 
-        Button btnShowSRSTest = (Button) findViewById(R.id.btn_srs_test);
-        btnShowSRSTest.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent itn = new Intent(v.getContext(), SRSTesterActivity.class);
-                v.getContext().startActivity(itn);
-            }
-        });
+        setUpBottomNavigation();
+    }
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)
-                findViewById(R.id.bottom_navigation);
-
+    private void setUpBottomNavigation() {
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
-                    public boolean onNavigationItemSelected(MenuItem item) {
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.action_start:
-                                //fragment = new FavouriteFragment();
+                                getFragmentManager().beginTransaction()
+                                        .replace(R.id.container, new HomeFragment())
+                                        .commit();
                                 break;
-                            case R.id.action_vocab:
-                                Intent itn = new Intent(getApplicationContext(), TopicsActivity.class);
-                                startActivity(itn);
+                            case R.id.action_topics:
+                                getFragmentManager().beginTransaction()
+                                        .replace(R.id.container, new TopicsFragment())
+                                        .commit();
                                 break;
                             case R.id.action_game:
-
+                                getFragmentManager().beginTransaction()
+                                        .replace(R.id.container, new GameFragment())
+                                        .commit();
                                 break;
                             case R.id.action_profile:
+                                getFragmentManager().beginTransaction()
+                                        .replace(R.id.container, new ProfileFragment())
+                                        .commit();
                                 break;
                         }
-                        //final FragmentTransaction transaction = fragmentManager.beginTransaction();
-                        //transaction.replace(R.id.main_container, fragment).commit();
                         return true;
                     }
                 });

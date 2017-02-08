@@ -1,0 +1,17 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.puppetmaster.vokabeltrainer.Fragments.HomeFragment"
+    android:orientation="vertical"
+    android:id="@+id/ll_home">
+
+    <!-- TODO: Update blank fragment layout -->
+    <Button
+        android:text="SRS Test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_srs_test"
+        android:onClick="openSRSTest" />
+
+</LinearLayout>

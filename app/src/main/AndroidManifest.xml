@@ -18,10 +18,6 @@
             android:name=".UnitsActivity"
             android:label="@string/title_activity_units"
             />
-        <activity
-            android:name=".TopicsActivity"
-            android:label="@string/title_activity_topics"
-            />
         <activity android:name=".SRSTesterActivity" />
     </application>
 

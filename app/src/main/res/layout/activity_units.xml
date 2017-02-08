@@ -106,21 +106,10 @@
 
     </GridLayout>
 
-    <HorizontalScrollView
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="0dp"
-        android:layout_below="@+id/stats_container"
-        android:layout_gravity="fill_horizontal"
-        android:textAlignment="center">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:id="@+id/ll_list_of_units"
-            android:paddingBottom="16dp"
-            android:paddingRight="16dp" />
-    </HorizontalScrollView>
+        android:id="@+id/recycler_units"
+        android:orientation="horizontal" />
 
 </LinearLayout>
