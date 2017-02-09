@@ -1,43 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_srstester"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.puppetmaster.vokabeltrainer.SRSTesterActivity"
-    android:orientation="vertical">
+    android:columnCount="2"
+    tools:context="com.example.puppetmaster.vokabeltrainer.SRSTesterActivity">
+
     <TextView
-        android:text="TextView"
-        android:layout_width="match_parent"
+        android:text="ID:"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_id" />
+        android:layout_columnSpan="1"
+        android:id="@+id/textView" />
 
     <TextView
         android:text="TextView"
-        android:layout_width="match_parent"
+        android:layout_columnSpan="1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_english" />
+        android:id="@+id/tv_id"
+        tools:text="1" />
+
+    <TextView
+        android:text="English:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_columnSpan="1"
+        android:id="@+id/textView2" />
 
     <TextView
         android:text="TextView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_german" />
+        android:id="@+id/tv_english"
+        android:layout_columnSpan="1"
+        tools:text="welcome" />
+
+    <TextView
+        android:text="German:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_columnSpan="1"
+        android:id="@+id/textView3" />
 
     <TextView
         android:text="TextView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_level" />
+        android:id="@+id/tv_german"
+        tools:text="Willkommen" />
+
+    <TextView
+        android:text="Difference: "
+        android:layout_width="89dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView4" />
 
     <TextView
         android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_revision"
+        tools:text="4500" />
+
+    <TextView
+        android:text="Level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView5" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_level"
+        tools:text="4"
+        android:inputType="number" />
+
+    <TextView
+        android:text="Last Revision:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView6" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_last_revision"
+        tools:text="2000-01-01T00:00"
+        android:inputType="date" />
+
+    <TextView
+        android:text="Next Revision:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView5" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_next_revision"
+        tools:text="2000-01-01T00:00"
+        android:inputType="number" />
+
+    <TextView
+        android:text="Correct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView5" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_correct"
+        tools:text="4000"
+        android:inputType="number" />
+
+    <TextView
+        android:text="False"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView5" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_false"
+        tools:text="0"
+        android:inputType="number" />
+
+    <Button
+        android:text="Update Vocab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_revision" />
+        android:id="@+id/btn_update_vocab"
+        android:layout_columnSpan="2"/>
 
-</LinearLayout>
+</GridLayout>
