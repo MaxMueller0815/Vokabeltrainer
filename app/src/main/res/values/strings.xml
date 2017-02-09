@@ -4,12 +4,12 @@
     <string name="title_activity_topics">Topics</string>
     <string name="title_activity_units">Units</string>
 
-    <string name="gesamt">Gesamt</string>
-    <string name="gelernt">Gelernt</string>
-    <string name="ausstehend">Ausstehend</string>
-    <string name="prozent">Prozent</string>
+    <string name="gesamt">Total</string>
+    <string name="gelernt">Learned</string>
+    <string name="ausstehend">Remaining</string>
+    <string name="prozent">Percent</string>
 
 
-    <string name="action_settings">Einstellungen</string>
+    <string name="action_settings">Settings</string>
 
 </resources>
