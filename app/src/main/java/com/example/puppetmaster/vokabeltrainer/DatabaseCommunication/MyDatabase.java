@@ -81,26 +81,29 @@ public class MyDatabase extends SQLiteAssetHelper {
         return unitsList;
     }
 
-    public void updateSingleVocab(Vocab updatedVocab){
-        Vocab currentVocab;
-        for(Vocab vocab : getListOfAllVocab()) {
-            if(vocab.getId() == updatedVocab.getId()) {
-                currentVocab = vocab;
-            }
-        }
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-//        contentValues.put("id", .);
-//        contentValues.put("phone", phone);
-//        contentValues.put("email", email);
-//        contentValues.put("street", street);
-//        contentValues.put("place", place);
-        db.insert("srs", null, contentValues);
-
         /*
         * TODO die einzelne Vokabel in der Datenbank updaten
         *
         * */
+    public void updateSingleVocab(Vocab updatedVocab){
+//        Vocab currentVocab;
+//        for(Vocab vocab : getListOfAllVocab()) {
+//            if(vocab.getId() == updatedVocab.getId()) {
+//                currentVocab = vocab;
+//            }
+//        }
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String whereClause = "id=" + updatedVocab.getId();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("srsLevel", updatedVocab.getSrsLevel());
+        contentValues.put("countCorrect", updatedVocab.getCountCorrect());
+        contentValues.put("countFalse", updatedVocab.getCountFalse());
+        contentValues.put("lastRevision", updatedVocab.getLastRevision().toString());
+        contentValues.put("nextRevision", updatedVocab.getNextRevision().toString());
+        db.update("srs", contentValues, whereClause, null);
+
+
     }
 
     public ArrayList<Vocab> getVocabOfUnit(int unitID) {

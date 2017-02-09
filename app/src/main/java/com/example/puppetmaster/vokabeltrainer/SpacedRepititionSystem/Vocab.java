@@ -89,4 +89,38 @@ public class Vocab {
 
     }
 
+    //TODO: Funktion löschen, nur für Testing
+    public Date getLastRevision() {
+        return lastRevision;
+    }
+
+    //TODO: Funktion löschen, nur für Testing
+    public Date getNextRevision() {
+        return nextRevision;
+    }
+
+    //TODO: Funktion löschen, nur für Testing
+    public int getCountCorrect() {
+        return countCorrect;
+    }
+
+    //TODO: Funktion löschen, nur für Testing
+    public int getCountFalse() {
+        return countFalse;
+    }
+
+    //TODO: Funktion löschen, nur für Testing
+    public void setSrsLevel(int srsLevel) {
+        this.srsLevel = srsLevel;
+    }
+
+    //TODO: Funktion löschen, nur für Testing
+    public void setCountCorrect(int countCorrect) {
+        this.countCorrect = countCorrect;
+    }
+
+    //TODO: Funktion löschen, nur für Testing
+    public void setCountFalse(int countFalse) {
+        this.countFalse = countFalse;
+    }
 }
