@@ -1,10 +1,6 @@
 package com.example.puppetmaster.vokabeltrainer.DatabaseCommunication;
 
-import android.app.Activity;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.view.View;
 
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 

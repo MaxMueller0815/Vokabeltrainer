@@ -1,7 +1,5 @@
 package com.example.puppetmaster.vokabeltrainer;
 
-import android.widget.ImageView;
-
 /**
  * Created by Benedikt on 20.01.17.
  */

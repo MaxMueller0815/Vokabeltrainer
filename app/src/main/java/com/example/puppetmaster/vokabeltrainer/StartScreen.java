@@ -1,11 +1,8 @@
 package com.example.puppetmaster.vokabeltrainer;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
@@ -14,9 +11,6 @@ import com.example.puppetmaster.vokabeltrainer.Fragments.HomeFragment;
 import com.example.puppetmaster.vokabeltrainer.Fragments.ProfileFragment;
 import com.example.puppetmaster.vokabeltrainer.Fragments.TopicsFragment;
 
-import static android.R.attr.fragment;
-
-
 public class StartScreen extends AppCompatActivity {
 
 
@@ -24,6 +18,8 @@ public class StartScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
+
+
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, new HomeFragment())
                 .commit();

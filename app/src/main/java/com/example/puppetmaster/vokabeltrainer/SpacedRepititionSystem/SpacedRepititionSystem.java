@@ -4,13 +4,10 @@ import android.content.Context;
 
 import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.SRSDataBaseCommunicator;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.SortedSet;
 
 /**
  * Created by florian on 11.01.17.

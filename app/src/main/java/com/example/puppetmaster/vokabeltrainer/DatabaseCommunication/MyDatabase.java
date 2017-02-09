@@ -14,7 +14,6 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class MyDatabase extends SQLiteAssetHelper {
 
