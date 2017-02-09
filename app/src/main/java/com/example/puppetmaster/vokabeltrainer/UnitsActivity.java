@@ -6,8 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.ListView;
 
 import com.example.puppetmaster.vokabeltrainer.Adapter.UnitAdapter;
+import com.example.puppetmaster.vokabeltrainer.Adapter.VocabAdapter;
 import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
 
 import java.util.ArrayList;
