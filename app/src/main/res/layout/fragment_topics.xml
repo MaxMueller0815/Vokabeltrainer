@@ -8,7 +8,6 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_topics"
         android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:layout_marginBottom="56dp" />
+        android:layout_width="match_parent" />
 
 </LinearLayout>
