@@ -3,7 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:title="Settings"
-        android:icon="@android:drawable/ic_menu_manage"
+        android:icon="@drawable/ic_settings"
         android:id="@+id/menu_settings"
+        app:showAsAction="always" />
+
+    <item android:title="List of Vocabulary"
+        android:icon="@drawable/ic_school"
+        android:id="@+id/menu_list_of_vocabs"
         app:showAsAction="always" />
 </menu>
