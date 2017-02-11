@@ -16,7 +16,7 @@
         android:theme="?attr/actionBarTheme"
         android:minHeight="?attr/actionBarSize"
         android:id="@+id/toolbar_start"
-        app:title="lEarned"
+        app:title="@string/app_name"
 
         android:elevation="4dp" />
 

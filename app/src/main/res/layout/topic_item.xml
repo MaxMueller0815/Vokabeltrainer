@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             card_view:srcCompat="@drawable/chapter1"
             android:scaleType="centerCrop"
-            android:layout_height="128dp" />
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/tv_topic_title"
