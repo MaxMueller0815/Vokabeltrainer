@@ -86,7 +86,10 @@ public class StartScreen extends AppCompatActivity {
             case R.id.menu_settings:
                 Log.d("debug","activity: action home has clicked");
                 startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
-                return true;
+                break;
+            case R.id.menu_list_of_vocabs:
+                startActivity(new Intent(getApplicationContext(), AllVocabsActivity.class));
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
