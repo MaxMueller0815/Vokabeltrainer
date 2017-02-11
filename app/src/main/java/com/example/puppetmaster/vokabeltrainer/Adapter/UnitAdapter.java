@@ -16,9 +16,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
 import com.example.puppetmaster.vokabeltrainer.R;
-import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 import com.example.puppetmaster.vokabeltrainer.Unit;
 import com.example.puppetmaster.vokabeltrainer.UnitsActivity;
 
@@ -45,14 +43,9 @@ public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.UnitViewHolder
         final int selectedUnit = unit.getId();
         topicViewHolder.vNumberOfUnit.setText("Unit " + (i + 1) + " of " + unitList.size());
         topicViewHolder.vTitle.setText(unit.getTitle());
-
-        MyDatabase db = new MyDatabase(context);
-        ArrayList<Vocab> listOfVocabs = db.getVocabOfUnit(unit.getId());
-        VocabAdapter vocabAdapter = new VocabAdapter(context, listOfVocabs);
+        VocabAdapter vocabAdapter = new VocabAdapter(context, unit.getVocabsOfUnit());
         topicViewHolder.vList.setAdapter(vocabAdapter);
-
         topicViewHolder.vButton.setTag(selectedUnit);
-
 
         topicViewHolder.vCard.setOnClickListener(new View.OnClickListener() {
             @Override

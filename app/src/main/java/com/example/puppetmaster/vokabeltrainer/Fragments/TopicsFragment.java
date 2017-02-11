@@ -19,13 +19,11 @@ public class TopicsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_topics, container, false);
         MyDatabase db = new MyDatabase(getContext());
-
         RecyclerView recList = (RecyclerView) view.findViewById(R.id.recycler_topics);
         recList.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);
-
         TopicAdapter ta = new TopicAdapter(new MyDatabase(getContext()).getTopics());
         recList.setAdapter(ta);
         return view;

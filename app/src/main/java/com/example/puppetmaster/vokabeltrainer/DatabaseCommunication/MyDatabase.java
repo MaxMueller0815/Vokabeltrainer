@@ -18,7 +18,9 @@ import java.util.ArrayList;
 public class MyDatabase extends SQLiteAssetHelper {
 
     private static final String DATABASE_NAME = "vocabDB.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
+    private SQLiteDatabase db;
+    private SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
     public MyDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -35,9 +37,8 @@ public class MyDatabase extends SQLiteAssetHelper {
     }
 
     public ArrayList<Topic> getTopics() {
-        SQLiteDatabase db = getReadableDatabase();
-        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        String [] sqlSelect = {"id, title"};
+        db = getReadableDatabase();
+        String[] sqlSelect = {"id, title"};
         String sqlTables = "topic";
 
         qb.setTables(sqlTables);
@@ -46,8 +47,11 @@ public class MyDatabase extends SQLiteAssetHelper {
         ArrayList<Topic> topicsList = new ArrayList<Topic>();
         try {
             c.moveToFirst();
-            while(!c.isAfterLast()) {
-                topicsList.add(new Topic(c.getInt(0), c.getString(1)));
+            while (!c.isAfterLast()) {
+                int topicID = c.getInt(0);
+                String topicTitle = c.getString(1);
+                ArrayList<Unit> unitsOfTopic = getUnitsOfTopic(topicID);
+                topicsList.add(new Topic(topicID, topicTitle, unitsOfTopic));
                 c.moveToNext();
             }
         } finally {
@@ -56,10 +60,10 @@ public class MyDatabase extends SQLiteAssetHelper {
         return topicsList;
     }
 
-    public ArrayList<Unit> getUnitsOfTopic(int topicID) {
+    private ArrayList<Unit> getUnitsOfTopic(int topicID) {
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        String [] sqlSelect = {"id ,title, topicID"};
+        String[] sqlSelect = {"id ,title"};
         String sqlTables = "unit";
 
         qb.setTables(sqlTables);
@@ -70,8 +74,12 @@ public class MyDatabase extends SQLiteAssetHelper {
 
         try {
             c.moveToFirst();
-            while(!c.isAfterLast()) {
-                unitsList.add(new Unit(c.getInt(0), c.getString(1), c.getInt(2)));
+            while (!c.isAfterLast()) {
+                int unitID = c.getInt(0);
+                String title = c.getString(1);
+                ArrayList<Vocab> vocabsOfUnit = getVocabOfUnit(unitID);
+                Log.i("Content of Unit", unitID + " contains" + vocabsOfUnit.toString());
+                unitsList.add(new Unit(unitID, title, vocabsOfUnit));
                 c.moveToNext();
             }
         } finally {
@@ -80,46 +88,22 @@ public class MyDatabase extends SQLiteAssetHelper {
         return unitsList;
     }
 
-        /*
-        * TODO die einzelne Vokabel in der Datenbank updaten
-        *
-        * */
-    public void updateSingleVocab(Vocab updatedVocab){
-//        Vocab currentVocab;
-//        for(Vocab vocab : getListOfAllVocab()) {
-//            if(vocab.getId() == updatedVocab.getId()) {
-//                currentVocab = vocab;
-//            }
-//        }
-        SQLiteDatabase db = this.getWritableDatabase();
 
-        String whereClause = "id=" + updatedVocab.getId();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("srsLevel", updatedVocab.getSrsLevel());
-        contentValues.put("countCorrect", updatedVocab.getCountCorrect());
-        contentValues.put("countFalse", updatedVocab.getCountFalse());
-        contentValues.put("lastRevision", updatedVocab.getLastRevision().toString());
-        contentValues.put("nextRevision", updatedVocab.getNextRevision().toString());
-        db.update("srs", contentValues, whereClause, null);
-
-
-    }
-
-    public ArrayList<Vocab> getVocabOfUnit(int unitID) {
-        SQLiteDatabase db = getReadableDatabase();
-        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        String [] sqlSelect = {"*"};
+    private ArrayList<Vocab> getVocabOfUnit(int unitID) {
+        db = getReadableDatabase();
+        String[] sqlSelect = {"*"};
         String sqlTables = "srs";
-
-        qb.setTables(sqlTables);
-        qb.appendWhere("unitID=" + unitID);
-        Cursor c = qb.query(db, sqlSelect, null, null,
+        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+        queryBuilder.setTables(sqlTables);
+        queryBuilder.appendWhere("unitID=" + unitID);
+        Log.i("UnitID in VocabOfUnit", "" + unitID);
+        Cursor c = queryBuilder.query(db, sqlSelect, null, null,
                 null, null, null);
-        ArrayList<Vocab> vocabList = new ArrayList<>();
+        ArrayList<Vocab> vocabList = new ArrayList<Vocab>();
 
         try {
             c.moveToFirst();
-            while(!c.isAfterLast()) {
+            while (!c.isAfterLast()) {
                 try {
                     vocabList.add(new Vocab(c.getInt(0), c.getString(1), c.getString(2), c.getInt(3), c.getInt(4), c.getString(5), c.getString(6), c.getInt(7), c.getInt(8)));
                 } catch (ParseException e) {
@@ -127,7 +111,7 @@ public class MyDatabase extends SQLiteAssetHelper {
                 }
                 c.moveToNext();
             }
-        }  finally {
+        } finally {
             c.close();
         }
 
@@ -135,12 +119,30 @@ public class MyDatabase extends SQLiteAssetHelper {
     }
 
     /*
+    * TODO die einzelne Vokabel in der Datenbank updaten
+    *
+    * */
+    public void updateSingleVocab(Vocab updatedVocab) {
+        db = this.getWritableDatabase();
+        String whereClause = "id=" + updatedVocab.getId();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("srsLevel", updatedVocab.getSrsLevel());
+        contentValues.put("countCorrect", updatedVocab.getCountCorrect());
+        contentValues.put("countFalse", updatedVocab.getCountFalse());
+        // TODO Date ins richtige Format bringen
+        //contentValues.put("lastRevision", updatedVocab.getLastRevision().toString());
+        //contentValues.put("nextRevision", updatedVocab.getNextRevision().toString());
+        db.update("srs", contentValues, whereClause, null);
+
+
+    }
+
+    /*
         return all vocabulary as a representation of the spaced repetition system
     * */
-    public ArrayList<Vocab> getListOfAllVocab(){
-        SQLiteDatabase db = getReadableDatabase();
-        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        String [] sqlSelect = {"*"};
+    public ArrayList<Vocab> getListOfAllVocab() {
+        db = getReadableDatabase();
+        String[] sqlSelect = {"*"};
         String sqlTables = "srs";
 
         qb.setTables(sqlTables);
@@ -150,7 +152,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 
         try {
             c.moveToFirst();
-            while(!c.isAfterLast()) {
+            while (!c.isAfterLast()) {
                 try {
                     listOfAllVocab.add(new Vocab(c.getInt(0), c.getString(1), c.getString(2), c.getInt(3), c.getInt(4), c.getString(5), c.getString(6), c.getInt(7), c.getInt(8)));
                     Log.d("Added", listOfAllVocab.get(listOfAllVocab.size() - 1) + "");
@@ -166,4 +168,36 @@ public class MyDatabase extends SQLiteAssetHelper {
         return listOfAllVocab;
     }
 
+    public ArrayList<Object> getSettings() {
+        ArrayList<Object> settings = new ArrayList<Object>();
+        db = getReadableDatabase();
+        String[] sqlSelect = {"workload, exerciseStart, exerciseEnd"};
+        String sqlTables = "userPreferences";
+
+        qb.setTables(sqlTables);
+        Cursor c = qb.query(db, sqlSelect, null, null,
+                null, null, null);
+
+
+        try {
+            c.moveToFirst();
+            settings.add(c.getInt(0));
+            settings.add(c.getString(1));
+            settings.add(c.getString(2));
+        } finally {
+            c.close();
+        }
+        return settings;
+    }
+
+    // TODO Set Workload
+    public void saveSettings(int workload, String strStart, String strEnd) {
+        db = this.getWritableDatabase();
+        String whereClause = "ROWID=1";
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("workload", workload);
+        contentValues.put("exerciseStart", strStart);
+        contentValues.put("exerciseEnd", strEnd);
+        db.update("userPreferences", contentValues, whereClause, null);
+    }
 }

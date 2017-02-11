@@ -1,5 +1,9 @@
 package com.example.puppetmaster.vokabeltrainer;
 
+import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
+
+import java.util.ArrayList;
+
 /**
  * Created by Benedikt on 20.01.17.
  */
@@ -7,12 +11,12 @@ package com.example.puppetmaster.vokabeltrainer;
 public class Unit {
     private int id;
     private String title;
-    private int topicID;
+    private ArrayList<Vocab> vocabsOfUnit;
 
-    public Unit(int id, String title, int topicID) {
+    public Unit(int id, String title, ArrayList<Vocab> vocabsOfUnit) {
         this.id = id;
         this.title = title;
-        this.topicID = topicID;
+        this.vocabsOfUnit = vocabsOfUnit;
     }
 
     public int getId() {
@@ -23,7 +27,7 @@ public class Unit {
         return title;
     }
 
-    public int getTopicID() {
-        return topicID;
+    public ArrayList<Vocab> getVocabsOfUnit() {
+        return vocabsOfUnit;
     }
 }

@@ -1,5 +1,10 @@
 package com.example.puppetmaster.vokabeltrainer;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
+
 /**
  * Created by Benedikt on 20.01.17.
  */
@@ -7,11 +12,12 @@ package com.example.puppetmaster.vokabeltrainer;
 public class Topic {
     private int id;
     private String title;
-    private int topicID;
+    private ArrayList<Unit> unitsOfTopic;
 
-    public Topic(int id, String title) {
+    public Topic(int id, String title, ArrayList<Unit> unitsOfTopic) {
         this.id = id;
         this.title = title;
+        this.unitsOfTopic = unitsOfTopic;
     }
 
     public int getId() {
@@ -49,5 +55,9 @@ public class Topic {
         }
 
         return imageID;
+    }
+
+    public ArrayList<Unit> getUnitsOfTopic() {
+        return unitsOfTopic;
     }
 }

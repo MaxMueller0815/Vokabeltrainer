@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.puppetmaster.vokabeltrainer.R;
 import com.example.puppetmaster.vokabeltrainer.Topic;
 import com.example.puppetmaster.vokabeltrainer.UnitsActivity;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,18 +34,20 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
 
     @Override
     public void onBindViewHolder(TopicViewHolder topicViewHolder, int i) {
-        Topic ti = topicList.get(i);
+        final Topic topic = topicList.get(i);
         final int selectedTopic = topicList.get(i).getId();
-        topicViewHolder.vCard.setTag(selectedTopic);
-        topicViewHolder.vImage.setImageResource(ti.getImage());
-        topicViewHolder.vTitle.setText(ti.getTitle());
+        topicViewHolder.vCard.setTag(topic);
+        topicViewHolder.vImage.setImageResource(topic.getImage());
+        topicViewHolder.vTitle.setText(topic.getTitle());
 
         topicViewHolder.vCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(),UnitsActivity.class);
                 Bundle mBundle = new Bundle();
-                mBundle.putInt("SELECTED_TOPIC", selectedTopic);
+                Gson gson = new Gson();
+                String TopicAsGson = gson.toJson(topic);
+                mBundle.putString("SELECTED_TOPIC", TopicAsGson);
                 intent.putExtras(mBundle);
                 v.getContext().startActivity(intent);
             }

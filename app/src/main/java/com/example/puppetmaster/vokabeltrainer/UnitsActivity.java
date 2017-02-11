@@ -4,13 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.widget.TextView;
 
 import com.azoft.carousellayoutmanager.CarouselLayoutManager;
 import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener;
 import com.azoft.carousellayoutmanager.CenterScrollListener;
 import com.example.puppetmaster.vokabeltrainer.Adapter.UnitAdapter;
-import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
+import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -21,8 +22,12 @@ public class UnitsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_units);
-        getListOfUnits();
+        readIntent();
+        calcStats();
+        initCarousel();
+    }
 
+    private void initCarousel() {
         final CarouselLayoutManager layoutManager = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL);
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_units);
         recyclerView.setLayoutManager(layoutManager);
@@ -32,15 +37,34 @@ public class UnitsActivity extends AppCompatActivity {
         recyclerView.setAdapter(new UnitAdapter(listOfUnits));
     }
 
-    private void getListOfUnits() {
+    private void readIntent() {
         Intent intent = getIntent();
         if (null != intent) { //Null Checking
-            int selectedTopic = intent.getIntExtra("SELECTED_TOPIC", -1);
-            Log.d("Ausgewähltes Topic", Integer.toString(selectedTopic));
-            MyDatabase db = new MyDatabase(this);
-            listOfUnits = db.getUnitsOfTopic(selectedTopic);
-            Log.d("Num Cards", "" + listOfUnits.size());
-
+            Gson gson = new Gson();
+            Topic topic = gson.fromJson(intent.getStringExtra("SELECTED_TOPIC"), Topic.class);
+            listOfUnits = topic.getUnitsOfTopic();
         }
+    }
+
+    private void calcStats() {
+        int vocabsInTopic = 0;
+        int practicedVocabs = 0;
+        for (Unit unit : listOfUnits) {
+            ArrayList<Vocab> vocabsOfUnit = unit.getVocabsOfUnit();
+            vocabsInTopic = vocabsOfUnit.size();
+            for (Vocab vocab : vocabsOfUnit) {
+                if(vocab.isPracticed()) {
+                    practicedVocabs++;
+                }
+            }
+        }
+        TextView tvCount = (TextView) findViewById(R.id.tv_count);
+        tvCount.setText("" + vocabsInTopic);
+        TextView tvLearned = (TextView) findViewById(R.id.tv_learned);
+        tvLearned.setText("" + practicedVocabs);
+        TextView tvNumLeft = (TextView) findViewById(R.id.tv_num_left);
+        tvNumLeft.setText("" + (vocabsInTopic - practicedVocabs));
+        TextView tvPercent = (TextView) findViewById(R.id.tv_percent);
+        tvPercent.setText((practicedVocabs/vocabsInTopic) + "%");
     }
 }

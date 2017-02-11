@@ -89,6 +89,14 @@ public class Vocab {
 
     }
 
+    public boolean isPracticed() {
+        if(getSrsLevel() >= 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     //TODO: Funktion löschen, nur für Testing
     public Date getLastRevision() {
         return lastRevision;
