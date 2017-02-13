@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.puppetmaster.vokabeltrainer.R;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
  */
 
 public class VocabAdapter extends ArrayAdapter<Vocab> {
+    private final int MAX_LEVEL = 12;
 
     public VocabAdapter(Context context, ArrayList<Vocab> vocabs) {
         super(context, 0, vocabs);
@@ -40,6 +42,9 @@ public class VocabAdapter extends ArrayAdapter<Vocab> {
 
         TextView defaultTranslation = (TextView) listItemView.findViewById(R.id.tv_default);
         defaultTranslation.setText(vocab.getEnglish());
+
+        ProgressBar progressBar = (ProgressBar) listItemView.findViewById(R.id.progress_level);
+        progressBar.setProgress(vocab.getSrsLevel());
         return listItemView;
     }
 }

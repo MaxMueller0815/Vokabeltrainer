@@ -51,7 +51,7 @@ public class UnitsActivity extends AppCompatActivity {
         int practicedVocabs = 0;
         for (Unit unit : listOfUnits) {
             ArrayList<Vocab> vocabsOfUnit = unit.getVocabsOfUnit();
-            vocabsInTopic = vocabsOfUnit.size();
+            vocabsInTopic = vocabsInTopic + vocabsOfUnit.size();
             for (Vocab vocab : vocabsOfUnit) {
                 if(vocab.isPracticed()) {
                     practicedVocabs++;
