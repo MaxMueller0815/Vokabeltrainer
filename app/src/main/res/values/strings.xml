@@ -13,4 +13,29 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_settings">SettingsActivity</string>
 
+
+    <!-- Sample String -->
+    <string name="sample_string">Beispieltext</string>
+
+    <!-- LearnActivity -->
+    <string name="vocab_learning_language">Los geht\'s!</string>
+    <string name="vocab_knowing_language">Gib dein Bestes!</string>
+    <string name="vocab_counter">0</string>
+    <string name="number_of_meanings">*</string>
+    <string name="vocab_hint">Vokabel eingeben</string>
+    <string name="toast_manual">Swipe nach links: Du weißt die Vokabel. \n\nTap auf Bildschirm: Du weißt die Vokabel nicht.</string>
+
+    <!-- Result AlertDialog -->
+    <string name="result">Ergebnis</string>
+    <string name="finished">OK</string>
+
+    <!-- Exit AlertDialog -->
+    <string name="exit_title">Verlassen</string>
+    <string name="exit_message">Willst du die Abfrage wirklich verlassen?</string>
+    <string name="exit_positive_button">Verlassen</string>
+    <string name="exit_negative_button">Abbrechen</string>
+    <string name="language_positive_button">Erstellen</string>
+    <string name="language_negative_button">Abbrechen</string>
+
+
 </resources>

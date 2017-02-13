@@ -18,6 +18,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".LearnActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize"
+            />
+        <activity
             android:name=".UnitsActivity"
             android:label="@string/title_activity_units" />
         <activity android:name=".SRSTesterActivity" />

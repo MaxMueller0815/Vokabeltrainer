@@ -17,8 +17,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.puppetmaster.vokabeltrainer.R;
+import com.example.puppetmaster.vokabeltrainer.LearnActivity;
 import com.example.puppetmaster.vokabeltrainer.Unit;
-import com.example.puppetmaster.vokabeltrainer.UnitsActivity;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,21 +39,21 @@ public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.UnitViewHolder
     }
 
     @Override
-    public void onBindViewHolder(UnitViewHolder topicViewHolder, int i) {
-        Unit unit = unitList.get(i);
-        final int selectedUnit = unit.getId();
-        topicViewHolder.vNumberOfUnit.setText("Unit " + (i + 1) + " of " + unitList.size());
-        topicViewHolder.vTitle.setText(unit.getTitle());
+    public void onBindViewHolder(UnitViewHolder unitViewHolder, int i) {
+        final Unit unit = unitList.get(i);
+        unitViewHolder.vNumberOfUnit.setText("Unit " + (i + 1) + " of " + unitList.size());
+        unitViewHolder.vTitle.setText(unit.getTitle());
         VocabAdapter vocabAdapter = new VocabAdapter(context, unit.getVocabsOfUnit());
-        topicViewHolder.vList.setAdapter(vocabAdapter);
-        topicViewHolder.vButton.setTag(selectedUnit);
+        unitViewHolder.vList.setAdapter(vocabAdapter);
 
-        topicViewHolder.vCard.setOnClickListener(new View.OnClickListener() {
+        unitViewHolder.vButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(),UnitsActivity.class);
+                Intent intent = new Intent(v.getContext(),LearnActivity.class);
                 Bundle mBundle = new Bundle();
-                mBundle.putInt("SELECTED_UNIT", selectedUnit);
+                Gson gson = new Gson();
+                String unitAsJson = gson.toJson(unit);
+                mBundle.putString("SELECTED_UNIT", unitAsJson);
                 intent.putExtras(mBundle);
                 v.getContext().startActivity(intent);
             }
