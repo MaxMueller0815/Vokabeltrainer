@@ -3,6 +3,7 @@ package com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -57,12 +58,35 @@ public class Vocab {
         }
     }
 
-    public void setLastRevision(Date currentdate){
-        this.lastRevision = currentdate;
+    public void setLastRevision(){
+        this.lastRevision = new Date();
     }
 
-    public void setNextRevision(Date nextRevision){
-        this.nextRevision = nextRevision;
+    public void setNextRevision(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(getLastRevision());
+
+        if (srsLevel == 1) {
+            calendar.add(Calendar.HOUR, 5);
+        } else if (srsLevel == 2) {
+            calendar.add(Calendar.HOUR, 12);
+        } else if (srsLevel == 3) {
+            calendar.add(Calendar.HOUR, 24);
+        } else if (srsLevel == 4) {
+            calendar.add(Calendar.DATE, 2);
+        } else if (srsLevel == 5) {
+            calendar.add(Calendar.DATE, 5);
+        } else if (srsLevel == 6) {
+            calendar.add(Calendar.DATE, 14);
+        } else if (srsLevel == 7) {
+            calendar.add(Calendar.MONTH, 1);
+        } else if (srsLevel == 8) {
+            calendar.add(Calendar.MONTH, 2);
+        } else if (srsLevel == 9) {
+            calendar.add(Calendar.MONTH, 3);
+        }
+
+        this.nextRevision = calendar.getTime();
     }
 
     public String getEnglish(){

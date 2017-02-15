@@ -13,7 +13,10 @@ import com.example.puppetmaster.vokabeltrainer.Unit;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class MyDatabase extends SQLiteAssetHelper {
 
@@ -130,9 +133,15 @@ public class MyDatabase extends SQLiteAssetHelper {
         contentValues.put("countCorrect", updatedVocab.getCountCorrect());
         contentValues.put("countFalse", updatedVocab.getCountFalse());
         // TODO Date ins richtige Format bringen
-        //contentValues.put("lastRevision", updatedVocab.getLastRevision().toString());
-        //contentValues.put("nextRevision", updatedVocab.getNextRevision().toString());
+        updatedVocab.setLastRevision();
+        updatedVocab.setNextRevision();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        String lastRevision = dateFormat.format(updatedVocab.getLastRevision());
+        String nextRevision = dateFormat.format(updatedVocab.getNextRevision());
+        contentValues.put("lastRevision", lastRevision);
+        contentValues.put("nextRevision", nextRevision);
         db.update("srs", contentValues, whereClause, null);
+        Log.i("MyDatabase", updatedVocab.getGerman()+ ": "+contentValues.toString());
 
 
     }
@@ -155,7 +164,6 @@ public class MyDatabase extends SQLiteAssetHelper {
             while (!c.isAfterLast()) {
                 try {
                     listOfAllVocab.add(new Vocab(c.getInt(0), c.getString(1), c.getString(2), c.getInt(3), c.getInt(4), c.getString(5), c.getString(6), c.getInt(7), c.getInt(8)));
-                    Log.d("Added", listOfAllVocab.get(listOfAllVocab.size() - 1) + "");
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

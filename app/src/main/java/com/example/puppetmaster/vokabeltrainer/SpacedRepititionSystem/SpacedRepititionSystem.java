@@ -104,9 +104,7 @@ public class SpacedRepititionSystem {
             vocab.increaseCountFalse();
         }
 
-        vocab.setLastRevision(new Date());
-
-
+        vocab.setLastRevision();
         dbCommunicator.updateVocab(vocab);
 
     }

@@ -38,8 +38,8 @@ public class SRSTesterActivity extends AppCompatActivity {
         updateBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 currentVocab.setSrsLevel(Integer.parseInt(etLevel.getText().toString()));
-                currentVocab.setLastRevision(lastRevision);
-                currentVocab.setNextRevision(nextRevision);
+                /*currentVocab.setLastRevision(lastRevision);
+                currentVocab.setNextRevision(nextRevision);*/
                 currentVocab.setCountCorrect(Integer.parseInt(etCountCorrect.getText().toString()));
                 currentVocab.setCountFalse(Integer.parseInt(etCountFalse.getText().toString()));
                 MyDatabase db = new MyDatabase(getApplicationContext());
