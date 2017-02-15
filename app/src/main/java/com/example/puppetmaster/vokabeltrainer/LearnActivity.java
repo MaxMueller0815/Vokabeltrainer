@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -52,6 +53,7 @@ public class LearnActivity extends AppCompatActivity {
     private String backCard ="";
     private double randomNum;
     private double result = 0.0;
+    private int unitID;
 
     private boolean learnList = false;
 
@@ -74,6 +76,7 @@ public class LearnActivity extends AppCompatActivity {
         if (null != intent) { //Null Checking
             Gson gson = new Gson();
             Unit unit = gson.fromJson(intent.getStringExtra("SELECTED_UNIT"), Unit.class);
+            unitID = unit.getId();
             allVocab = unit.getVocabsOfUnit();
             listSize = allVocab.size();
         }
@@ -122,26 +125,52 @@ public class LearnActivity extends AppCompatActivity {
 
     // TODO: Sollte man das nicht durch die handleAnswer/checkAnswer Funktion in SRS machen?
     private void compareSolution(){
-        textInput = editTextInput.getText().toString();
-        String currentSolution = backCard;
-        //textInput.trim();
-        //currentSolution.trim();
-        //allVocab.get(counter_vocab).increaseAsked();
 
-        if(currentSolution.trim().equalsIgnoreCase(textInput.trim())) {
+        String currentSolution = backCard;
+        currentSolution = currentSolution.replace("…","");
+        currentSolution = currentSolution.replace("?","");
+        currentSolution = currentSolution.replace("!","");
+        currentSolution = currentSolution.replace(".","");
+        currentSolution = currentSolution.replaceAll("\\(.*?\\)","");
+        currentSolution = currentSolution.trim();
+        Log.i("currentSolution", currentSolution);
+
+        textInput = editTextInput.getText().toString();
+        textInput = textInput.replace("…","");
+        textInput = textInput.replace("?","");
+        textInput = textInput.replace("!","");
+        textInput = textInput.replace(".","");
+        textInput = textInput.replaceAll("\\(.*?\\)","");
+        textInput = textInput.trim();
+        Log.i("textInput", textInput);
+
+        Vocab currentVocab = allVocab.get(counter_vocab);
+
+
+
+        if(currentSolution.equalsIgnoreCase(textInput)) {
             imageView.setImageResource(R.drawable.smiley_happy);
             imageView.setVisibility(View.VISIBLE);
 
-            allVocab.get(counter_vocab).increaseCountCorrect();
+            currentVocab.increaseCountCorrect();
+            currentVocab.increaseSrsLevel();
             //dbAdmin.updateAskedAndKnown(allVocab.get(counter_vocab));
+
+
             counter_correct_answer++;
         } else {
             imageView.setImageResource(R.drawable.smiley_question);
             imageView.setVisibility(View.VISIBLE);
+            currentVocab.increaseCountFalse();
+            currentVocab.decreaseSrsLevel();
 
             //allVocab.get(counter_vocab).resetKnown();
             //dbAdmin.updateAskedAndKnown(allVocab.get(counter_vocab));
         }
+
+        MyDatabase db = new MyDatabase(this);
+        db.updateSingleVocab(currentVocab);
+        db.close();
     }
 
     private void updateNumCounter() {
@@ -290,7 +319,13 @@ public class LearnActivity extends AppCompatActivity {
         alertDialogBuilder.setPositiveButton(R.string.finished, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+//                Intent intent = new Intent(getApplicationContext(), UnitsActivity.class);
+//                Bundle mBundle = new Bundle();
+//                mBundle.putInt("FINISHED_UNIT", unitID);
+//                intent.putExtras(mBundle);
+//                startActivity(intent);
                 finish();
+
             }
         });
 
