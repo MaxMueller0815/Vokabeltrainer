@@ -18,7 +18,6 @@ public class TopicsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_topics, container, false);
-        MyDatabase db = new MyDatabase(getContext());
         RecyclerView recList = (RecyclerView) view.findViewById(R.id.recycler_topics);
         recList.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
