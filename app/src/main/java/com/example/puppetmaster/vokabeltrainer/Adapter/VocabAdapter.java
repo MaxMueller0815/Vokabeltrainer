@@ -42,9 +42,11 @@ public class VocabAdapter extends ArrayAdapter<Vocab> {
 
         TextView defaultTranslation = (TextView) listItemView.findViewById(R.id.tv_default);
         defaultTranslation.setText(vocab.getEnglish());
-
+        int level = vocab.getSrsLevel();
         ProgressBar progressBar = (ProgressBar) listItemView.findViewById(R.id.progress_level);
-        progressBar.setProgress(vocab.getSrsLevel());
+        progressBar.setProgress(level);
+        TextView tvLevel = (TextView) listItemView.findViewById(R.id.tv_level);
+        tvLevel.setText(level + "");
         return listItemView;
     }
 }

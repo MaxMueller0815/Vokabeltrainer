@@ -38,9 +38,20 @@
         android:progressDrawable="@drawable/circular_progress_bar"
         android:background="@drawable/circle_shape"
         style="?android:attr/progressBarStyleHorizontal"
-        android:max="12"
-        android:progress="3"
+        android:max="9"
+        android:progress="0"
         android:layout_alignParentRight="true"
         android:layout_centerInParent="true" />
+
+    <TextView
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_level"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:text="0"
+        android:textSize="8sp" />
 
 </RelativeLayout>
