@@ -2,7 +2,6 @@ package com.example.puppetmaster.vokabeltrainer.Fragments;
 
 import android.app.Fragment;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -10,34 +9,48 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
-import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
 import com.example.puppetmaster.vokabeltrainer.R;
 import com.example.puppetmaster.vokabeltrainer.SRSTesterActivity;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 import com.example.puppetmaster.vokabeltrainer.Topic;
+import com.example.puppetmaster.vokabeltrainer.Unit;
+import com.github.lzyzsd.circleprogress.ArcProgress;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
-import java.lang.reflect.Array;
-import java.text.NumberFormat;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
     private View view;
+    private ArrayList<Vocab> vocabs = new ArrayList<Vocab>();
+    ArrayList<Topic> topics = new ArrayList<>();
+    private final int VISIBLE_DAYS = 7;
+    private int counterWeek = 0;
+    DataPoint[] datapoints = new DataPoint[VISIBLE_DAYS];
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home, container, false);
+
+
+        readBundle();
+        calcStats();
         initGraph();
+        initProgressBar();
 
         Button srsButton = (Button) view.findViewById(R.id.btn_srs_test);
         srsButton.setOnClickListener(new View.OnClickListener() {
@@ -47,37 +60,90 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
         return view;
     }
 
-    private void initGraph() {
-        final int VISIBLE_DAYS = 7;
+    private void readBundle() {
+        Gson gson = new Gson();
+        String getArgument = getArguments().getString("topics");
+        Type baseType = new TypeToken<List<Topic>>() {
+        }.getType();
+        topics = gson.fromJson(getArgument, baseType);
 
-        Calendar calendarPast = Calendar.getInstance();
-        calendarPast.setTime(new Date());
-
-        ArrayList<Vocab> vocabs = new MyDatabase(getContext()).getListOfAllVocab();
-        DataPoint[] datapoints = new DataPoint[VISIBLE_DAYS];
-
-        for (int i = VISIBLE_DAYS - 1; i >= 0; i--) {
-            double counter = 0;
-            for (Vocab vocab : vocabs) {
-                Calendar calenderOfVocab = Calendar.getInstance();
-                calenderOfVocab.setTime(vocab.getLastRevision());
-
-                if (calenderOfVocab.get(Calendar.YEAR) == calendarPast.get(Calendar.YEAR) &&
-                        calenderOfVocab.get(Calendar.DAY_OF_YEAR) == calendarPast.get(Calendar.DAY_OF_YEAR)) {
-                    counter++;
+        for (Topic topic : topics) {
+            ArrayList<Unit> units = topic.getUnitsOfTopic();
+            for (Unit unit : units) {
+                ArrayList<Vocab> vocabsOfUnit = unit.getVocabsOfUnit();
+                for (Vocab vocab : vocabsOfUnit) {
+                    vocabs.add(vocab);
                 }
             }
-            datapoints[i] = new DataPoint(calendarPast.getTime(), counter);
+        }
+
+        Log.i("Length of vocabs",vocabs.size()+" items");
+    }
+
+
+
+
+    private void initProgressBar() {
+        ArcProgress progressDay = (ArcProgress) view.findViewById(R.id.arc_progress_today);
+        TextView tvDay = (TextView) view.findViewById(R.id.tv_day);
+        tvDay.setText((int) datapoints[6].getY() + "");
+        double percentDay = datapoints[6].getY() / 20.0 * 100.0;
+        if (percentDay <= 100) {
+            progressDay.setProgress((int) percentDay);
+        } else {
+            progressDay.setProgress(100);
+        }
+
+        Log.i("counterToday", percentDay + " in ProgressBar");
+
+        ArcProgress progressYesterday = (ArcProgress) view.findViewById(R.id.arc_progress_yesterday);
+        TextView tvYesterday = (TextView) view.findViewById(R.id.tv_yesterday);
+        tvYesterday.setText((int) datapoints[5].getY() + "");
+        double percentYesterday = datapoints[5].getY() / 20.0 * 100.0;
+        if (percentYesterday <= 100) {
+            progressYesterday.setProgress((int) percentYesterday);
+        } else {
+            progressYesterday.setProgress(100);
+        }
+        Log.i("counterYesterday", percentYesterday + " in ProgressBar");
+
+        ArcProgress progressWeek = (ArcProgress) view.findViewById(R.id.arc_progress_week);
+        TextView tvWeek = (TextView) view.findViewById(R.id.tv_week);
+        tvWeek.setText(counterWeek + "");
+        double percentWeek = counterWeek / 140.0 * 100.0;
+        if (percentWeek <= 100) {
+            progressWeek.setProgress((int) percentWeek);
+        } else {
+            progressWeek.setProgress(100);
+        }
+        Log.i("counterWeek", percentWeek + " in ProgressBar");
+    }
+
+    private void calcStats() {
+        Calendar calendarPast = Calendar.getInstance();
+        calendarPast.setTime(new Date());
+        for (int i = VISIBLE_DAYS - 1; i >= 0; i--) {
+            double counterDay = 0;
+            for (Vocab vocab : vocabs) {
+                    Calendar calenderOfVocab = Calendar.getInstance();
+                    calenderOfVocab.setTime(vocab.getLastRevision());
+                    if (calenderOfVocab.get(Calendar.YEAR) == calendarPast.get(Calendar.YEAR) &&
+                            calenderOfVocab.get(Calendar.DAY_OF_YEAR) == calendarPast.get(Calendar.DAY_OF_YEAR)) {
+                        counterDay++;
+                        counterWeek++;
+                    }
+            }
+            datapoints[i] = new DataPoint(calendarPast.getTime(), counterDay);
             //datapoints[i] = new DataPoint(i, counter);
             Log.i("Datapoint added", new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(datapoints[i].getX()) + ", " + datapoints[i].getY());
             calendarPast.add(Calendar.DATE, -1);
         }
+    }
 
-
+    private void initGraph() {
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(datapoints);
         series.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
         series.setDrawDataPoints(true);
@@ -85,8 +151,10 @@ public class HomeFragment extends Fragment {
         series.setThickness(15);
 
         GraphView graph = (GraphView) view.findViewById(R.id.graph);
-        calendarPast.add(Calendar.DATE, 1);
-        graph.getViewport().setMinX(calendarPast.getTime().getTime());
+        Calendar calendar1wAgo = Calendar.getInstance();
+        calendar1wAgo.setTime(new Date());
+        calendar1wAgo.add(Calendar.DATE, -6);
+        graph.getViewport().setMinX(calendar1wAgo.getTime().getTime());
         graph.getViewport().setMaxX(new Date().getTime());
         graph.getViewport().setXAxisBoundsManual(true);
         graph.getGridLabelRenderer().setHumanRounding(false);
@@ -110,6 +178,4 @@ public class HomeFragment extends Fragment {
                 });
         graph.addSeries(series);
     }
-
-
 }

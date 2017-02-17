@@ -1,132 +1,246 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- TODO: Update blank fragment layout -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_home"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.puppetmaster.vokabeltrainer.Fragments.HomeFragment"
     android:orientation="vertical"
-    android:id="@+id/ll_home"
-    android:padding="16dp">
+    tools:context="com.example.puppetmaster.vokabeltrainer.Fragments.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
-    <com.jjoe64.graphview.GraphView
-        android:layout_width="match_parent"
-        android:id="@+id/graph"
-        android:layout_height="200dp" />
-
-    <Button
-        android:text="Learn 6 new words"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/button" />
+        android:layout_below="@+id/arc_progress"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <com.github.lzyzsd.circleprogress.ArcProgress
+            android:id="@+id/arc_progress_week"
+            android:layout_width="230dp"
+            android:layout_height="230dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:paddingBottom="10dp"
+            app:arc_bottom_text=""
+            app:arc_finished_color="@color/colorAccent3"
+            app:arc_max="100"
+            app:arc_progress="90"
+            app:arc_stroke_width="20dp"
+            app:arc_suffix_text_padding="0dp"
+            app:arc_text_color="@color/md_blue_grey_50"
+            app:arc_unfinished_color="@color/colorAccent3Light" />
 
-        <TableRow
+        <com.github.lzyzsd.circleprogress.ArcProgress
+            android:id="@+id/arc_progress_yesterday"
+            android:layout_width="180dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="54dp"
+            android:paddingBottom="10dp"
+            app:arc_bottom_text=""
+            app:arc_finished_color="@color/colorAccent2"
+            app:arc_max="100"
+            app:arc_progress="44"
+            app:arc_stroke_width="20dp"
+            app:arc_suffix_text_padding="0dp"
+            app:arc_text_color="@color/md_blue_grey_50"
+            app:arc_unfinished_color="@color/colorAccent2Light"
+            android:layout_height="180dp" />
+
+        <com.github.lzyzsd.circleprogress.ArcProgress
+            android:id="@+id/arc_progress_today"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="false"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="80dp"
+            android:layout_marginTop="80dp"
+            android:paddingBottom="10dp"
+            app:arc_text_size="30dp"
+            app:arc_finished_color="@color/colorAccent"
+            app:arc_max="100"
+            app:arc_progress="10"
+            app:arc_stroke_width="20dp"
+            app:arc_suffix_text_padding="0dp"
+            app:arc_text_color="@color/colorAccentDark"
+            app:arc_unfinished_color="@color/colorAccentLight" />
+
+        <LinearLayout
+            android:id="@+id/ll_stats"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="16dp">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/arc_progress_today"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal"
+            android:weightSum="3">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView13"
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="4dp"
                 android:layout_weight="1"
-                android:gravity="center" />
+                android:elevation="0dp"
+                android:padding="10dp"
+                app:cardBackgroundColor="@color/colorAccentLight">
 
-            <TextView
-                android:text="New"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView15"
+                <View
+                    android:layout_width="4dp"
+                    android:background="@color/colorAccentDark"
+                    android:layout_height="match_parent"></View>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="8dp">
+
+                    <TextView
+                        android:id="@+id/textView12"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Today"
+                        android:textColor="@color/colorAccentDark"
+                        android:textSize="10sp"
+                        android:textStyle="normal|bold" />
+
+                    <TextView
+                        android:id="@+id/tv_day"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="30"
+                        android:textColor="@color/colorAccentDark"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        tools:text="30" />
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="4dp"
                 android:layout_weight="1"
-                android:gravity="center" />
+                android:padding="10dp"
+                app:cardBackgroundColor="@color/colorAccent2Light">
 
-            <TextView
-                android:text="Old"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView14"
+                <View
+                    android:layout_width="4dp"
+                    android:background="@color/colorAccent2Dark"
+                    android:layout_height="match_parent"></View>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="8dp">
+
+                    <TextView
+                        android:id="@+id/textView12"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Yesterday"
+                        android:textColor="@color/colorAccent2Dark"
+                        android:textSize="10sp"
+                        android:textStyle="normal|bold" />
+
+                    <TextView
+                        android:id="@+id/tv_yesterday"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="134"
+                        android:textColor="@color/colorAccent2Dark"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        tools:text="134" />
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="4dp"
                 android:layout_weight="1"
-                android:gravity="center" />
-        </TableRow>
+                android:padding="10dp"
+                app:cardBackgroundColor="@color/colorAccent3Light">
 
-        <TableRow
+                <View
+                    android:layout_width="4dp"
+                    android:background="@color/colorAccent3Dark"
+                    android:layout_height="match_parent"></View>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="8dp">
+
+                    <TextView
+                        android:id="@+id/textView12"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="7 days"
+                        android:textColor="@color/colorAccent3Dark"
+                        android:textSize="10sp"
+                        android:textStyle="normal|bold" />
+
+                    <TextView
+                        android:id="@+id/tv_week"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="20"
+                        android:textColor="@color/colorAccent3Dark"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        tools:text="20" />
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_learn_words"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="16dp">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_stats"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="32dp"
+            android:text="Learn 6 new words" />
 
-            <TextView
-                android:text="Yesterday"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView18"
-                android:layout_weight="1"
-                android:gravity="left" />
-
-            <TextView
-                android:text="TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_yesterday_new"
-                android:layout_weight="1"
-                tools:text="16"
-                android:gravity="center" />
-
-            <TextView
-                android:text="TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_yesterday_old"
-                android:layout_weight="1"
-                tools:text="32"
-                android:gravity="center" />
-        </TableRow>
-
-        <TableRow
+        <Button
+            android:id="@+id/btn_srs_test"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="16dp">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/graph"
+            android:onClick="openSRSTest"
+            android:text="SRS Test" />
 
-            <TextView
-                android:text="Last Week"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView21"
-                android:layout_weight="1"
-                android:gravity="left" />
-
-            <TextView
-                android:text="TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView20"
-                android:layout_weight="1"
-                tools:text="76"
-                android:gravity="center" />
-
-            <TextView
-                android:text="TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView19"
-                android:layout_weight="1"
-                tools:text="128"
-                android:gravity="center" />
-        </TableRow>
-
-        <TableRow
+        <com.jjoe64.graphview.GraphView
+            android:id="@+id/graph"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </TableLayout>
+            android:layout_height="200dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/btn_learn_words" />
 
-    <Button
-        android:text="SRS Test"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/btn_srs_test"
-        android:onClick="openSRSTest" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"></View>
 
-</LinearLayout>
+    </RelativeLayout>
+</ScrollView>

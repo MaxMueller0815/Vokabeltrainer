@@ -81,7 +81,6 @@ public class MyDatabase extends SQLiteAssetHelper {
                 int unitID = c.getInt(0);
                 String title = c.getString(1);
                 ArrayList<Vocab> vocabsOfUnit = getVocabOfUnit(unitID);
-                Log.i("Content of Unit", unitID + " contains" + vocabsOfUnit.toString());
                 unitsList.add(new Unit(unitID, title, vocabsOfUnit));
                 c.moveToNext();
             }
@@ -99,7 +98,6 @@ public class MyDatabase extends SQLiteAssetHelper {
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         queryBuilder.setTables(sqlTables);
         queryBuilder.appendWhere("unitID=" + unitID);
-        Log.i("UnitID in VocabOfUnit", "" + unitID);
         Cursor c = queryBuilder.query(db, sqlSelect, null, null,
                 null, null, null);
         ArrayList<Vocab> vocabList = new ArrayList<Vocab>();

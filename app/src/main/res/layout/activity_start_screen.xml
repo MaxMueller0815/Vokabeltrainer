@@ -9,17 +9,6 @@
     tools:context="com.example.puppetmaster.vokabeltrainer.StartScreen"
     android:padding="0dp">
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:itemIconTint="@drawable/nav_item_color_state"
-        app:itemTextColor="@drawable/nav_item_color_state"
-        app:menu="@menu/bottom_navigation"
-        android:background="@color/colorWhite"
-        android:elevation="8dp"/>
-
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,19 +17,31 @@
         android:minHeight="?attr/actionBarSize"
         android:id="@+id/toolbar_start"
         app:title="@string/app_name"
-
         android:elevation="4dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:paddingRight="8dp" />
 
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        app:itemIconTint="@drawable/nav_item_color_state"
+        app:itemTextColor="@drawable/nav_item_color_state"
+        app:menu="@menu/bottom_navigation"
+        android:background="@color/colorWhite"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/container_start"
-        android:layout_below="@+id/toolbar_start"
-        android:layout_alignParentStart="true">
-
+        android:layout_alignParentTop="false"
+        android:layout_alignParentStart="false"
+        android:layout_above="@+id/bottom_navigation"
+        android:layout_below="@+id/toolbar_start">
     </RelativeLayout>
 
 </RelativeLayout>

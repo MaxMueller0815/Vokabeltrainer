@@ -155,8 +155,6 @@ public class LearnActivity extends AppCompatActivity {
             currentVocab.increaseCountCorrect();
             currentVocab.increaseSrsLevel();
             //dbAdmin.updateAskedAndKnown(allVocab.get(counter_vocab));
-
-
             counter_correct_answer++;
         } else {
             imageView.setImageResource(R.drawable.smiley_question);

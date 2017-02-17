@@ -3,50 +3,57 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:card_view="http://schemas.android.com/tools"
     android:layout_marginRight="40dp"
     android:layout_marginTop="16dp"
     android:layout_marginLeft="40dp"
     android:id="@+id/card_unit"
-    android:layout_marginBottom="40dp"
-    android:elevation="24dp"
-    card_view:cardUseCompatPadding="true"
-    card_view:cardElevation="24dp"
-    app:cardCornerRadius="8dp"
-    >
+    android:layout_marginBottom="10dp"
+    app:elevation="24dp"
+    app:cardCornerRadius="8dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:text="TextView"
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/tv_unit_number"
-            android:paddingTop="32dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp" />
+            app:srcCompat="@drawable/inner_shadow_top"
+            android:id="@+id/imageView"
+            android:layout_below="@+id/tv_unit_number"
+            android:layout_height="8dp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            app:srcCompat="@drawable/inner_shadow_bottom"
+            android:id="@+id/imageView2"
+            android:layout_height="4dp"
+            android:layout_above="@+id/btn_unit_learn" />
 
         <TextView
             android:text="TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tv_unit_title"
-            android:textSize="20sp"
-            android:layout_below="@+id/tv_unit_number"
+            android:textSize="22sp"
             android:paddingRight="16dp"
             android:paddingLeft="16dp"
-            android:paddingBottom="32dp" />
+            android:paddingTop="32dp"
+            android:textAllCaps="false"
+            android:textStyle="normal|bold" />
 
-        <ListView
+        <TextView
+            android:text="TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/list_unit_vocabs"
+            android:id="@+id/tv_unit_number"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:textColor="@color/colorAccentDark"
+            android:textSize="10sp"
             android:layout_below="@+id/tv_unit_title"
-            android:layout_above="@+id/btn_unit_learn"
-            android:background="#FAFAFA" />
+            android:paddingBottom="32dp"
+            android:textStyle="normal|bold" />
 
         <Button
             android:text="Learn"
@@ -57,6 +64,13 @@
             android:layout_centerHorizontal="true"
             android:background="@color/colorAccent"
             android:textColor="@color/colorWhite" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/list_unit_vocabs"
+            android:layout_below="@+id/tv_unit_number"
+            android:layout_alignParentStart="true" />
 
     </RelativeLayout>
 

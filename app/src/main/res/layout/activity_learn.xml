@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/colorAccent">
+        android:background="@color/colorWhite">
 
         <RelativeLayout
             android:id="@+id/vocab_knowing_language"
@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
-                android:background="@color/colorPrimaryDark"
+                android:background="@color/colorAccent2"
                 android:gravity="center"
                 android:textColor="@color/colorWhite"
                 android:textSize="30sp" />
@@ -34,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
-                android:background="@color/md_blue_500"
+                android:background="@color/colorAccent3"
                 android:gravity="center"
                 android:text="@string/vocab_knowing_language"
                 android:textColor="@color/colorWhite"

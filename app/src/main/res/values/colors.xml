@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#fff</color>
-    <color name="colorPrimaryDark">#CFD8DC</color>
-    <color name="colorAccent">#8BC34A</color>
+    <color name="colorPrimaryDark">#455a64</color>
+    <color name="colorAccent">@color/md_light_green_500</color>
+    <color name="colorAccent2">@color/md_cyan_500</color>
+    <color name="colorAccent3">@color/md_blue_grey_500</color>
+
+
+    <color name="colorAccentLight">@color/md_light_green_100</color>
+    <color name="colorAccent2Light">@color/md_cyan_100</color>
+    <color name="colorAccent3Light">@color/md_blue_grey_100</color>
+
+    <color name="colorAccentDark">@color/md_light_green_800</color>
+    <color name="colorAccent2Dark">@color/md_cyan_800</color>
+    <color name="colorAccent3Dark">@color/md_blue_grey_800</color>
 
     <color name="colorWhite">#ffffff</color>
+    <color name="colorWhite50">#7effffff</color>
     <color name="colorInactive">#cfd8dc</color>
 
     <!--reds-->
@@ -122,7 +134,7 @@
     <!-- cyan -->
     <color name="md_cyan_50">#E0F7FA</color>
     <color name="md_cyan_100">#B2EBF2</color>
-    <color name="md_cyan_200">#80DEEA</color>
+    <color name="md_cyan_200">#80deea</color>
     <color name="md_cyan_300">#4DD0E1</color>
     <color name="md_cyan_400">#26C6DA</color>
     <color name="md_cyan_500">#00BCD4</color>
@@ -148,7 +160,7 @@
     <color name="md_teal_900">#004d40</color>
     <color name="md_teal_A100">#A7FFEB</color>
     <color name="md_teal_A200">#64FFDA</color>
-    <color name="md_teal_A400">#1DE9B6</color>
+    <color name="md_teal_A400">#1de9b6</color>
     <color name="md_teal_A700">#00bfa5</color>
 
     <!-- green -->
@@ -181,13 +193,13 @@
     <color name="md_light_green_A100">#CCFF90</color>
     <color name="md_light_green_A200">#B2FF59</color>
     <color name="md_light_green_A400">#76FF03</color>
-    <color name="md_light_green_A700">#64DD17</color>
+    <color name="md_light_green_A700">#64dd17</color>
 
     <!-- lime-->
     <color name="md_lime_50">#F9FBE7</color>
     <color name="md_lime_100">#F0F4C3</color>
     <color name="md_lime_200">#E6EE9C</color>
-    <color name="md_lime_300">#DCE775</color>
+    <color name="md_lime_300">#dce775</color>
     <color name="md_lime_400">#D4E157</color>
     <color name="md_lime_500">#CDDC39</color>
     <color name="md_lime_600">#C0CA33</color>
@@ -197,7 +209,7 @@
     <color name="md_lime_A100">#F4FF81</color>
     <color name="md_lime_A200">#EEFF41</color>
     <color name="md_lime_A400">#C6FF00</color>
-    <color name="md_lime_A700">#AEEA00</color>
+    <color name="md_lime_A700">#aeea00</color>
 
     <!--yellow -->
     <color name="md_yellow_50">#FFFDE7</color>
