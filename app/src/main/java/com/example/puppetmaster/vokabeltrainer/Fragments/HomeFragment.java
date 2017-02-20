@@ -2,6 +2,8 @@ package com.example.puppetmaster.vokabeltrainer.Fragments;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.DashPathEffect;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
 import com.example.puppetmaster.vokabeltrainer.R;
 import com.example.puppetmaster.vokabeltrainer.SRSTesterActivity;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
@@ -37,7 +40,10 @@ public class HomeFragment extends Fragment {
     ArrayList<Topic> topics = new ArrayList<>();
     private final int VISIBLE_DAYS = 7;
     private int counterWeek = 0;
-    DataPoint[] datapoints = new DataPoint[VISIBLE_DAYS];
+    private int workload = 0;
+    DataPoint[] datapointsLearned = new DataPoint[VISIBLE_DAYS];
+    DataPoint[] datapointsWorkload = new DataPoint[VISIBLE_DAYS];
+
 
 
     @Override
@@ -48,6 +54,7 @@ public class HomeFragment extends Fragment {
 
 
         readBundle();
+        retrieveWorkload();
         calcStats();
         initGraph();
         initProgressBar();
@@ -61,6 +68,12 @@ public class HomeFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void retrieveWorkload() {
+        workload = new MyDatabase(getContext()).getWorkload();
+        TextView tvWorkload = (TextView) view.findViewById(R.id.tv_workload);
+        tvWorkload.setText(""+ workload);
     }
 
     private void readBundle() {
@@ -87,29 +100,31 @@ public class HomeFragment extends Fragment {
 
 
     private void initProgressBar() {
+        // ProgressBar for today
         ArcProgress progressDay = (ArcProgress) view.findViewById(R.id.arc_progress_today);
         TextView tvDay = (TextView) view.findViewById(R.id.tv_day);
-        tvDay.setText((int) datapoints[6].getY() + "");
-        double percentDay = datapoints[6].getY() / 20.0 * 100.0;
+        tvDay.setText((int) datapointsLearned[6].getY() + "");
+        double percentDay = datapointsLearned[6].getY() / workload * 100.0;
         if (percentDay <= 100) {
             progressDay.setProgress((int) percentDay);
         } else {
             progressDay.setProgress(100);
         }
+        //Log.i("counterToday", percentDay + " in ProgressBar");
 
-        Log.i("counterToday", percentDay + " in ProgressBar");
-
+        // ProgressBar for yesterday
         ArcProgress progressYesterday = (ArcProgress) view.findViewById(R.id.arc_progress_yesterday);
         TextView tvYesterday = (TextView) view.findViewById(R.id.tv_yesterday);
-        tvYesterday.setText((int) datapoints[5].getY() + "");
-        double percentYesterday = datapoints[5].getY() / 20.0 * 100.0;
+        tvYesterday.setText((int) datapointsLearned[5].getY() + "");
+        double percentYesterday = datapointsLearned[5].getY() / workload * 100.0;
         if (percentYesterday <= 100) {
             progressYesterday.setProgress((int) percentYesterday);
         } else {
             progressYesterday.setProgress(100);
         }
-        Log.i("counterYesterday", percentYesterday + " in ProgressBar");
+        //Log.i("counterYesterday", percentYesterday + " in ProgressBar");
 
+        // ProgressBar for last 7 days
         ArcProgress progressWeek = (ArcProgress) view.findViewById(R.id.arc_progress_week);
         TextView tvWeek = (TextView) view.findViewById(R.id.tv_week);
         tvWeek.setText(counterWeek + "");
@@ -119,7 +134,7 @@ public class HomeFragment extends Fragment {
         } else {
             progressWeek.setProgress(100);
         }
-        Log.i("counterWeek", percentWeek + " in ProgressBar");
+        //Log.i("counterWeek", percentWeek + " in ProgressBar");
     }
 
     private void calcStats() {
@@ -136,19 +151,26 @@ public class HomeFragment extends Fragment {
                         counterWeek++;
                     }
             }
-            datapoints[i] = new DataPoint(calendarPast.getTime(), counterDay);
-            //datapoints[i] = new DataPoint(i, counter);
-            Log.i("Datapoint added", new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(datapoints[i].getX()) + ", " + datapoints[i].getY());
+            datapointsLearned[i] = new DataPoint(calendarPast.getTime(), counterDay);
+            datapointsWorkload[i] = new DataPoint(calendarPast.getTime(), workload);
+            //datapointsLearned[i] = new DataPoint(i, counter);
+            Log.i("Datapoint added", new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(datapointsLearned[i].getX()) + ", " + datapointsLearned[i].getY());
             calendarPast.add(Calendar.DATE, -1);
         }
     }
 
     private void initGraph() {
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(datapoints);
-        series.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
-        series.setDrawDataPoints(true);
-        series.setDataPointsRadius(15);
-        series.setThickness(15);
+        LineGraphSeries<DataPoint> seriesLearned = new LineGraphSeries<>(datapointsLearned);
+        seriesLearned.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent3));
+        //seriesLearned.setDrawDataPoints(true);
+        //seriesLearned.setDataPointsRadius(15);
+        seriesLearned.setThickness(15);
+
+        LineGraphSeries<DataPoint> seriesWorkload = new LineGraphSeries<>(datapointsWorkload);
+        //seriesWorkload.setDrawBackground(true);
+        //seriesWorkload.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent3Light));
+        seriesWorkload.setColor(ContextCompat.getColor(getContext(), R.color.md_orange_500));
+        seriesWorkload.setThickness(15);
 
         GraphView graph = (GraphView) view.findViewById(R.id.graph);
         Calendar calendar1wAgo = Calendar.getInstance();
@@ -176,6 +198,8 @@ public class HomeFragment extends Fragment {
 
                     }
                 });
-        graph.addSeries(series);
+        graph.addSeries(seriesWorkload);
+        graph.addSeries(seriesLearned);
+
     }
 }

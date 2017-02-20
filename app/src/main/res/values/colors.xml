@@ -19,6 +19,8 @@
     <color name="colorWhite50">#7effffff</color>
     <color name="colorInactive">#cfd8dc</color>
 
+    <color name="bg">#e5eced</color>
+
     <!--reds-->
     <color name="md_red_50">#FFEBEE</color>
     <color name="md_red_100">#FFCDD2</color>

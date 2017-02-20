@@ -196,6 +196,26 @@ public class MyDatabase extends SQLiteAssetHelper {
         return settings;
     }
 
+    public int getWorkload() {
+        int workload = 0;
+        db = getReadableDatabase();
+        String[] sqlSelect = {"workload"};
+        String sqlTables = "userPreferences";
+
+        qb.setTables(sqlTables);
+        Cursor c = qb.query(db, sqlSelect, null, null,
+                null, null, null);
+
+
+        try {
+            c.moveToFirst();
+            workload = c.getInt(0);
+        } finally {
+            c.close();
+        }
+        return workload;
+    }
+
     // TODO Set Workload
     public void saveSettings(int workload, String strStart, String strEnd) {
         db = this.getWritableDatabase();

@@ -70,7 +70,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/list_unit_vocabs"
             android:layout_below="@+id/tv_unit_number"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_above="@+id/btn_unit_learn" />
 
     </RelativeLayout>
 
