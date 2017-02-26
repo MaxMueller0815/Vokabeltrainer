@@ -38,7 +38,7 @@ public class VocabAdapter extends ArrayAdapter<Vocab> {
         Vocab vocab = getItem(position);
 
         TextView german = (TextView) listItemView.findViewById(R.id.tv_german);
-        german.setText(vocab.getGerman());
+        german.setText(vocab.getGerman().get(0));
 
         TextView defaultTranslation = (TextView) listItemView.findViewById(R.id.tv_default);
         defaultTranslation.setText(vocab.getEnglish());

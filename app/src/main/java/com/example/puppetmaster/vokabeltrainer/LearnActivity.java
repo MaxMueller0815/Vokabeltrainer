@@ -44,19 +44,12 @@ public class LearnActivity extends AppCompatActivity {
     private int listSize;
     private FloatingActionButton vocab_fab;
     private EditText editTextInput;
-    private String textInput;
     private ImageView imageView;
     private int click_counter_fab = 0;
     private TextView textViewInput;
     private int counter_correct_answer = 0;
     private String frontCard = "";
     private String backCard ="";
-    private double randomNum;
-    private double result = 0.0;
-    private int unitID;
-
-    private boolean learnList = false;
-
     private AlertDialog alertDialog;
 
 
@@ -83,48 +76,13 @@ public class LearnActivity extends AppCompatActivity {
     }
 
     private void learnDirection() {
-        frontCard = allVocab.get(counter_vocab).getGerman();
-        backCard = allVocab.get(counter_vocab).getEnglish();
-        /*Bundle bundle = getIntent().getExtras();
-        boolean knowing_to_learning = bundle.getBoolean("knowingToLearning");
-        boolean learning_to_knowing = bundle.getBoolean("learningToKnowing");
-        boolean mixed = bundle.getBoolean("mixed");
-
-        String listName = bundle.getString("listName");
-
-
-        if (listName != null){
-            learnList = true;
-            repopulateVocabArrayWithList(listName);
-        }
-
-        if (knowing_to_learning){
-            frontCard = allVocab.get(counter_vocab).getSourceVocab();
-            backCard = allVocab.get(counter_vocab).getTargetVocab();
-        }
-
-        if (learning_to_knowing){
-            backCard = allVocab.get(counter_vocab).getSourceVocab();
-            frontCard = allVocab.get(counter_vocab).getTargetVocab();
-        }
-
-        if (mixed){
-
-            randomNum =  Math.random();
-
-            if(randomNum < 0.5) {
-                backCard = allVocab.get(counter_vocab).getSourceVocab();
-                frontCard = allVocab.get(counter_vocab).getTargetVocab();
-            }
-            if(randomNum >= 0.5) {
-                frontCard = allVocab.get(counter_vocab).getSourceVocab();
-                backCard = allVocab.get(counter_vocab).getTargetVocab();
-            }
-        }*/
+        frontCard = allVocab.get(counter_vocab).getEnglish();
+        backCard = allVocab.get(counter_vocab).getGerman().get(0);
     }
 
     // TODO: Sollte man das nicht durch die handleAnswer/checkAnswer Funktion in SRS machen?
     private void compareSolution(){
+        boolean isCorrect = false;
 
         String currentSolution = backCard;
         currentSolution = currentSolution.replace("…","");
@@ -135,7 +93,7 @@ public class LearnActivity extends AppCompatActivity {
         currentSolution = currentSolution.trim();
         Log.i("currentSolution", currentSolution);
 
-        textInput = editTextInput.getText().toString();
+        String textInput = editTextInput.getText().toString();
         textInput = textInput.replace("…","");
         textInput = textInput.replace("?","");
         textInput = textInput.replace("!","");
@@ -146,24 +104,27 @@ public class LearnActivity extends AppCompatActivity {
 
         Vocab currentVocab = allVocab.get(counter_vocab);
 
-
-
         if(currentSolution.equalsIgnoreCase(textInput)) {
+            isCorrect = true;
+        } else {
+            for (String translation : currentVocab.getGerman()) {
+                if (textInput.equals(translation)) {
+                    isCorrect = true;
+                }
+            }
+        }
+
+        if(isCorrect) {
             imageView.setImageResource(R.drawable.smiley_happy);
             imageView.setVisibility(View.VISIBLE);
-
             currentVocab.increaseCountCorrect();
             currentVocab.increaseSrsLevel();
-            //dbAdmin.updateAskedAndKnown(allVocab.get(counter_vocab));
             counter_correct_answer++;
         } else {
             imageView.setImageResource(R.drawable.smiley_question);
             imageView.setVisibility(View.VISIBLE);
             currentVocab.increaseCountFalse();
             currentVocab.decreaseSrsLevel();
-
-            //allVocab.get(counter_vocab).resetKnown();
-            //dbAdmin.updateAskedAndKnown(allVocab.get(counter_vocab));
         }
 
         MyDatabase db = new MyDatabase(this);
@@ -175,25 +136,6 @@ public class LearnActivity extends AppCompatActivity {
         counter_vocab_num++;
         vocab_counter_button.setText(counter_vocab_num + " / " + listSize);
     }
-
-    /*private void fillListFromDB(){
-        allVocab = new ArrayList<>();
-        allVocab.addAll(NavigationFragmentThree.getVocItems());
-
-        listSize = allVocab.size();
-        Collections.shuffle(allVocab);
-        Collections.sort(allVocab, new CustomComparator());
-    }
-
-    private void initDB(){
-        dbAdmin = new DBAdmin(this);
-        dbAdmin.open();
-    }
-
-    protected void onDestroy() {
-        dbAdmin.close();
-        super.onDestroy();
-    }*/
 
     private void initUIElements() {
         vocab_knowing_language = (RelativeLayout)findViewById(R.id.vocab_knowing_language);
@@ -209,9 +151,7 @@ public class LearnActivity extends AppCompatActivity {
         editTextInput = (EditText)findViewById(R.id.vocab_edit_text);
         imageView = (ImageView) findViewById(R.id.image_view_correct);
         imageView.setVisibility(View.INVISIBLE);
-
         textViewInput = (TextView) findViewById(R.id.vocab_text_view);
-
         imageButton_exit = (ImageButton) findViewById(R.id.imageButton_exit);
     }
 
@@ -338,7 +278,7 @@ public class LearnActivity extends AppCompatActivity {
 
         ImageView smileyIV = (ImageView) alertDialog.findViewById(R.id.image_view_smiley);
         String sourceString = "";
-        result= (double) counter_correct_answer / (double)listSize;
+        double result = (double) counter_correct_answer / (double) listSize;
 
         if(result >= 0.90){
             smileyIV.setImageResource(R.drawable.smiley_cool);
@@ -403,13 +343,6 @@ public class LearnActivity extends AppCompatActivity {
 
         alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-
-        // Edit Design alertDialog
-        Button positiveButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
-        //positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-
-        Button negativeButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
-        //negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
     }
 
     private void textViewToEditText() {
@@ -433,9 +366,4 @@ public class LearnActivity extends AppCompatActivity {
     public void onBackPressed() {
         showAlertDialogExit();
     }
-
-    /*private void repopulateVocabArrayWithList(String listName) {
-        allVocab = dbAdmin.getAllVocabForList(listName);
-        listSize = allVocab.size();
-    }*/
 }

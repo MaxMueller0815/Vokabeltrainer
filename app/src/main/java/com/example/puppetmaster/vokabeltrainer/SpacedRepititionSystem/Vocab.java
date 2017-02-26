@@ -3,6 +3,7 @@ package com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -16,7 +17,7 @@ public class Vocab {
     private String dateFormatString = "yyyy-MM-dd'T'HH:mm";
     private int id;
     private String english;
-    private String german;
+    private ArrayList<String> german;
     private int unitId;
     private int srsLevel;
     private Date lastRevision;
@@ -24,7 +25,7 @@ public class Vocab {
     private int countCorrect;
     private int countFalse;
 
-    public Vocab(int id, String english, String german, int unitId, int srsLevel,
+    public Vocab(int id, String english, ArrayList<String> german, int unitId, int srsLevel,
                       String lastRevision, String nextRevision, int countCorrect, int countFalse) throws ParseException {
 
         DateFormat format = new SimpleDateFormat(dateFormatString, Locale.ENGLISH);
@@ -93,7 +94,7 @@ public class Vocab {
         return english;
     }
 
-    public String getGerman(){
+    public ArrayList<String> getGerman(){
         return german;
     }
 
@@ -114,11 +115,7 @@ public class Vocab {
     }
 
     public boolean isPracticed() {
-        if(getSrsLevel() >= 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return getSrsLevel() >= 1;
     }
 
     //TODO: Funktion löschen, nur für Testing

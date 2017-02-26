@@ -23,6 +23,7 @@ public class UnitsActivity extends AppCompatActivity {
     ArrayList<Unit> listOfUnits;
     private CarouselLayoutManager layoutManager;
     private int scrollPosition = 0;
+    private RecyclerView recyclerView;
 
     private int topicID;
 
@@ -89,7 +90,7 @@ public class UnitsActivity extends AppCompatActivity {
 
     private void initCarousel() {
         layoutManager = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL);
-        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_units);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_units);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.addOnScrollListener(new CenterScrollListener());
@@ -114,4 +115,24 @@ public class UnitsActivity extends AppCompatActivity {
 //        calcStats();
 //        initCarousel();
 //    }
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        MyDatabase db = new MyDatabase(this);
+        Log.d("Topic", topicID + "");
+        listOfUnits = db.getTopics().get(topicID - 1).getUnitsOfTopic();
+
+//        int i = 0;
+//        while (i < listOfUnits.size() - 1) {
+//            if (listOfUnits.get(i).getId() == 3) {
+//                layoutManager.scrollToPosition(i);
+//                break;
+//            }
+//            i++;
+//        }
+        calcStats();
+        recyclerView.setAdapter(new UnitAdapter(listOfUnits));
+    }
 }

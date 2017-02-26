@@ -2,8 +2,7 @@ package com.example.puppetmaster.vokabeltrainer.Fragments;
 
 import android.app.Fragment;
 import android.content.Intent;
-import android.graphics.DashPathEffect;
-import android.graphics.Paint;
+
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -34,6 +33,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static android.icu.text.DateFormat.getDateInstance;
+
 public class HomeFragment extends Fragment {
     private View view;
     private ArrayList<Vocab> vocabs = new ArrayList<Vocab>();
@@ -43,7 +44,7 @@ public class HomeFragment extends Fragment {
     private int workload = 0;
     DataPoint[] datapointsLearned = new DataPoint[VISIBLE_DAYS];
     DataPoint[] datapointsWorkload = new DataPoint[VISIBLE_DAYS];
-
+    private boolean alreadyVisited = false;
 
 
     @Override
@@ -51,8 +52,6 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home, container, false);
-
-
         readBundle();
         retrieveWorkload();
         calcStats();
@@ -66,6 +65,7 @@ public class HomeFragment extends Fragment {
                 startActivity(new Intent(getContext(), SRSTesterActivity.class));
             }
         });
+        alreadyVisited = true;
 
         return view;
     }
@@ -73,7 +73,7 @@ public class HomeFragment extends Fragment {
     private void retrieveWorkload() {
         workload = new MyDatabase(getContext()).getWorkload();
         TextView tvWorkload = (TextView) view.findViewById(R.id.tv_workload);
-        tvWorkload.setText(""+ workload);
+        tvWorkload.setText("" + workload);
     }
 
     private void readBundle() {
@@ -93,10 +93,8 @@ public class HomeFragment extends Fragment {
             }
         }
 
-        Log.i("Length of vocabs",vocabs.size()+" items");
+        Log.i("Length of vocabs", vocabs.size() + " items");
     }
-
-
 
 
     private void initProgressBar() {
@@ -110,7 +108,6 @@ public class HomeFragment extends Fragment {
         } else {
             progressDay.setProgress(100);
         }
-        //Log.i("counterToday", percentDay + " in ProgressBar");
 
         // ProgressBar for yesterday
         ArcProgress progressYesterday = (ArcProgress) view.findViewById(R.id.arc_progress_yesterday);
@@ -122,7 +119,6 @@ public class HomeFragment extends Fragment {
         } else {
             progressYesterday.setProgress(100);
         }
-        //Log.i("counterYesterday", percentYesterday + " in ProgressBar");
 
         // ProgressBar for last 7 days
         ArcProgress progressWeek = (ArcProgress) view.findViewById(R.id.arc_progress_week);
@@ -134,7 +130,6 @@ public class HomeFragment extends Fragment {
         } else {
             progressWeek.setProgress(100);
         }
-        //Log.i("counterWeek", percentWeek + " in ProgressBar");
     }
 
     private void calcStats() {
@@ -143,18 +138,17 @@ public class HomeFragment extends Fragment {
         for (int i = VISIBLE_DAYS - 1; i >= 0; i--) {
             double counterDay = 0;
             for (Vocab vocab : vocabs) {
-                    Calendar calenderOfVocab = Calendar.getInstance();
-                    calenderOfVocab.setTime(vocab.getLastRevision());
-                    if (calenderOfVocab.get(Calendar.YEAR) == calendarPast.get(Calendar.YEAR) &&
-                            calenderOfVocab.get(Calendar.DAY_OF_YEAR) == calendarPast.get(Calendar.DAY_OF_YEAR)) {
-                        counterDay++;
-                        counterWeek++;
-                    }
+                Calendar calenderOfVocab = Calendar.getInstance();
+                calenderOfVocab.setTime(vocab.getLastRevision());
+                if (calenderOfVocab.get(Calendar.YEAR) == calendarPast.get(Calendar.YEAR) &&
+                        calenderOfVocab.get(Calendar.DAY_OF_YEAR) == calendarPast.get(Calendar.DAY_OF_YEAR)) {
+                    counterDay++;
+                    counterWeek++;
+                }
             }
             datapointsLearned[i] = new DataPoint(calendarPast.getTime(), counterDay);
             datapointsWorkload[i] = new DataPoint(calendarPast.getTime(), workload);
-            //datapointsLearned[i] = new DataPoint(i, counter);
-            Log.i("Datapoint added", new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(datapointsLearned[i].getX()) + ", " + datapointsLearned[i].getY());
+            Log.i("Datapoint added", getDateInstance().format(datapointsLearned[i].getX()) + ", " + datapointsLearned[i].getY());
             calendarPast.add(Calendar.DATE, -1);
         }
     }
@@ -162,13 +156,9 @@ public class HomeFragment extends Fragment {
     private void initGraph() {
         LineGraphSeries<DataPoint> seriesLearned = new LineGraphSeries<>(datapointsLearned);
         seriesLearned.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent3));
-        //seriesLearned.setDrawDataPoints(true);
-        //seriesLearned.setDataPointsRadius(15);
         seriesLearned.setThickness(15);
 
         LineGraphSeries<DataPoint> seriesWorkload = new LineGraphSeries<>(datapointsWorkload);
-        //seriesWorkload.setDrawBackground(true);
-        //seriesWorkload.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent3Light));
         seriesWorkload.setColor(ContextCompat.getColor(getContext(), R.color.md_orange_500));
         seriesWorkload.setThickness(15);
 
@@ -176,10 +166,11 @@ public class HomeFragment extends Fragment {
         Calendar calendar1wAgo = Calendar.getInstance();
         calendar1wAgo.setTime(new Date());
         calendar1wAgo.add(Calendar.DATE, -6);
+        graph.getViewport().setMinX(0);
         graph.getViewport().setMinX(calendar1wAgo.getTime().getTime());
         graph.getViewport().setMaxX(new Date().getTime());
         graph.getViewport().setXAxisBoundsManual(true);
-        graph.getGridLabelRenderer().setHumanRounding(false);
+        graph.getGridLabelRenderer().setHumanRounding(true);
         graph.getGridLabelRenderer().setNumHorizontalLabels(VISIBLE_DAYS);
         graph.getGridLabelRenderer()
                 .setLabelFormatter(new DefaultLabelFormatter() {
@@ -200,6 +191,17 @@ public class HomeFragment extends Fragment {
                 });
         graph.addSeries(seriesWorkload);
         graph.addSeries(seriesLearned);
-
     }
+
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        if (alreadyVisited) {
+//            topics = new MyDatabase(getContext()).getTopics();
+//            retrieveWorkload();
+//            calcStats();
+//            initGraph();
+//            initProgressBar();
+//        }
+//    }
 }

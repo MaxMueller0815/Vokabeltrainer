@@ -60,7 +60,7 @@ public class SRSTesterActivity extends AppCompatActivity {
         tvEnglish.setText(currentVocab.getEnglish());
 
         TextView tvGerman = (TextView) findViewById(R.id.tv_german);
-        tvGerman.setText(currentVocab.getGerman());
+        tvGerman.setText(currentVocab.getGerman().get(0));
 
         TextView tvLastRevision = (TextView) findViewById(R.id.tv_revision);
         tvLastRevision.setText("" + currentVocab.getRevisionDifference());

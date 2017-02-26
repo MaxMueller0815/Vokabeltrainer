@@ -21,7 +21,7 @@ import java.util.Date;
 public class MyDatabase extends SQLiteAssetHelper {
 
     private static final String DATABASE_NAME = "vocabDB.db";
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 2;
     private SQLiteDatabase db;
     private SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
@@ -101,12 +101,15 @@ public class MyDatabase extends SQLiteAssetHelper {
         Cursor c = queryBuilder.query(db, sqlSelect, null, null,
                 null, null, null);
         ArrayList<Vocab> vocabList = new ArrayList<Vocab>();
+        ArrayList<String> translations = new ArrayList<String>();
+
 
         try {
             c.moveToFirst();
             while (!c.isAfterLast()) {
                 try {
-                    vocabList.add(new Vocab(c.getInt(0), c.getString(1), c.getString(2), c.getInt(3), c.getInt(4), c.getString(5), c.getString(6), c.getInt(7), c.getInt(8)));
+                    translations = getTranslations(c.getInt(0));
+                    vocabList.add(new Vocab(c.getInt(0), c.getString(2), translations, c.getInt(3), c.getInt(4), c.getString(5), c.getString(6), c.getInt(7), c.getInt(8)));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -117,6 +120,30 @@ public class MyDatabase extends SQLiteAssetHelper {
         }
 
         return vocabList;
+    }
+
+
+    private ArrayList<String> getTranslations(int srsID) {
+        db = getReadableDatabase();
+        String[] sqlSelect = {"translation"};
+        String sqlTables = "translations";
+        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+        queryBuilder.setTables(sqlTables);
+        queryBuilder.appendWhere("srsID=" + srsID);
+        Cursor c = queryBuilder.query(db, sqlSelect, null, null,
+                null, null, null);
+        ArrayList<String> translations = new ArrayList<String>();
+
+        try {
+            c.moveToFirst();
+            while (!c.isAfterLast()) {
+                translations.add(c.getString(0));
+                c.moveToNext();
+            }
+        } finally {
+            c.close();
+        }
+        return translations;
     }
 
     /*
@@ -140,8 +167,6 @@ public class MyDatabase extends SQLiteAssetHelper {
         contentValues.put("nextRevision", nextRevision);
         db.update("srs", contentValues, whereClause, null);
         Log.i("MyDatabase", updatedVocab.getGerman()+ ": "+contentValues.toString());
-
-
     }
 
     /*
@@ -156,12 +181,14 @@ public class MyDatabase extends SQLiteAssetHelper {
         Cursor c = qb.query(db, sqlSelect, null, null,
                 null, null, null);
         ArrayList<Vocab> listOfAllVocab = new ArrayList<>();
+        ArrayList<String> translations = new ArrayList<String>();
 
         try {
             c.moveToFirst();
             while (!c.isAfterLast()) {
                 try {
-                    listOfAllVocab.add(new Vocab(c.getInt(0), c.getString(1), c.getString(2), c.getInt(3), c.getInt(4), c.getString(5), c.getString(6), c.getInt(7), c.getInt(8)));
+                    translations = getTranslations(c.getInt(0));
+                    listOfAllVocab.add(new Vocab(c.getInt(0), c.getString(1), translations, c.getInt(3), c.getInt(4), c.getString(5), c.getString(6), c.getInt(7), c.getInt(8)));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

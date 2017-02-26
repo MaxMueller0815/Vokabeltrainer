@@ -28,7 +28,7 @@
             app:arc_progress="90"
             app:arc_stroke_width="20dp"
             app:arc_suffix_text_padding="0dp"
-            app:arc_text_color="@color/md_blue_grey_50"
+            app:arc_text_color="@color/bg"
             app:arc_unfinished_color="@color/colorAccent3Light"
             android:layout_marginBottom="50dp"
             android:layout_alignParentTop="true" />
@@ -45,7 +45,7 @@
             app:arc_progress="80"
             app:arc_stroke_width="20dp"
             app:arc_suffix_text_padding="0dp"
-            app:arc_text_color="@color/md_blue_grey_50"
+            app:arc_text_color="@color/bg"
             app:arc_unfinished_color="@color/colorAccent2Light"
             android:layout_height="180dp"
             android:layout_below="@+id/ll_stats"
