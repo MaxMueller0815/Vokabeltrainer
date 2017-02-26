@@ -36,4 +36,8 @@ public class SRSDataBaseCommunicator {
 
     }
 
+    public ArrayList<Vocab> getVocabOfUnit(int id){
+        return myDatabase.getVocabOfUnit(id);
+    }
+
 }

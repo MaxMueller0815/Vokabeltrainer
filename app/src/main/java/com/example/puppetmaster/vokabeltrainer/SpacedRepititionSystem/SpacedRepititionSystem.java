@@ -128,4 +128,17 @@ public class SpacedRepititionSystem {
         }
     }
 
+    public void startNewUnit(int id){
+        ArrayList<Vocab> vocabsInUnit = new ArrayList<Vocab>();
+        vocabsInUnit = dbCommunicator.getVocabOfUnit(id);
+
+        for (int i = 0; i < vocabsInUnit.size(); i++){
+            Vocab currentVocab = vocabsInUnit.get(i);
+
+            currentVocab.pushIntoWorkload();
+            dbCommunicator.updateVocab(currentVocab);
+
+        }
+    }
+
 }

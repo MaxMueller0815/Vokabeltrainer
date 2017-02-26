@@ -58,6 +58,21 @@ public class Vocab {
             srsLevel = 0;
         }
     }
+    public void pushIntoWorkload(){
+        this.srsLevel = 1;
+
+        Date currentDate = new Date();
+        this.nextRevision = new Date(currentDate.getTime() - 2 * 24 * 3600 * 1000);
+
+    }
+
+    public boolean isNewVocab(){
+        if(srsLevel == 1 && countCorrect == 0 && countFalse == 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     public void setLastRevision(){
         this.lastRevision = new Date();
