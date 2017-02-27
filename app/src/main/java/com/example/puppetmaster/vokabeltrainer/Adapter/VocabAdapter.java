@@ -38,8 +38,13 @@ public class VocabAdapter extends ArrayAdapter<Vocab> {
         Vocab vocab = getItem(position);
 
         TextView german = (TextView) listItemView.findViewById(R.id.tv_german);
-        german.setText(vocab.getGerman().get(0));
 
+        String germanTranslation = "";
+        if (vocab.getGerman().size() > 0) {
+            germanTranslation = vocab.getGerman().get(0);
+        }
+
+        german.setText(germanTranslation);
         TextView defaultTranslation = (TextView) listItemView.findViewById(R.id.tv_default);
         defaultTranslation.setText(vocab.getEnglish());
         int level = vocab.getSrsLevel();

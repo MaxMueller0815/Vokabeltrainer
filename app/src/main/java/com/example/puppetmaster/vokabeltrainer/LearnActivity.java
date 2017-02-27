@@ -69,7 +69,6 @@ public class LearnActivity extends AppCompatActivity {
         if (null != intent) { //Null Checking
             Gson gson = new Gson();
             Unit unit = gson.fromJson(intent.getStringExtra("SELECTED_UNIT"), Unit.class);
-            unitID = unit.getId();
             allVocab = unit.getVocabsOfUnit();
             listSize = allVocab.size();
         }
@@ -80,37 +79,15 @@ public class LearnActivity extends AppCompatActivity {
         backCard = allVocab.get(counter_vocab).getGerman().get(0);
     }
 
-    // TODO: Sollte man das nicht durch die handleAnswer/checkAnswer Funktion in SRS machen?
+    // TODO: Sollte man das nicht durch die handleAnswer/checkAnswer Funktion in SRS machen? -> Folge: dauert ewig
     private void compareSolution(){
         boolean isCorrect = false;
-
-        String currentSolution = backCard;
-        currentSolution = currentSolution.replace("…","");
-        currentSolution = currentSolution.replace("?","");
-        currentSolution = currentSolution.replace("!","");
-        currentSolution = currentSolution.replace(".","");
-        currentSolution = currentSolution.replaceAll("\\(.*?\\)","");
-        currentSolution = currentSolution.trim();
-        Log.i("currentSolution", currentSolution);
-
-        String textInput = editTextInput.getText().toString();
-        textInput = textInput.replace("…","");
-        textInput = textInput.replace("?","");
-        textInput = textInput.replace("!","");
-        textInput = textInput.replace(".","");
-        textInput = textInput.replaceAll("\\(.*?\\)","");
-        textInput = textInput.trim();
-        Log.i("textInput", textInput);
-
         Vocab currentVocab = allVocab.get(counter_vocab);
-
-        if(currentSolution.equalsIgnoreCase(textInput)) {
-            isCorrect = true;
-        } else {
-            for (String translation : currentVocab.getGerman()) {
-                if (textInput.equals(translation)) {
-                    isCorrect = true;
-                }
+        String userInput = cleanString(editTextInput.getText().toString());
+        ArrayList<String> translations = currentVocab.getGerman();
+        for (String translation : translations) {
+            if (userInput.equals(cleanString(translation))) {
+                isCorrect = true;
             }
         }
 
@@ -360,6 +337,12 @@ public class LearnActivity extends AppCompatActivity {
     private void removeKeyboard() {
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editTextInput.getWindowToken(), 0);
+    }
+
+    private static String cleanString(String term) {
+        term = term.replaceAll("\\(.*?\\)","");
+        term = term.toLowerCase().replaceAll("[^a-z]", "");
+        return term.trim();
     }
 
     @Override
