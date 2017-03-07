@@ -44,4 +44,11 @@
         android:layout_below="@+id/toolbar_start">
     </RelativeLayout>
 
+    <ImageView
+        android:id="@+id/iv_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        app:srcCompat="@mipmap/motivation" />
+
 </RelativeLayout>
