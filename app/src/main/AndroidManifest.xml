@@ -13,7 +13,6 @@
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -34,7 +33,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.puppetmaster.vokabeltrainer.StartScreen" />
         </activity>
-        <activity android:name=".AllVocabsActivity"></activity>
+        <activity android:name=".AllVocabsActivity"
+            android:parentActivityName=".StartScreen" />
     </application>
 
 </manifest>

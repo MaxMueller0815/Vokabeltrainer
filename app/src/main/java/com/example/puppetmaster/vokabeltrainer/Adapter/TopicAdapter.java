@@ -64,7 +64,6 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
     }
 
 
-
     public static class TopicViewHolder extends RecyclerView.ViewHolder {
         protected CardView vCard;
         protected ImageView vImage;

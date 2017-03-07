@@ -37,8 +37,6 @@ public class StartScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
         fragmentManager = this.getFragmentManager();
-        initToolBar();
-        initBottomNavigation();
         GetTask getTask = new GetTask(getApplicationContext());
         getTask.execute();
     }
@@ -76,6 +74,7 @@ public class StartScreen extends AppCompatActivity {
                         return true;
                     }
                 });
+        bottomNavigationView.setVisibility(View.VISIBLE);
     }
 
     private Bundle topicAsBundle() {
@@ -89,6 +88,7 @@ public class StartScreen extends AppCompatActivity {
     public void initToolBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar_start);
         setSupportActionBar(toolbar);
+        toolbar.setVisibility(View.VISIBLE);
     }
 
 
@@ -130,6 +130,8 @@ public class StartScreen extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void v) {
             super.onPostExecute(v);
+            initToolBar();
+            initBottomNavigation();
             Fragment homeFragment = new HomeFragment();//Get Fragment Instance
             homeFragment.setArguments(topicAsBundle());//Finally set argument bundle to fragment
             fragmentManager.beginTransaction().replace(R.id.container_start, homeFragment).commit();
