@@ -9,9 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.puppetmaster.vokabeltrainer.Adapter.TopicAdapter;
-import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
 import com.example.puppetmaster.vokabeltrainer.R;
-import com.example.puppetmaster.vokabeltrainer.Topic;
+import com.example.puppetmaster.vokabeltrainer.Entities.Topic;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

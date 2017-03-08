@@ -1,4 +1,4 @@
-package com.example.puppetmaster.vokabeltrainer;
+package com.example.puppetmaster.vokabeltrainer.Entities;
 
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 

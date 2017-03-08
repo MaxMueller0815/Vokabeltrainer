@@ -17,8 +17,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.puppetmaster.vokabeltrainer.R;
-import com.example.puppetmaster.vokabeltrainer.LearnActivity;
-import com.example.puppetmaster.vokabeltrainer.Unit;
+import com.example.puppetmaster.vokabeltrainer.Activities.LearnActivity;
+import com.example.puppetmaster.vokabeltrainer.Entities.Unit;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -27,9 +27,11 @@ import java.util.List;
 public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.UnitViewHolder> {
     private Context context;
     private List<Unit> unitList;
+    private int topicID;
 
-    public UnitAdapter(ArrayList<Unit> unitList) {
+    public UnitAdapter(ArrayList<Unit> unitList, int topicID) {
         this.unitList = unitList;
+        this.topicID = topicID;
     }
 
 
@@ -54,6 +56,7 @@ public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.UnitViewHolder
                 Gson gson = new Gson();
                 String unitAsJson = gson.toJson(unit);
                 mBundle.putString("SELECTED_UNIT", unitAsJson);
+                mBundle.putInt("SELECTED_TOPIC", topicID);
                 intent.putExtras(mBundle);
                 v.getContext().startActivity(intent);
             }

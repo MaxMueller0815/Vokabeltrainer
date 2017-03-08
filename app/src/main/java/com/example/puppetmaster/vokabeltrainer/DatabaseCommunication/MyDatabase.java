@@ -8,15 +8,13 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
-import com.example.puppetmaster.vokabeltrainer.Topic;
-import com.example.puppetmaster.vokabeltrainer.Unit;
+import com.example.puppetmaster.vokabeltrainer.Entities.Topic;
+import com.example.puppetmaster.vokabeltrainer.Entities.Unit;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 public class MyDatabase extends SQLiteAssetHelper {
 

@@ -1,4 +1,4 @@
-package com.example.puppetmaster.vokabeltrainer;
+package com.example.puppetmaster.vokabeltrainer.Activities;
 
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -23,7 +22,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
+import com.example.puppetmaster.vokabeltrainer.R;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
+import com.example.puppetmaster.vokabeltrainer.Entities.Unit;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;

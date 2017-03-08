@@ -14,10 +14,10 @@ import android.widget.TextView;
 
 import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
 import com.example.puppetmaster.vokabeltrainer.R;
-import com.example.puppetmaster.vokabeltrainer.SRSTesterActivity;
+import com.example.puppetmaster.vokabeltrainer.Activities.SRSTesterActivity;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
-import com.example.puppetmaster.vokabeltrainer.Topic;
-import com.example.puppetmaster.vokabeltrainer.Unit;
+import com.example.puppetmaster.vokabeltrainer.Entities.Topic;
+import com.example.puppetmaster.vokabeltrainer.Entities.Unit;
 import com.github.lzyzsd.circleprogress.ArcProgress;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -27,7 +27,6 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;

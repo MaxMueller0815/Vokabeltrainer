@@ -1,4 +1,4 @@
-package com.example.puppetmaster.vokabeltrainer;
+package com.example.puppetmaster.vokabeltrainer.Helper;
 
 /**
  * Created by Benedikt on 08.02.17.
