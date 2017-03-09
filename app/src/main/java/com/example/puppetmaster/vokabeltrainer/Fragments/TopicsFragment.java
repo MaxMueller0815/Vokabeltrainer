@@ -4,13 +4,17 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.puppetmaster.vokabeltrainer.Activities.StartScreen;
 import com.example.puppetmaster.vokabeltrainer.Adapter.TopicAdapter;
+import com.example.puppetmaster.vokabeltrainer.Entities.Unit;
 import com.example.puppetmaster.vokabeltrainer.R;
 import com.example.puppetmaster.vokabeltrainer.Entities.Topic;
+import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -26,7 +30,7 @@ public class TopicsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_topics, container, false);
-        readBundle();
+        retrieveTopics();
         RecyclerView recList = (RecyclerView) view.findViewById(R.id.recycler_topics);
         recList.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
@@ -37,11 +41,7 @@ public class TopicsFragment extends Fragment {
         return view;
     }
 
-    private void readBundle() {
-        Gson gson = new Gson();
-        String getArgument = getArguments().getString("topics");
-        Type baseType = new TypeToken<List<Topic>>() {
-        }.getType();
-        topics = gson.fromJson(getArgument, baseType);
+    private void retrieveTopics() {
+        topics =  ((StartScreen)this.getActivity()).getTopics();
     }
 }

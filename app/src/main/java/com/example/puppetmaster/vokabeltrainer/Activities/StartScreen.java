@@ -30,7 +30,12 @@ import java.util.ArrayList;
 
 public class StartScreen extends AppCompatActivity {
     private Toolbar toolbar;
-    ArrayList<Topic> topics = new ArrayList<Topic>();
+
+    public ArrayList<Topic> getTopics() {
+        return topics;
+    }
+
+    private ArrayList<Topic> topics = new ArrayList<Topic>();
     private static FragmentManager fragmentManager;
 
 
@@ -53,12 +58,12 @@ public class StartScreen extends AppCompatActivity {
                         switch (item.getItemId()) {
                             case R.id.action_start:
                                 Fragment homeFragment = new HomeFragment();//Get Fragment Instance
-                                homeFragment.setArguments(topicAsBundle());//Finally set argument bundle to fragment
+                                //homeFragment.setArguments(topicAsBundle());//Finally set argument bundle to fragment
                                 fragmentManager.beginTransaction().replace(R.id.container_start, homeFragment).commit();
                                 break;
                             case R.id.action_topics:
                                 Fragment topicsFragment = new TopicsFragment();//Get Fragment Instance
-                                topicsFragment.setArguments(topicAsBundle());//Finally set argument bundle to fragment
+                                //topicsFragment.setArguments(topicAsBundle());//Finally set argument bundle to fragment
                                 fragmentManager.beginTransaction().replace(R.id.container_start, topicsFragment).commit();
                                 break;
                             case R.id.action_game:
@@ -79,13 +84,13 @@ public class StartScreen extends AppCompatActivity {
         bottomNavigationView.setVisibility(View.VISIBLE);
     }
 
-    private Bundle topicAsBundle() {
+    /*private Bundle topicAsBundle() {
         Bundle topicData = new Bundle();//Use bundle to pass data
         Gson gson = new Gson();
         String strTopics = gson.toJson(topics);
         topicData.putString("topics", strTopics);//put string, int, etc in bundle with a key value
         return topicData;
-    }
+    }*/
 
     public void initToolBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar_start);
@@ -109,12 +114,14 @@ public class StartScreen extends AppCompatActivity {
                 break;
             case R.id.menu_list_of_vocabs:
                 Intent intent = new Intent(getApplicationContext(), AllVocabsActivity.class);
-                intent.putExtras(topicAsBundle());
+                //intent.putExtras(topicAsBundle());
                 startActivity(intent);
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 
     private class GetTask extends AsyncTask<Object, Void, Void> {
         Context context;
@@ -135,7 +142,7 @@ public class StartScreen extends AppCompatActivity {
             initToolBar();
             initBottomNavigation();
             Fragment homeFragment = new HomeFragment();//Get Fragment Instance
-            homeFragment.setArguments(topicAsBundle());//Finally set argument bundle to fragment
+            //homeFragment.setArguments(topicAsBundle());//Finally set argument bundle to fragment
             fragmentManager.beginTransaction().replace(R.id.container_start, homeFragment).commit();
             ImageView loadingImage = (ImageView) findViewById(R.id.iv_loading);
             loadingImage.setVisibility(View.GONE);

@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.puppetmaster.vokabeltrainer.Activities.StartScreen;
 import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
 import com.example.puppetmaster.vokabeltrainer.R;
 import com.example.puppetmaster.vokabeltrainer.Activities.SRSTesterActivity;
@@ -51,9 +52,8 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         view = inflater.inflate(R.layout.fragment_home, container, false);
-        readBundle();
+        retrieveTopics();
         retrieveWorkload();
         calcStats();
         initGraph();
@@ -79,12 +79,8 @@ public class HomeFragment extends Fragment {
         tvWorkload.setText("" + workload + " words");
     }
 
-    private void readBundle() {
-        Gson gson = new Gson();
-        String getArgument = getArguments().getString("topics");
-        Type baseType = new TypeToken<List<Topic>>() {
-        }.getType();
-        topics = gson.fromJson(getArgument, baseType);
+    private void retrieveTopics() {
+        topics =  ((StartScreen)this.getActivity()).getTopics();
 
         for (Topic topic : topics) {
             ArrayList<Unit> units = topic.getUnitsOfTopic();
@@ -95,7 +91,6 @@ public class HomeFragment extends Fragment {
                 }
             }
         }
-
         Log.i("Length of vocabs", vocabs.size() + " items");
     }
 
@@ -193,7 +188,7 @@ public class HomeFragment extends Fragment {
                 });
     }
 
-    @Override
+/*    @Override
     public void onResume() {
         super.onResume();
         if (alreadyVisited) {
@@ -203,5 +198,5 @@ public class HomeFragment extends Fragment {
             initGraph();
             initProgressBar();
         }
-    }
+    }*/
 }
