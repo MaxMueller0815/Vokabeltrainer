@@ -13,17 +13,20 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="@mipmap/motivation"
+        android:backgroundTint="@color/colorAccent3Dark"
+        android:backgroundTintMode="multiply"
+        android:elevation="4dp">
 
         <ImageView
             android:id="@+id/iv_solution"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/colorAccent3"
             android:elevation="4dp"
             android:padding="100dp"
-            android:scaleType="centerInside"
+            android:scaleType="centerCrop"
             android:visibility="visible"
             app:srcCompat="@drawable/smiley_cool" />
 
@@ -66,6 +69,7 @@
                 android:layout_marginLeft="64dp"
                 android:layout_marginRight="64dp"
                 android:layout_marginTop="32dp"
+                android:onClick="finish"
                 android:text="Continue" />
 
         </LinearLayout>

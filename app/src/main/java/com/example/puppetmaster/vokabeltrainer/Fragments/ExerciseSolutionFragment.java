@@ -4,8 +4,11 @@ package com.example.puppetmaster.vokabeltrainer.Fragments;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -25,11 +28,21 @@ import com.example.puppetmaster.vokabeltrainer.Helper.Declension;
 import com.example.puppetmaster.vokabeltrainer.Helper.StringCleaner;
 import com.example.puppetmaster.vokabeltrainer.R;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
+import com.github.lzyzsd.circleprogress.Utils;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import static android.text.Spanned.SPAN_INCLUSIVE_INCLUSIVE;
 
@@ -45,6 +58,7 @@ public class ExerciseSolutionFragment extends Fragment {
     private boolean isCorrect = false;
     ImageView ivIndicator;
     Context context;
+    TextView tvWiki;
 
     public ExerciseSolutionFragment() {
         // Required empty public constructor
@@ -124,6 +138,15 @@ public class ExerciseSolutionFragment extends Fragment {
                 ((ExerciseActivity) getActivity()).evaluateResult(isCorrect);
             }
         });
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+
+        tvWiki = (TextView) view.findViewById(R.id.tv_wiktionary);
+        FetchWikiEntry fetchWikiEntry = new FetchWikiEntry();
+        fetchWikiEntry.execute(translations.get(0));
+
     }
 
     // TODO: Sollte man das nicht durch die handleAnswer/checkAnswer Funktion in SRS machen? -> Folge: dauert ewig
@@ -149,5 +172,52 @@ public class ExerciseSolutionFragment extends Fragment {
         MyDatabase db = new MyDatabase(context);
         db.updateSingleVocab(currentVocab);
         db.close();
+    }
+
+    public class FetchWikiEntry extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String entry = "";
+            try {
+                Uri.Builder builder = new Uri.Builder();
+                builder.scheme("https")
+                        .authority("de.wiktionary.org")
+                        .appendPath("w")
+                        .appendPath("api.php")
+                        .appendQueryParameter("action", "query")
+                        .appendQueryParameter("format", "json")
+                        .appendQueryParameter("prop", "revisions")
+                        .appendQueryParameter("rvprop", "content")
+                        .appendQueryParameter("titles", strings[0]);
+
+                URL url = new URL(builder.build().toString());
+                InputStream inputStream = url.openStream();
+                Scanner s = new Scanner(inputStream).useDelimiter("\\A");
+                String result = s.hasNext() ? s.next() : "";
+                JSONObject response = new JSONObject(result);
+                JSONObject query2 = response.getJSONObject("query");
+                JSONObject pages = query2.getJSONObject("pages");
+                JSONObject page = pages.getJSONObject((String) pages.keys().next());
+                JSONArray revisions = page.getJSONArray("revisions");
+                JSONObject revision = revisions.getJSONObject(0);
+                entry = revision.getString("*");
+            }
+            catch (JSONException je) {
+                Log.e("JSON Error",je.toString());
+                return null;
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return entry;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            tvWiki.setText(s);
+        }
     }
 }

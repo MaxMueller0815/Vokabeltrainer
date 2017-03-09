@@ -33,7 +33,6 @@ public class ExerciseInputFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        solutionInput.requestFocus();
     }
 
     @Override
@@ -70,6 +69,11 @@ public class ExerciseInputFragment extends Fragment {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(solutionInput.getWindowToken(), 0);
     }
+
+//    private void showKeyboard() {
+//        InputMethodManager imm =  (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+//        imm.showSoftInput(solutionInput, InputMethodManager.SHOW_IMPLICIT);
+//    }
 
 
 

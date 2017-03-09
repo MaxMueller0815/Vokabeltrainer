@@ -9,12 +9,15 @@ import java.util.ArrayList;
 public class Declension {
     public static boolean checkDeclension(String term) {
         String article = "";
-        article = term.substring(term.indexOf("(")+1,term.indexOf(","));
-        if (article.equals("der") || article.equals("die") || article.equals("das")) {
-            return true;
-        } else {
-            return false;
+        boolean isNoun = false;
+        try {
+            article = term.substring(term.indexOf("(")+1,term.indexOf(","));
+            if (article.equals("der") || article.equals("die") || article.equals("das")) {
+                isNoun = true;
+            }
+        } catch (Exception e) {
         }
+        return isNoun;
     }
     public static ArrayList<String> getDeclination(String term) {
         String sgNominativ = "";

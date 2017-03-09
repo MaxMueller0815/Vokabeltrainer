@@ -18,9 +18,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:padding="100dp"
-            android:background="@color/colorAccent3"
-            android:elevation="4dp">
+            android:background="@color/colorAccent3Dark"
+            android:elevation="4dp"
+            android:padding="100dp">
 
             <ImageView
                 android:id="@+id/iv_solution"
@@ -73,6 +73,12 @@
                     android:gravity="center_horizontal"
                     android:text="TextView" />
 
+                <TextView
+                    android:id="@+id/tv_wiktionary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+
                 <TableLayout
                     android:id="@+id/table_declension"
                     android:layout_width="match_parent"
@@ -80,12 +86,16 @@
                     android:layout_marginBottom="32dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:layout_marginTop="48dp">
+                    android:layout_marginTop="48dp"
+                    android:divider="?android:attr/dividerHorizontal"
+                    android:showDividers="middle|end">
 
                     <TableRow
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="8dp">
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="16dp"
+                        android:showDividers="end">
 
                         <TextView
                             android:id="@+id/textView21"
@@ -100,6 +110,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Singular"
+                            android:textAllCaps="false"
                             android:textStyle="bold" />
 
                         <TextView
@@ -107,14 +118,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Plurar"
+                            android:text="Plural"
                             android:textStyle="bold" />
                     </TableRow>
 
                     <TableRow
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="8dp">
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="16dp">
 
                         <TextView
                             android:id="@+id/textView22"
@@ -142,7 +154,8 @@
                     <TableRow
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="8dp">
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="16dp">
 
                         <TextView
                             android:id="@+id/textView25"
@@ -170,7 +183,8 @@
                     <TableRow
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="8dp">
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="16dp">
 
                         <TextView
                             android:id="@+id/textView23"
@@ -198,7 +212,8 @@
                     <TableRow
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="8dp">
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="16dp">
 
                         <TextView
                             android:id="@+id/textView24"
