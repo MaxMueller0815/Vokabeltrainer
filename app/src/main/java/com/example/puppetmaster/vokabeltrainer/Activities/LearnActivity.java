@@ -11,6 +11,10 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -22,12 +26,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
+import com.example.puppetmaster.vokabeltrainer.Helper.Declension;
 import com.example.puppetmaster.vokabeltrainer.R;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 import com.example.puppetmaster.vokabeltrainer.Entities.Unit;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+
+import static android.text.Spanned.SPAN_INCLUSIVE_INCLUSIVE;
 
 public class LearnActivity extends AppCompatActivity {
 
@@ -83,14 +90,21 @@ public class LearnActivity extends AppCompatActivity {
     // TODO: Sollte man das nicht durch die handleAnswer/checkAnswer Funktion in SRS machen? -> Folge: dauert ewig
     private void compareSolution(){
         boolean isCorrect = false;
+        boolean isSuggestedSolution = false;
         Vocab currentVocab = allVocab.get(counter_vocab);
         String userInput = cleanString(editTextInput.getText().toString());
         ArrayList<String> translations = currentVocab.getGerman();
-        for (String translation : translations) {
-            if (userInput.equals(cleanString(translation))) {
+        String alternativeSolution = "";
+        for (int i = 0; i < translations.size(); i++) {
+            if (userInput.equals(cleanString(translations.get(i)))) {
                 isCorrect = true;
+                if (isCorrect && i > 0) {
+                    alternativeSolution = translations.get(i);
+                }
             }
         }
+
+        Log.v("Declension", Declension.getDeclination(backCard).toString());
 
         if(isCorrect) {
             imageView.setImageResource(R.drawable.smiley_happy);
@@ -98,6 +112,14 @@ public class LearnActivity extends AppCompatActivity {
             currentVocab.increaseCountCorrect();
             currentVocab.increaseSrsLevel();
             counter_correct_answer++;
+            if (!alternativeSolution.equals("")) {
+                SpannableString span1 = new SpannableString(backCard);
+                span1.setSpan(new AbsoluteSizeSpan(30, true), 0, backCard.length(), SPAN_INCLUSIVE_INCLUSIVE);
+                SpannableString span2 = new SpannableString("Also: " + alternativeSolution);
+                span2.setSpan(new AbsoluteSizeSpan(15, true), 0, span2.length(), SPAN_INCLUSIVE_INCLUSIVE);
+                CharSequence finalText = TextUtils.concat(span1, "\n", span2);
+                vocab_learning_language_text_view.setText(finalText);
+            }
         } else {
             imageView.setImageResource(R.drawable.smiley_question);
             imageView.setVisibility(View.VISIBLE);
@@ -340,14 +362,14 @@ public class LearnActivity extends AppCompatActivity {
         imm.hideSoftInputFromWindow(editTextInput.getWindowToken(), 0);
     }
 
-    private static String cleanString(String term) {
-        term = term.replaceAll("\\(.*?\\)","");
-        term = term.toLowerCase().replaceAll("[^a-z]", "");
-        return term.trim();
-    }
-
     @Override
     public void onBackPressed() {
         showAlertDialogExit();
+    }
+
+    public static String cleanString(String term) {
+        term = term.replaceAll("\\(.*?\\)","");
+        term = term.toLowerCase().replaceAll("[^a-z]", "");
+        return term.trim();
     }
 }

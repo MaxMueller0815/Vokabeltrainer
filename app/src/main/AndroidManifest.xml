@@ -13,14 +13,14 @@
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".Activities.LearnActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize"
-            />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Activities.UnitsActivity"
             android:label="@string/title_activity_units" />
@@ -33,8 +33,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.puppetmaster.vokabeltrainer.Activities.StartScreen" />
         </activity>
-        <activity android:name=".Activities.AllVocabsActivity"
+        <activity
+            android:name=".Activities.AllVocabsActivity"
             android:parentActivityName=".Activities.StartScreen" />
+        <activity android:name=".Activities.ExerciseActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

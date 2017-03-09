@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.puppetmaster.vokabeltrainer.Activities.ExerciseActivity;
 import com.example.puppetmaster.vokabeltrainer.R;
 import com.example.puppetmaster.vokabeltrainer.Activities.LearnActivity;
 import com.example.puppetmaster.vokabeltrainer.Entities.Unit;
@@ -51,7 +52,7 @@ public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.UnitViewHolder
         unitViewHolder.vButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(),LearnActivity.class);
+                Intent intent = new Intent(v.getContext(), ExerciseActivity.class);
                 Bundle mBundle = new Bundle();
                 Gson gson = new Gson();
                 String unitAsJson = gson.toJson(unit);
