@@ -23,11 +23,9 @@ public class WiktionaryHelper {
         doc.body().getElementsByClass("section-heading").remove();
         doc.body().getElementsByClass("edit-page").remove();
         doc.body().getElementsByClass("NavFrame").remove();
-        //doc.body().getElementsByClass("in-block").remove();
         doc.body().getElementsByClass("references").remove();
         doc.body().getElementsByClass("toc-mobile").remove();
-       /* doc.body().getElementById("Vorlage_Uberarbeiten").remove();
-*/
+
         doc.body().select("[title=Akronyme und Kürzel]>dl").remove();
         doc.body().select("[title=Akronyme und Kürzel]").remove();
 
@@ -65,5 +63,25 @@ public class WiktionaryHelper {
 
     public static String docToHTML(Document doc) {
         return doc.outerHtml().replaceAll("(\n)", "");
+    }
+
+    public static String prepareSearchTerm(String searchTerm) {
+        searchTerm = StringCleaner.cleanString(searchTerm);
+        searchTerm = improveCapitalizationRules(searchTerm);
+        searchTerm = searchTerm.replace(" ", "_");
+        return searchTerm;
+    }
+
+    private static String improveCapitalizationRules(String searchTerm) {
+        int countBlankSpaces = 0;
+        for(int i = 0; i < searchTerm.length(); i++) {
+            if(Character.isWhitespace(searchTerm.charAt(i))) countBlankSpaces++;
+        }
+        if (countBlankSpaces > 0) {
+            char c[] = searchTerm.toCharArray();
+            c[0] = Character.toLowerCase(c[0]);
+            searchTerm = new String(c);
+        }
+        return searchTerm;
     }
 }

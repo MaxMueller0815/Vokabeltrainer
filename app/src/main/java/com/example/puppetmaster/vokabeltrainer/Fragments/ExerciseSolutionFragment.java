@@ -145,7 +145,7 @@ public class ExerciseSolutionFragment extends Fragment {
         @Override
         protected String doInBackground(String... strings) {
             try {
-                String searchTerm = StringCleaner.cleanString(strings[0]);
+                String searchTerm = WiktionaryHelper.prepareSearchTerm(strings[0]);
                 String url = "https://de.m.wiktionary.org/wiki/" + searchTerm;
                 Log.i("Trying to connect to", url + "(encoding by jSoup in next step)");
                 doc = Jsoup.connect(url)

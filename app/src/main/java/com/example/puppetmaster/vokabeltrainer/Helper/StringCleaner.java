@@ -7,7 +7,7 @@ package com.example.puppetmaster.vokabeltrainer.Helper;
 public class StringCleaner {
     public static String cleanString(String term) {
         term = term.replaceAll("\\(.*?\\)","");
-        term = term.replaceAll("[^A-ZÄÖÜa-zäöüß]", "");
+        term = term.replaceAll("[^A-ZÄÖÜa-zäöüß ]", "");
         return term.trim();
     }
 }
