@@ -1,13 +1,11 @@
 package com.example.puppetmaster.vokabeltrainer.Fragments;
 
-import android.content.Context;
-import android.net.Uri;
-import android.os.Bundle;
 import android.app.Fragment;
-import android.text.Html;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,11 +15,11 @@ import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 
 import java.util.ArrayList;
 
-public class ExerciseResultFragment extends Fragment {
+public class ExerciseFinalScoreFragment extends Fragment {
     View view;
     int counterCorrect;
     ArrayList<Vocab> allVocab;
-    public ExerciseResultFragment() {
+    public ExerciseFinalScoreFragment() {
         // Required empty public constructor
     }
 
@@ -34,7 +32,7 @@ public class ExerciseResultFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_exercise_result, container, false);
+        view = inflater.inflate(R.layout.fragment_exercise_final_score, container, false);
         counterCorrect = ((ExerciseActivity)this.getActivity()).getCounterCorrect();
         allVocab = ((ExerciseActivity)this.getActivity()).getAllVocab();
 
@@ -68,6 +66,14 @@ public class ExerciseResultFragment extends Fragment {
         tvTitle.setText(title);
         TextView tvDescription = (TextView) view.findViewById(R.id.tv_solution_description);
         tvDescription.setText(description);
+
+        Button returnButton = (Button) view.findViewById(R.id.btn_continue);
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
         return view;
     }
 

@@ -4,13 +4,13 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.ProgressBar;
 
 import com.example.puppetmaster.vokabeltrainer.Entities.Unit;
+import com.example.puppetmaster.vokabeltrainer.Fragments.ExerciseFinalScoreFragment;
 import com.example.puppetmaster.vokabeltrainer.Fragments.ExerciseInputFragment;
-import com.example.puppetmaster.vokabeltrainer.Fragments.ExerciseResultFragment;
-import com.example.puppetmaster.vokabeltrainer.Fragments.ExerciseSolutionFragment;
 import com.example.puppetmaster.vokabeltrainer.R;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 import com.google.gson.Gson;
@@ -25,6 +25,14 @@ public class ExerciseActivity extends AppCompatActivity {
     public Vocab currentVocab;
 
 
+    public int getTurn() {
+        return turn;
+    }
+
+    public int getSizeOfExercise() {
+        return allVocab.size();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +40,7 @@ public class ExerciseActivity extends AppCompatActivity {
         fragmentManager = getFragmentManager();
         readIntent();
         startNextTurn();
+
     }
 
     private void readIntent() {
@@ -50,10 +59,13 @@ public class ExerciseActivity extends AppCompatActivity {
         }
 
         if (turn < allVocab.size()) {
+            ProgressBar progressBar = (ProgressBar) findViewById(R.id.pb_exercise);
+            progressBar.setMax(allVocab.size());
+            progressBar.setProgress(turn + 1);
             Fragment exerciseInputFragment = new ExerciseInputFragment();//Get Fragment Instance
             ft.replace(R.id.container_exercise, exerciseInputFragment).commit();
         } else {
-            Fragment exerciseResultFragment= new ExerciseResultFragment();
+            Fragment exerciseResultFragment= new ExerciseFinalScoreFragment();
             ft.replace(R.id.container_exercise, exerciseResultFragment).commit();
         }
     }

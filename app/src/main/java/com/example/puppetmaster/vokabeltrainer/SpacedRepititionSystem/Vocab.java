@@ -67,11 +67,7 @@ public class Vocab {
     }
 
     public boolean isNewVocab(){
-        if(srsLevel == 1 && countCorrect == 0 && countFalse == 0){
-            return true;
-        }else{
-            return false;
-        }
+        return srsLevel == 1 && countCorrect == 0 && countFalse == 0;
     }
 
     public void setLastRevision(){
