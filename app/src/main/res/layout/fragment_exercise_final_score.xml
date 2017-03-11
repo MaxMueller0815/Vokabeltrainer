@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@mipmap/motivation"
-        android:backgroundTint="@color/colorAccent3Dark"
+        android:backgroundTint="@color/colorAccent"
         android:backgroundTintMode="multiply"
         android:elevation="4dp">
 
@@ -69,7 +69,8 @@
                 android:layout_marginLeft="64dp"
                 android:layout_marginRight="64dp"
                 android:layout_marginTop="32dp"
-                android:text="Continue" />
+                android:text="Continue"
+                android:textColor="@color/colorWhite" />
 
         </LinearLayout>
     </RelativeLayout>

@@ -5,8 +5,8 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +14,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.puppetmaster.vokabeltrainer.Activities.ExerciseActivity;
@@ -27,6 +28,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,9 +42,8 @@ public class ExerciseSolutionFragment extends Fragment {
     private boolean isCorrect = false;
     ImageView ivIndicator;
     Context context;
-    TextView tvWiki;
-    String htmlDoc = "";
     WebView webView;
+    TextToSpeech tts;
 
     public ExerciseSolutionFragment() {
         // Required empty public constructor
@@ -61,8 +62,19 @@ public class ExerciseSolutionFragment extends Fragment {
         }
 
         compareSolution();
+        playTTS();
         initUI();
+        searchWiktionary();
         return view;
+    }
+
+    private void searchWiktionary() {
+        try {
+            SiteFetcher sf = new SiteFetcher();
+            sf.execute(translations.get(0));
+        } catch (Exception e) {
+            System.out.print(e);
+        }
     }
 
     private void initUI() {
@@ -98,22 +110,8 @@ public class ExerciseSolutionFragment extends Fragment {
                 ((ExerciseActivity) getActivity()).evaluateResult(isCorrect);
             }
         });
-
-        try {
-            SiteFetcher sf = new SiteFetcher();
-            sf.execute(translations.get(0));
-            webView = (WebView) view.findViewById(R.id.wv_wiki);
-            webView.getSettings().setJavaScriptEnabled(false);
-            webView.setWebViewClient(new WebViewClient() {
-                public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                    return true;
-                }
-            });
-        } catch (Exception e) {
-            System.out.print(e);
-        }
     }
-
+//TODO: Gehört das hier hin?
     private void compareSolution() {
         translations = currentVocab.getGerman();
         userAnswer = StringCleaner.cleanString(userAnswer.toLowerCase());
@@ -132,38 +130,58 @@ public class ExerciseSolutionFragment extends Fragment {
             currentVocab.increaseCountFalse();
             currentVocab.decreaseSrsLevel();
         }
-
         MyDatabase db = new MyDatabase(context);
         db.updateSingleVocab(currentVocab);
         db.close();
     }
 
-    private class SiteFetcher extends AsyncTask<String, Void, String> {
-        Document doc;
+    private void playTTS() {
+        tts = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status != TextToSpeech.ERROR) {
+                    tts.setLanguage(Locale.GERMANY);
+                    String utteranceId = this.hashCode() + "";
+                    tts.speak(StringCleaner.cleanString(translations.get(0)), TextToSpeech.QUEUE_FLUSH, null, utteranceId);
+                }
+            }
+        });
+    }
 
-        //HERE DECLARE THE VARIABLES YOU USE FOR PARSING
+    private class SiteFetcher extends AsyncTask<String, Void, WiktionaryHelper> {
         @Override
-        protected String doInBackground(String... strings) {
+        protected WiktionaryHelper doInBackground(String... strings) {
             try {
-                String searchTerm = WiktionaryHelper.prepareSearchTerm(strings[0]);
-                String url = "https://de.m.wiktionary.org/wiki/" + searchTerm;
-                Log.i("Trying to connect to", url + "(encoding by jSoup in next step)");
-                doc = Jsoup.connect(url)
+                Document doc = Jsoup.connect(WiktionaryHelper.makeUrl(strings[0]))
                         .get();
-                doc = WiktionaryHelper.removeUnneededSegments(doc);
-                //doc = WiktionaryHelper.addCustomCSS(doc, "materialize");
-                doc = WiktionaryHelper.addCustomCSS(doc, "main");
-                htmlDoc = WiktionaryHelper.docToHTML(doc);
+                WiktionaryHelper wikiHelper = new WiktionaryHelper(doc);
+                return wikiHelper;
             } catch (Exception e) {
                 System.out.print(e);
+                return null;
             }
-            return htmlDoc;
         }
 
         @Override
-        protected void onPostExecute(String htmlDoc) {
-            super.onPostExecute(htmlDoc);
-            webView.loadDataWithBaseURL("file:///android_asset/.", htmlDoc, "text/html", "UTF-8", null);
+        protected void onPostExecute(WiktionaryHelper wikiHelper) {
+            super.onPostExecute(wikiHelper);
+            ProgressBar pbLoader = (ProgressBar) view.findViewById(R.id.pb_wiktionary_loader);
+            pbLoader.setVisibility(View.GONE);
+
+            webView = (WebView) view.findViewById(R.id.wv_wiki);
+            webView.getSettings().setJavaScriptEnabled(false);
+            webView.setWebViewClient(new WebViewClient() {
+                public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                    return true;
+                }
+            });
+            if (wikiHelper.hasBeenFound()) {
+                webView.loadDataWithBaseURL("file:///android_asset/.", wikiHelper.toString(), "text/html", "UTF-8", null);
+                webView.setVisibility(View.VISIBLE);
+            } else {
+                TextView noEntry = (TextView) view.findViewById(R.id.tv_no_wiki_found);
+                noEntry.setVisibility(View.VISIBLE);
+            }
         }
     }
 }

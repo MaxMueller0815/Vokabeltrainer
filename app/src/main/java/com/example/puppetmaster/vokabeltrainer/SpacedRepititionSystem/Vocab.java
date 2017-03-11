@@ -49,6 +49,9 @@ public class Vocab {
     }
     public void increaseSrsLevel(){
         srsLevel += 1;
+        if(srsLevel >= 9) {
+            srsLevel = 9;
+        }
     }
 
     public void decreaseSrsLevel(){

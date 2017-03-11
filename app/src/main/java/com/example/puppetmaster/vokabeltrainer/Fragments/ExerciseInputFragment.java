@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,16 +60,28 @@ public class ExerciseInputFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                showKeyboard();
+            }
+        }, 500);
+
+    }
+
     private void removeKeyboard() {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(solutionInput.getWindowToken(), 0);
     }
 
-//    private void showKeyboard() {
-//        InputMethodManager imm =  (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-//        imm.showSoftInput(solutionInput, InputMethodManager.SHOW_IMPLICIT);
-//    }
-
-
-
+    private void showKeyboard() {
+        solutionInput.requestFocus();
+        InputMethodManager imm =  (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(solutionInput, InputMethodManager.SHOW_IMPLICIT);
+    }
 }
