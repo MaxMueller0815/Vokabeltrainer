@@ -12,10 +12,10 @@ import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener;
 import com.azoft.carousellayoutmanager.CenterScrollListener;
 import com.example.puppetmaster.vokabeltrainer.Adapter.UnitAdapter;
 import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
-import com.example.puppetmaster.vokabeltrainer.R;
-import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 import com.example.puppetmaster.vokabeltrainer.Entities.Topic;
 import com.example.puppetmaster.vokabeltrainer.Entities.Unit;
+import com.example.puppetmaster.vokabeltrainer.R;
+import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;

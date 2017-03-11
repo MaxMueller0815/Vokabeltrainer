@@ -16,15 +16,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.example.puppetmaster.vokabeltrainer.Helper.BottomNavigationViewHelper;
 import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
+import com.example.puppetmaster.vokabeltrainer.Entities.Topic;
 import com.example.puppetmaster.vokabeltrainer.Fragments.GameFragment;
 import com.example.puppetmaster.vokabeltrainer.Fragments.HomeFragment;
 import com.example.puppetmaster.vokabeltrainer.Fragments.ProfileFragment;
 import com.example.puppetmaster.vokabeltrainer.Fragments.TopicsFragment;
+import com.example.puppetmaster.vokabeltrainer.Helper.BottomNavigationViewHelper;
 import com.example.puppetmaster.vokabeltrainer.R;
-import com.example.puppetmaster.vokabeltrainer.Entities.Topic;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 

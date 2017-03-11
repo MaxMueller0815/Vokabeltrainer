@@ -14,7 +14,6 @@ import android.text.Html;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -26,10 +25,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
-import com.example.puppetmaster.vokabeltrainer.Helper.Declension;
+import com.example.puppetmaster.vokabeltrainer.Entities.Unit;
 import com.example.puppetmaster.vokabeltrainer.R;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
-import com.example.puppetmaster.vokabeltrainer.Entities.Unit;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -104,7 +102,7 @@ public class LearnActivity extends AppCompatActivity {
             }
         }
 
-        Log.v("Declension", Declension.getDeclination(backCard).toString());
+
 
         if(isCorrect) {
             imageView.setImageResource(R.drawable.smiley_happy);

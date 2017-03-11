@@ -1,11 +1,11 @@
 package com.example.puppetmaster.vokabeltrainer.Fragments;
 
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,11 +31,6 @@ public class ExerciseInputFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -44,7 +39,6 @@ public class ExerciseInputFragment extends Fragment {
         TextView tvQuestion = (TextView) view.findViewById(R.id.tv_question);
         tvQuestion.setText(currentVocab.getEnglish());
         solutionInput = (EditText) view.findViewById(R.id.et_user_answer);
-
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_exercise_input);
         fab.setOnClickListener(new View.OnClickListener() {

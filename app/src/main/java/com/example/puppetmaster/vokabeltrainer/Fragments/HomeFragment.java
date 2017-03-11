@@ -2,7 +2,6 @@ package com.example.puppetmaster.vokabeltrainer.Fragments;
 
 import android.app.Fragment;
 import android.content.Intent;
-
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -10,30 +9,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.puppetmaster.vokabeltrainer.Activities.SRSTesterActivity;
 import com.example.puppetmaster.vokabeltrainer.Activities.StartScreen;
 import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
-import com.example.puppetmaster.vokabeltrainer.R;
-import com.example.puppetmaster.vokabeltrainer.Activities.SRSTesterActivity;
-import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 import com.example.puppetmaster.vokabeltrainer.Entities.Topic;
 import com.example.puppetmaster.vokabeltrainer.Entities.Unit;
+import com.example.puppetmaster.vokabeltrainer.R;
+import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 import com.github.lzyzsd.circleprogress.ArcProgress;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import static android.icu.text.DateFormat.getDateInstance;
 

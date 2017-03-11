@@ -17,9 +17,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.puppetmaster.vokabeltrainer.Activities.ExerciseActivity;
-import com.example.puppetmaster.vokabeltrainer.R;
-import com.example.puppetmaster.vokabeltrainer.Activities.LearnActivity;
 import com.example.puppetmaster.vokabeltrainer.Entities.Unit;
+import com.example.puppetmaster.vokabeltrainer.R;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
