@@ -96,6 +96,40 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="32dp"
+            android:layout_marginTop="32dp"
+            android:background="@color/cardview_shadow_start_color" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Input Mode"
+            android:textStyle="normal|bold" />
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Change the way this app evaluates your translation"
+            android:textSize="10sp" />
+
+        <Switch
+            android:id="@+id/switch_article"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="Requires article" />
+
+        <Switch
+            android:id="@+id/switch_case_sensitive"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Case sensitive" />
+
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

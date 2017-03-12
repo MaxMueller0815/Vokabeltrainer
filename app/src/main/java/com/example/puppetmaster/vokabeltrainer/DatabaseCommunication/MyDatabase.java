@@ -12,6 +12,7 @@ import com.example.puppetmaster.vokabeltrainer.Entities.Unit;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 public class MyDatabase extends SQLiteAssetHelper {
 
     private static final String DATABASE_NAME = "vocabDB.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private SQLiteDatabase db;
     private SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
@@ -202,7 +203,7 @@ public class MyDatabase extends SQLiteAssetHelper {
     public ArrayList<Object> getSettings() {
         ArrayList<Object> settings = new ArrayList<Object>();
         db = getReadableDatabase();
-        String[] sqlSelect = {"workload, exerciseStart, exerciseEnd"};
+        String[] sqlSelect = {"workload, exerciseStart, exerciseEnd, inputRequiresArticle, inputRequiresCapitalisation"};
         String sqlTables = "userPreferences";
 
         qb.setTables(sqlTables);
@@ -215,6 +216,8 @@ public class MyDatabase extends SQLiteAssetHelper {
             settings.add(c.getInt(0));
             settings.add(c.getString(1));
             settings.add(c.getString(2));
+            settings.add(c.getInt(3));
+            settings.add(c.getInt(4));
         } finally {
             c.close();
         }
@@ -242,13 +245,65 @@ public class MyDatabase extends SQLiteAssetHelper {
     }
 
     // TODO Set Workload
-    public void saveSettings(int workload, String strStart, String strEnd) {
+    public void saveSettings(int workload, String strStart, String strEnd, boolean withArticle, boolean caseSensitive) {
         db = this.getWritableDatabase();
         String whereClause = "ROWID=1";
         ContentValues contentValues = new ContentValues();
         contentValues.put("workload", workload);
         contentValues.put("exerciseStart", strStart);
         contentValues.put("exerciseEnd", strEnd);
+        int inputRequiresArticle;
+        if (withArticle) {
+            inputRequiresArticle = 1;
+        } else {
+            inputRequiresArticle = 0;
+        }
+        contentValues.put("inputRequiresArticle", inputRequiresArticle);
+
+        int inputRequiresCapitalisation;
+        if (caseSensitive) {
+            inputRequiresCapitalisation = 1;
+        } else {
+            inputRequiresCapitalisation = 0;
+        }
+        contentValues.put("inputRequiresCapitalisation", inputRequiresCapitalisation);
+
         db.update("userPreferences", contentValues, whereClause, null);
+        db.close();
+    }
+
+    public boolean[] getInputMode() {
+        boolean[] inputMode = new boolean[2];
+        boolean withArticle;
+        boolean caseSensitve;
+
+        db = getReadableDatabase();
+        String[] sqlSelect = {"inputRequiresArticle, inputRequiresCapitalisation"};
+        String sqlTables = "userPreferences";
+
+        qb.setTables(sqlTables);
+        Cursor c = qb.query(db, sqlSelect, null, null,
+                null, null, null);
+
+
+        try {
+            c.moveToFirst();
+            if (c.getInt(0) == 0) {
+                withArticle = false;
+            } else {
+                withArticle = true;
+            };
+
+            if (c.getInt(1) == 0) {
+                caseSensitve = false;
+            } else {
+                caseSensitve = true;
+            }
+        } finally {
+            c.close();
+        }
+        inputMode[0] = withArticle;
+        inputMode[1] = caseSensitve;
+        return inputMode;
     }
 }
