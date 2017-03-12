@@ -72,7 +72,6 @@
                     android:id="@+id/tv_alternative_solution"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="32dp"
                     android:gravity="center_horizontal"
                     android:text="TextView" />
 
@@ -87,8 +86,10 @@
                     android:id="@+id/wv_wiki"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
                     android:clickable="false"
                     android:longClickable="false"
+                    android:padding="16dp"
                     android:visibility="invisible">
 
                 </WebView>
@@ -97,6 +98,7 @@
                     android:id="@+id/tv_no_wiki_found"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
                     android:gravity="center_horizontal"
                     android:text="No Wiktionary entry found"
                     android:textAlignment="center"

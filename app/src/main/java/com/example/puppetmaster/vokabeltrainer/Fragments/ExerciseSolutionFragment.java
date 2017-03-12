@@ -134,7 +134,6 @@ public class ExerciseSolutionFragment extends Fragment {
         db.updateSingleVocab(currentVocab);
         db.close();
     }
-
     private void playTTS() {
         tts = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
             @Override
@@ -158,8 +157,8 @@ public class ExerciseSolutionFragment extends Fragment {
                 return wikiHelper;
             } catch (Exception e) {
                 System.out.print(e);
-                return null;
             }
+            return null;
         }
 
         @Override
@@ -167,15 +166,15 @@ public class ExerciseSolutionFragment extends Fragment {
             super.onPostExecute(wikiHelper);
             ProgressBar pbLoader = (ProgressBar) view.findViewById(R.id.pb_wiktionary_loader);
             pbLoader.setVisibility(View.GONE);
-
-            webView = (WebView) view.findViewById(R.id.wv_wiki);
-            webView.getSettings().setJavaScriptEnabled(false);
-            webView.setWebViewClient(new WebViewClient() {
-                public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                    return true;
-                }
-            });
-            if (wikiHelper.hasBeenFound()) {
+            
+            if (wikiHelper != null && wikiHelper.hasBeenFound()) {
+                webView = (WebView) view.findViewById(R.id.wv_wiki);
+                webView.getSettings().setJavaScriptEnabled(false);
+                webView.setWebViewClient(new WebViewClient() {
+                    public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                        return true;
+                    }
+                });
                 webView.loadDataWithBaseURL("file:///android_asset/.", wikiHelper.toString(), "text/html", "UTF-8", null);
                 webView.setVisibility(View.VISIBLE);
             } else {

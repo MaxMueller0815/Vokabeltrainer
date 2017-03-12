@@ -36,8 +36,8 @@ public class WiktionaryHelper {
         doc.body().getElementsByClass("printfooter").remove();
         doc.body().getElementsByClass("noprint").remove();
         doc.body().getElementById(".C3.9Cbersetzungen").remove();
-
-        //doc.body().select("[title=Phonetik] + dl").get(1).remove();
+        //doc.getElementById("Vorlage_Erweitern").remove();
+        //doc.body().select("div#Vorlage_Erweitern").remove();
 
         doc.body().select("[title=Akronyme und Kürzel] + dl").remove();
         doc.body().select("[title=Akronyme und Kürzel]").remove();
@@ -130,7 +130,7 @@ public class WiktionaryHelper {
     }*/
 
     public boolean hasBeenFound() {
-        if (doc == null || doc.toString().contains("noarticletext")) {
+        if (doc.toString().contains("noarticletext")) {
             return false;
         } else {
             return true;
