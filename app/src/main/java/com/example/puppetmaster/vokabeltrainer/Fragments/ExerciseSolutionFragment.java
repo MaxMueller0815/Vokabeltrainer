@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,7 @@ import android.widget.TextView;
 
 import com.example.puppetmaster.vokabeltrainer.Activities.ExerciseActivity;
 import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
-import com.example.puppetmaster.vokabeltrainer.Helper.StringCleaner;
+import com.example.puppetmaster.vokabeltrainer.Helper.WordHelper;
 import com.example.puppetmaster.vokabeltrainer.Helper.WiktionaryHelper;
 import com.example.puppetmaster.vokabeltrainer.R;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
@@ -29,6 +30,7 @@ import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.StringTokenizer;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,6 +70,7 @@ public class ExerciseSolutionFragment extends Fragment {
         return view;
     }
 
+    //TODO: Offline-Modus behandeln
     private void searchWiktionary() {
         try {
             SiteFetcher sf = new SiteFetcher();
@@ -111,12 +114,13 @@ public class ExerciseSolutionFragment extends Fragment {
             }
         });
     }
-//TODO: Gehört das hier hin?
+
+    //TODO: Gehört das hier hin?
     private void compareSolution() {
         translations = currentVocab.getGerman();
-        userAnswer = StringCleaner.cleanString(userAnswer.toLowerCase());
+        userAnswer = WordHelper.cleanString(userAnswer.toLowerCase());
         for (int i = 0; i < translations.size(); i++) {
-            if (userAnswer.equals(StringCleaner.cleanString(translations.get(i).toLowerCase()))) {
+            if (userAnswer.equals(WordHelper.cleanString(translations.get(i).toLowerCase()))) {
                 isCorrect = true;
                 if (isCorrect && i > 0) {
                     alternativeSolution = translations.get(i);
@@ -135,13 +139,23 @@ public class ExerciseSolutionFragment extends Fragment {
         db.close();
     }
     private void playTTS() {
-        tts = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
+        String phrase = currentVocab.getGerman().get(0);
+        if (WordHelper.isNoun(phrase)) {
+            phrase = WordHelper.getArticle(phrase) + " " + WordHelper.cleanString(phrase);
+        } else {
+            phrase = WordHelper.cleanString(phrase);
+        }
+        Log.v("TTS", phrase);
+        final String finalPhrase = phrase;
+        tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
                 if (status != TextToSpeech.ERROR) {
                     tts.setLanguage(Locale.GERMANY);
+                    //tts.setPitch((float) 0.5);
+                    tts.setSpeechRate((float) 0.9);
                     String utteranceId = this.hashCode() + "";
-                    tts.speak(StringCleaner.cleanString(translations.get(0)), TextToSpeech.QUEUE_FLUSH, null, utteranceId);
+                    tts.speak(finalPhrase, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
                 }
             }
         });

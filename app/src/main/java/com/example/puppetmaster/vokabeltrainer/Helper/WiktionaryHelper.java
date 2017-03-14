@@ -36,6 +36,7 @@ public class WiktionaryHelper {
         doc.body().getElementsByClass("printfooter").remove();
         doc.body().getElementsByClass("noprint").remove();
         doc.body().getElementById(".C3.9Cbersetzungen").remove();
+        doc.body().select("#Vorlage_Uberarbeiten").remove();
         //doc.getElementById("Vorlage_Erweitern").remove();
         //doc.body().select("div#Vorlage_Erweitern").remove();
 
@@ -90,7 +91,7 @@ public class WiktionaryHelper {
     }
 
     public static String makeUrl(String searchTerm) {
-        searchTerm = StringCleaner.cleanString(searchTerm);
+        searchTerm = WordHelper.cleanString(searchTerm);
 
 //        Improves capitalisation
         int countBlankSpaces = 0;
