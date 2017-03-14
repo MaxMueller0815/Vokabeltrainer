@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class MyDatabase extends SQLiteAssetHelper {
 
     private static final String DATABASE_NAME = "vocabDB.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     private SQLiteDatabase db;
     private SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
@@ -108,7 +108,7 @@ public class MyDatabase extends SQLiteAssetHelper {
             while (!c.isAfterLast()) {
                 try {
                     translations = getTranslations(c.getInt(0));
-                    vocabList.add(new Vocab(c.getInt(0), c.getString(2), translations, c.getInt(3), c.getInt(4), c.getString(5), c.getString(6), c.getInt(7), c.getInt(8)));
+                    vocabList.add(new Vocab(c.getInt(0), c.getString(1), translations, c.getInt(2), c.getInt(3), c.getString(4), c.getString(5), c.getInt(6), c.getInt(7)));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
