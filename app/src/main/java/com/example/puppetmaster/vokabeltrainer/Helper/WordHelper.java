@@ -12,28 +12,33 @@ public class WordHelper {
     }
 
     public static boolean isNoun(String term) {
-        String article = "";
-        boolean isNoun = false;
-        try {
-            article = term.substring(term.indexOf("(")+1,term.indexOf(","));
-            if (article.equals("der") || article.equals("die") || article.equals("das")) {
-                isNoun = true;
-            }
-            } catch (Exception e) {}
-        return isNoun;
+        return getArticle(term) != null;
+    }
+
+    public static boolean isArticle(String term) {
+        if (term.equals("der") || term.equals("die") || term.equals("das")) {
+            return true;
+        }
+
+        return false;
     }
 
     public static String getArticle(String term) {
-        String word = term.replaceAll(" \\(.*\\)", "");
-        String[] parts = term.split("[\\(\\)]");
-        String[] declinationInfo = new String[2];
-        for (String part : parts) {
-            declinationInfo = part.split(",");
+
+        int idx = term.indexOf('(');
+        if (idx == -1) {
+            return null;
         }
-        String article = declinationInfo[0].trim();
-        if (article == null) {
-            article = declinationInfo[0];
+
+        return term.substring(idx + 1, idx + 4);
+    }
+
+    public static String getNoun(String term) {
+
+        if (!isNoun(term)) {
+            return null;
         }
-        return article;
+
+        return term.substring(0 , term.indexOf('(') - 1);
     }
 }
