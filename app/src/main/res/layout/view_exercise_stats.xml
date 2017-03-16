@@ -12,6 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_toLeftOf="@+id/tv_exercise_progress"
-        android:background="@color/colorAccent3" />
+        android:background="@color/md_blue_grey_800" />
 
 </RelativeLayout>
