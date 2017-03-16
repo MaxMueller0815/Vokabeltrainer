@@ -14,21 +14,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@mipmap/motivation"
-        android:backgroundTint="@color/colorAccent"
-        android:backgroundTintMode="multiply"
+        android:background="@color/colorAccent"
         android:elevation="4dp">
 
         <ImageView
             android:id="@+id/iv_solution"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:layout_weight="1"
             android:elevation="4dp"
             android:padding="100dp"
             android:scaleType="centerCrop"
             android:visibility="visible"
-            app:srcCompat="@drawable/smiley_cool" />
+            app:srcCompat="@drawable/smiley_1" />
 
     </RelativeLayout>
 
@@ -62,16 +62,12 @@
 
             <Button
                 android:id="@+id/btn_continue"
-                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_marginLeft="64dp"
                 android:layout_marginRight="64dp"
                 android:layout_marginTop="32dp"
-                android:text="Continue"
-                android:textColor="@color/colorWhite" />
-
+                android:text="Continue" />
         </LinearLayout>
     </RelativeLayout>
 

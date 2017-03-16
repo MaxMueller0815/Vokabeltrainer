@@ -28,8 +28,10 @@
                 android:id="@+id/iv_solution"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/smiley_happy" />
+                app:srcCompat="@drawable/correct" />
         </RelativeLayout>
 
 
@@ -41,7 +43,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="16dp">
 
                 <TextView
                     android:id="@+id/tv_best_solution"
@@ -50,7 +53,7 @@
                     android:layout_marginTop="48dp"
                     android:gravity="center_horizontal"
                     android:text="TextView"
-                    android:textSize="18sp"
+                    android:textSize="24sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -59,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:text="TextView"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tv_user_answer"

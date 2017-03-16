@@ -43,22 +43,19 @@ public class ExerciseFinalScoreFragment extends Fragment {
         String description = "Du hast " + counterCorrect +  " von "  + listSize +  " Vokabeln richtig!";
 
         if(result >= 0.90){
-            ivSolution.setImageResource(R.drawable.smiley_cool);
+            ivSolution.setImageResource(R.drawable.smiley_1);
             title = "Super!";
-
         }else if(result < 0.90 && result >= 0.60){
-            ivSolution.setImageResource(R.drawable.smiley_happy);
+            ivSolution.setImageResource(R.drawable.smiley_2);
             title = "Glückwunsch!";
-        }
-        else if(result < 0.60 && result >= 0.20){
-            ivSolution.setImageResource(R.drawable.smiley_question);
+        } else if(result < 0.60 && result >= 0.20){
+            ivSolution.setImageResource(R.drawable.smiley_3);
             title = "Das geht besser!";
-        }
-        else if(result < 0.20 && result > 0.00){
-            ivSolution.setImageResource(R.drawable.smiley_sad);
+        } else if(result < 0.20 && result > 0.00){
+            ivSolution.setImageResource(R.drawable.smiley_4);
             title = "Schade!";
         }else {
-            ivSolution.setImageResource(R.drawable.smiley_sad);
+            ivSolution.setImageResource(R.drawable.smiley_5);
             title = "Schade!";
             description = "Du hast keine einzige Vokabel richtig!";
         }

@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -84,13 +86,10 @@ public class ExerciseSolutionFragment extends Fragment {
         TextView tvUserAnswer = (TextView) view.findViewById(R.id.tv_user_answer);
         ivIndicator = (ImageView) view.findViewById(R.id.iv_solution);
         if (isCorrect) {
-            ivIndicator.setImageResource(R.drawable.smiley_happy);
+            ivIndicator.setImageResource(R.drawable.correct);
             tvUserAnswer.setVisibility(View.GONE);
-            /*if (!alternativeSolution.equals("")) {
-
-            }*/
         } else {
-            ivIndicator.setImageResource(R.drawable.smiley_question);
+            ivIndicator.setImageResource(R.drawable.error);
             tvUserAnswer.setText("Your answer: " + userAnswer);
         }
 
@@ -140,8 +139,9 @@ public class ExerciseSolutionFragment extends Fragment {
     }
     private void playTTS() {
         String phrase = currentVocab.getGerman().get(0);
+
         if (WordHelper.isNoun(phrase)) {
-            phrase = WordHelper.getArticle(phrase) + " " + WordHelper.cleanString(phrase);
+            phrase = WordHelper.getArticle(phrase) + " " + WordHelper.getNoun(phrase);
         } else {
             phrase = WordHelper.cleanString(phrase);
         }
@@ -153,7 +153,7 @@ public class ExerciseSolutionFragment extends Fragment {
                 if (status != TextToSpeech.ERROR) {
                     tts.setLanguage(Locale.GERMANY);
                     //tts.setPitch((float) 0.5);
-                    tts.setSpeechRate((float) 0.9);
+                    tts.setSpeechRate((float) 1);
                     String utteranceId = this.hashCode() + "";
                     tts.speak(finalPhrase, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
                 }
