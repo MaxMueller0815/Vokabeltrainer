@@ -3,6 +3,10 @@ package com.example.puppetmaster.vokabeltrainer.Helper;
 import android.util.Log;
 
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 /**
  * Created by Benedikt on 10.03.17.
@@ -10,7 +14,6 @@ import org.jsoup.nodes.Document;
 
 public class WiktionaryHelper {
     private Document doc;
-    private String searchTerm;
 
     public WiktionaryHelper(Document doc) {
         this.doc = doc;
@@ -22,68 +25,28 @@ public class WiktionaryHelper {
         doc.head().appendElement("link").attr("rel", "stylesheet").attr("type", "text/css").attr("href", cssFileName+".css");
         return doc;
     }
-//    TODO: Funktioniert nicht so ganz
+
     public void removeUnneededSegments() {
+        doc.select("script, link, meta").remove();
         doc.getElementsByTag("script").remove();
-        doc.body().getElementsByClass("thumb").remove();
-        doc.body().getElementsByClass("header-container").remove();
-        doc.body().getElementsByClass("pre-content").remove();
-        doc.body().getElementsByClass("section-heading").remove();
-        doc.body().getElementsByClass("edit-page").remove();
-        doc.body().getElementsByClass("NavFrame").remove();
-        doc.body().getElementsByClass("references").remove();
-        doc.body().getElementsByClass("toc-mobile").remove();
-        doc.body().getElementsByClass("printfooter").remove();
-        doc.body().getElementsByClass("noprint").remove();
-        doc.body().getElementById(".C3.9Cbersetzungen").remove();
-        doc.body().select("#Vorlage_Uberarbeiten").remove();
-        //doc.getElementById("Vorlage_Erweitern").remove();
-        //doc.body().select("div#Vorlage_Erweitern").remove();
+        ArrayList<Element> segments = new ArrayList<>();
+        Element firstSegment = doc.select(".mf-section-1").first();
+        firstSegment.select(".mw-ui-icon").remove();
+        firstSegment.select("[title=Phonetik]+dl  > dd:gt(0)").remove();
+        segments.add(firstSegment.select("h3").first());
+        segments.add(firstSegment.select(".wikitable").first());
 
-        doc.body().select("[title=Akronyme und Kürzel] + dl").remove();
-        doc.body().select("[title=Akronyme und Kürzel]").remove();
+        String[] relevantSegments = {"Trennungsmöglichkeiten am Zeilenumbruch", "Phonetik", "Sinn und Bezeichnetes (Semantik)", "Verwendungsbeispielsätze"};
 
-        doc.body().select("[title=Etymologie und Morphologie] + dl").remove();
-        doc.body().select("[title=Etymologie und Morphologie]").remove();
+        for (String relevantSegment : relevantSegments) {
+            segments.add(firstSegment.select("[title=" + relevantSegment+ "]").first());
+            segments.add(firstSegment.select("[title=" + relevantSegment+ "] + dl").first());
+        }
 
-        doc.body().select("[title=bedeutungsgleich gebrauchte Wörter] + dl").remove();
-        doc.body().select("[title=bedeutungsgleich gebrauchte Wörter]").remove();
-
-        doc.body().select("[title=Sinnverwandte Wörter] + dl").remove();
-        doc.body().select("[title=Sinnverwandte Wörter]").remove();
-
-        doc.body().select("[title=Antonyme] + dl").remove();
-        doc.body().select("[title=Antonyme]").remove();
-
-        doc.body().select("[title=Hyperonyme] + dl").remove();
-        doc.body().select("[title=Hyperonyme]").remove();
-
-        doc.body().select("[title=Hyponyme] + dl").remove();
-        doc.body().select("[title=Hyponyme]").remove();
-
-        doc.body().select("[title=Derivate, Komposita und Konversionen] + dl").remove();
-        doc.body().select("[title=Derivate, Komposita und Konversionen]").remove();
-
-        doc.body().select("[title=Referenzen und weiterführende Informationen] + dl + p").remove();
-        doc.body().select("[title=Referenzen und weiterführende Informationen] + dl").remove();
-        doc.body().select("[title=Referenzen und weiterführende Informationen]").remove();
-
-        doc.body().select("[title=Ähnlich geschriebene oder gleich klingende Wörter] + dl").remove();
-        doc.body().select("[title=Ähnlich geschriebene oder gleich klingende Wörter]").remove();
-
-        doc.body().select("[title=Ähnliche Wörter (Deutsch)] + dl").remove();
-        doc.body().select("[title=Ähnliche Wörter (Deutsch)]").remove();
-
-        doc.body().select("[title=Das Gesuchte nicht gefunden? Ähnliche Wörter aus allen Sprachen] + dl").remove();
-        doc.body().select("[title=Das Gesuchte nicht gefunden? Ähnliche Wörter aus allen Sprachen]").remove();
-
-        doc.body().select("[title=Ähnlich geschriebene oder gleich klingende Wörter] + dl").remove();
-        doc.body().select("[title=Ähnlich geschriebene oder gleich klingende Wörter]").remove();
-
-        doc.body().select("[title=Signifikante Kollokationen] + dl").remove();
-        doc.body().select("[title=Signifikante Kollokationen]").remove();
-
-        doc.body().select("footer").remove();
+        doc.body().select("body>div").remove();
+        for (Element segment : segments) {
+            doc.body().appendChild(segment);
+        }
     }
 
     public String toString() {
@@ -111,6 +74,8 @@ public class WiktionaryHelper {
         Log.i("Trying to connect to", url + "(encoding by jSoup in next step)");
         return url;
     }
+
+
 
     /*private void playWikiSoundFile() {
         Element urlLink = doc.select("[href$=.ogg]").first();
