@@ -6,8 +6,6 @@
     tools:context="com.example.puppetmaster.vokabeltrainer.Fragments.ExerciseInputFragment"
     android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_exercise_input"
         android:layout_width="wrap_content"

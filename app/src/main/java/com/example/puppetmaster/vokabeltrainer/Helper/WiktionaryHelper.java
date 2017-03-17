@@ -28,7 +28,6 @@ public class WiktionaryHelper {
 
     public void removeUnneededSegments() {
         doc.select("script, link, meta").remove();
-        doc.getElementsByTag("script").remove();
         ArrayList<Element> segments = new ArrayList<>();
         Element firstSegment = doc.select(".mf-section-1").first();
         firstSegment.select(".mw-ui-icon").remove();

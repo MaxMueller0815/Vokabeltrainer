@@ -145,10 +145,6 @@ public class MyDatabase extends SQLiteAssetHelper {
         return translations;
     }
 
-    /*
-    * TODO die einzelne Vokabel in der Datenbank updaten
-    *
-    * */
     public void updateSingleVocab(Vocab updatedVocab) {
         db = this.getWritableDatabase();
         String whereClause = "id=" + updatedVocab.getId();

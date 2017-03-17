@@ -1,8 +1,10 @@
 package com.example.puppetmaster.vokabeltrainer.Activities;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -88,6 +90,42 @@ public class ExerciseActivity extends AppCompatActivity {
 
     public ArrayList<Vocab> getAllVocab() {
         return allVocab;
+    }
+
+    @Override
+    public void onBackPressed() {
+        showAlertDialogExit();
+    }
+
+    private void showAlertDialogExit() {
+        // Setup View for AlertDialog
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        // Dialog cancelable with back key
+        alertDialogBuilder.setCancelable(true);
+
+        // Setup title and message of alertDialog
+        alertDialogBuilder.setIcon(R.drawable.ic_exit);
+        alertDialogBuilder.setTitle(R.string.exit_title);
+        alertDialogBuilder.setMessage(R.string.exit_message);
+
+        // Setup Buttons for dialog
+        alertDialogBuilder.setPositiveButton(R.string.exit_title, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton(R.string.language_negative_button, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
 

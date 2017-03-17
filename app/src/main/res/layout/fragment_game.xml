@@ -5,7 +5,6 @@
     tools:context="com.example.puppetmaster.vokabeltrainer.Fragments.GameFragment"
     android:padding="16dp">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

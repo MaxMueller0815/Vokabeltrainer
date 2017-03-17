@@ -72,7 +72,6 @@ public class ExerciseSolutionFragment extends Fragment {
         return view;
     }
 
-    //TODO: Offline-Modus behandeln
     private void searchWiktionary() {
         try {
             SiteFetcher sf = new SiteFetcher();
@@ -114,7 +113,6 @@ public class ExerciseSolutionFragment extends Fragment {
         });
     }
 
-    //TODO: Gehört das hier hin?
     private void compareSolution() {
         translations = currentVocab.getGerman();
         userAnswer = WordHelper.cleanString(userAnswer.toLowerCase());
@@ -168,6 +166,7 @@ public class ExerciseSolutionFragment extends Fragment {
                 Document doc = Jsoup.connect(WiktionaryHelper.makeUrl(strings[0]))
                         .get();
                 WiktionaryHelper wikiHelper = new WiktionaryHelper(doc);
+                Log.i("wiki", wikiHelper.toString());
                 return wikiHelper;
             } catch (Exception e) {
                 System.out.print(e);
