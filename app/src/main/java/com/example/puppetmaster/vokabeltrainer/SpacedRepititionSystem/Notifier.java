@@ -15,12 +15,14 @@ import java.util.Calendar;
 
 public class Notifier {
 
+    private static int [] timeRange = {0,0};
+
     private Intent alarmIntent;
     private PendingIntent pendingIntent;
     private AlarmManager manager;
     private SharedPreferences prefs;
 
-    public void Notifier(Context context){
+    public Notifier(Context context){
 
         this.prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
