@@ -37,7 +37,6 @@ public class SpacedRepititionSystem {
     public SpacedRepititionSystem(Context context){
         notifier = new Notifier(context);
         dbCommunicator = new SRSDataBaseCommunicator(context);
-        initCurrentRequestList();
     }
 
     /*

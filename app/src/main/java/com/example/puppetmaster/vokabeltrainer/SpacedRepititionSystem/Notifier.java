@@ -26,16 +26,6 @@ public class Notifier {
 
     private ArrayList<Calendar> timeblockList = new ArrayList<Calendar>();
 
-
-    /*
-    *   Konstruktor neu aufrufen, wenn in den Einstellungen etwas verändert wird,
-    *   sonst werden die neuen Zeitblöcke nicht gespeichert.
-    *
-    *
-    *   TODO: die ifabfrage rausnehmen, weil sonst der neue konstruktor bei neu gespeicherten
-    *   zeitblöcken ins leere läuft
-    *
-    * */
     public Notifier(Context context){
 
         this.prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -48,7 +38,7 @@ public class Notifier {
         int numberOfTimeBlocks = calculateNumberOfTimeBlocks();
         initTimeBlockArrayList(timeRange[0], numberOfTimeBlocks);
 
-        if (!prefs.getBoolean("firstTime", false)){
+    //    if (!prefs.getBoolean("firstTime", false)){
 
             this.alarmIntent = new Intent(context, AlarmReceiver.class);
             this.pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
@@ -63,7 +53,7 @@ public class Notifier {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean("firstTime", true);
             editor.apply();
-        }
+     //   }
 
     }
 
