@@ -25,11 +25,12 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Activities.UnitsActivity"
-            android:label="@string/title_activity_units" />
+            android:label="@string/title_activity_units"
+            android:parentActivityName=".Activities.StartScreen"/>
         <activity android:name=".Activities.SRSTesterActivity" />
         <activity
             android:name=".Activities.SettingsActivity"
-            android:label="@string/title_activity_settings"
+            android:label="@string/action_settings"
             android:parentActivityName=".Activities.StartScreen">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
