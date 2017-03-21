@@ -1,11 +1,16 @@
 package com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.SRSDataBaseCommunicator;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -29,14 +34,30 @@ public class SpacedRepititionSystem {
     private Notifier notifier;
     private SRSDataBaseCommunicator dbCommunicator;
 
+    private SharedPreferences prefs;
+
     private ArrayList<Vocab> currentRequestList = new ArrayList<Vocab>();
     private Vocab currentVocab;
 
     private int currentRequestListLength = 5;
+    private int newVocabRequestedToday = 0;
+    private int newVocabToRequestOnOneDay = 15;
 
     public SpacedRepititionSystem(Context context){
         notifier = new Notifier(context);
         dbCommunicator = new SRSDataBaseCommunicator(context);
+
+        this.prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+        if(prefs.getInt("lastTrainingDay", 0) == getDateAsInt()){
+            newVocabRequestedToday = prefs.getInt("newVocabThisDay", 0);
+        }else{
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt("lastTrainingDay", getDateAsInt());
+            editor.apply();
+
+            newVocabRequestedToday = 0;
+        }
     }
 
     /*
@@ -53,7 +74,16 @@ public class SpacedRepititionSystem {
         currentVocab = currentRequestList.get(0);
         currentRequestList.remove(0);
 
-        return currentVocab;
+        if (currentVocab.isNewVocab()) {
+            if(newVocabRequestedToday >= newVocabToRequestOnOneDay){
+                return getVocabRequest();
+            }else{
+                newVocabRequestedToday += 1;
+                return currentVocab;
+            }
+        }else{
+            return currentVocab;
+        }
     }
 /*
 *       generates a list of vocab to request with the declared size
@@ -91,6 +121,8 @@ public class SpacedRepititionSystem {
 
     /*
     *   manage the srs level of the requested vocab depending on the answer
+    *   save the number of new vocab requested on the day
+    *   set date of last handled answer on the actual day
     * */
 
     public void handleAnswer(int language, Vocab vocab, String answer){
@@ -104,6 +136,11 @@ public class SpacedRepititionSystem {
 
         vocab.setLastRevision();
         dbCommunicator.updateVocab(vocab);
+
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("lastTrainingDay", getDateAsInt());
+        editor.putInt("newVocabThisDay", newVocabRequestedToday);
+        editor.apply();
 
     }
 
@@ -137,6 +174,11 @@ public class SpacedRepititionSystem {
             dbCommunicator.updateVocab(currentVocab);
 
         }
+    }
+
+    public int getDateAsInt() {
+        DateFormat formatter = new SimpleDateFormat("ddMMyyyy");
+        return Integer.parseInt(formatter.format(new Date()));
     }
 
 }
