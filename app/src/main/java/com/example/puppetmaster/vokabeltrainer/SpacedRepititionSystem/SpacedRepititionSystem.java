@@ -70,20 +70,22 @@ public class SpacedRepititionSystem {
 
         if (currentRequestList.size() == 0) {
             initCurrentRequestList();
-        }
+            System.out.println("request list ist leer.....");
+            return getVocabRequest();
+        }else{
+            currentVocab = currentRequestList.get(0);
+            currentRequestList.remove(0);
 
-        currentVocab = currentRequestList.get(0);
-        currentRequestList.remove(0);
-
-        if (currentVocab.isNewVocab()) {
-            if (newVocabRequestedToday >= newVocabToRequestOnOneDay) {
-                return getVocabRequest();
+            if (currentVocab.isNewVocab()) {
+                if (newVocabRequestedToday >= newVocabToRequestOnOneDay) {
+                    return getVocabRequest();
+                } else {
+                    newVocabRequestedToday += 1;
+                    return currentVocab;
+                }
             } else {
-                newVocabRequestedToday += 1;
                 return currentVocab;
             }
-        } else {
-            return currentVocab;
         }
     }
 
@@ -119,6 +121,8 @@ public class SpacedRepititionSystem {
                 currentRequestList.add(vocabToAdd);
             }
         }
+
+        System.out.println("requestlist initialisiert:  " + currentRequestList.toString());
     }
 
     /*
