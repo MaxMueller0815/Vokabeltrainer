@@ -1,0 +1,37 @@
+* {
+    color: #263238;
+}
+
+body {
+    background-color: #F4F9FD;
+}
+
+a {
+    text-decoration: none;
+}
+
+dd, dl, ol {
+    margin-left: 0px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.75em;
+}
+
+td, th {
+    border-bottom: 1px solid #B0BEC5;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: left;
+}
+
+th {
+    font-weight: bold;
+}
+
+p {
+    margin-top: 3em;
+}
+

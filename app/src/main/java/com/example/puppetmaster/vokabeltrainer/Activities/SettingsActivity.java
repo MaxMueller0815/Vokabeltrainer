@@ -1,4 +1,4 @@
-package com.example.puppetmaster.vokabeltrainer;
+package com.example.puppetmaster.vokabeltrainer.Activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,9 +8,12 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 
 import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
+import com.example.puppetmaster.vokabeltrainer.R;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +25,10 @@ public class SettingsActivity extends AppCompatActivity {
     private String strEnd;
     private EditText etWorkload;
     private int workload;
+    Switch switchArticle;
+    Switch switchCapitalisation;
+    private int inputRequiresArticle;
+    private int inputRequiresCapitalisation;
 
 
     @Override
@@ -36,8 +43,8 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 saveSettings();
-                Snackbar.make(view, "Settings have been saved", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "Settings have been saved", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
             }
         });
 
@@ -50,8 +57,12 @@ public class SettingsActivity extends AppCompatActivity {
         workload = (int) settings.get(0);
         strStart = settings.get(1).toString();
         strEnd = settings.get(2).toString();
+        inputRequiresArticle = (int) settings.get(3);
+        inputRequiresCapitalisation = (int) settings.get(4);
         initSpinner();
         initWorkload();
+        initInputMode();
+
     }
 
     private void initWorkload() {
@@ -87,15 +98,31 @@ public class SettingsActivity extends AppCompatActivity {
         setSpinnerValue(spinnerEnd, strEnd);
     }
 
+    private void initInputMode() {
+        switchArticle = (Switch) findViewById(R.id.switch_article);
+        switchCapitalisation = (Switch) findViewById(R.id.switch_case_sensitive);
+
+        if (inputRequiresArticle == 1) {
+            switchArticle.setChecked(true);
+        } else {
+            switchArticle.setChecked(false);
+        }
+
+        if (inputRequiresCapitalisation == 1) {
+            switchCapitalisation.setChecked(true);
+        } else {
+            switchCapitalisation.setChecked(false);
+        }
+    }
+
     private void saveSettings() {
         workload = Integer.parseInt(etWorkload.getText().toString());
         strStart = spinnerStart.getSelectedItem().toString();
         strEnd = spinnerEnd.getSelectedItem().toString();
-        db.saveSettings(workload, strStart, strEnd);
+        db.saveSettings(workload, strStart, strEnd, switchArticle.isChecked(), switchCapitalisation.isChecked());
         }
 
-    private void setSpinnerValue(Spinner spinner, String myString)
-    {
+    private void setSpinnerValue(Spinner spinner, String myString) {
         int index = 0;
         for(int i = 0; i < spinner.getCount(); i++){
             if(spinner.getItemAtPosition(i).toString().equals(myString)){
@@ -103,5 +130,11 @@ public class SettingsActivity extends AppCompatActivity {
                 break;
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        saveSettings();
+        finish();
     }
 }

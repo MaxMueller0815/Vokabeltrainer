@@ -6,7 +6,6 @@ import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.SRSDataBase
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -36,7 +35,7 @@ public class SpacedRepititionSystem {
     private int currentRequestListLength = 5;
 
     public SpacedRepititionSystem(Context context){
-        notifier = new Notifier();
+        notifier = new Notifier(context);
         dbCommunicator = new SRSDataBaseCommunicator(context);
         initCurrentRequestList();
     }

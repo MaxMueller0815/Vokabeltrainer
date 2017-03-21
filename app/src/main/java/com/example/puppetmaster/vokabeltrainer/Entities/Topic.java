@@ -1,7 +1,6 @@
-package com.example.puppetmaster.vokabeltrainer;
+package com.example.puppetmaster.vokabeltrainer.Entities;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import com.example.puppetmaster.vokabeltrainer.R;
 
 import java.util.ArrayList;
 

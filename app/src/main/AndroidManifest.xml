@@ -2,13 +2,25 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.puppetmaster.vokabeltrainer">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
+
+        <receiver android:name=".SpacedRepititionSystem.DeviceBootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".SpacedRepititionSystem.AlarmReceiver" />
+
         <activity
-            android:name=".StartScreen"
+            android:name=".Activities.StartScreen"
             android:theme="@style/AppTheme.NoActionBar">
             >
             <intent-filter>
@@ -18,23 +30,28 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LearnActivity"
+            android:name=".Activities.LearnActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize"
-            />
+            android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".UnitsActivity"
-            android:label="@string/title_activity_units" />
-        <activity android:name=".SRSTesterActivity" />
+            android:name=".Activities.UnitsActivity"
+            android:label="@string/title_activity_units"
+            android:parentActivityName=".Activities.StartScreen"/>
+        <activity android:name=".Activities.SRSTesterActivity" />
         <activity
-            android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName=".StartScreen">
+            android:name=".Activities.SettingsActivity"
+            android:label="@string/action_settings"
+            android:parentActivityName=".Activities.StartScreen">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.puppetmaster.vokabeltrainer.StartScreen" />
+                android:value="com.example.puppetmaster.vokabeltrainer.Activities.StartScreen" />
         </activity>
-        <activity android:name=".AllVocabsActivity"></activity>
+        <activity
+            android:name=".Activities.AllVocabsActivity"
+            android:parentActivityName=".Activities.StartScreen" />
+        <activity android:name=".Activities.ExerciseActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

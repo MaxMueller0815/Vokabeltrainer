@@ -6,33 +6,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.puppetmaster.vokabeltrainer.StartScreen"
+    tools:context="com.example.puppetmaster.vokabeltrainer.Activities.StartScreen"
     android:padding="0dp">
-
-    <android.support.v7.widget.Toolbar
+    <ImageView
+        android:id="@+id/iv_loading"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:theme="?attr/actionBarTheme"
-        android:minHeight="?attr/actionBarSize"
-        android:id="@+id/toolbar_start"
-        app:title="@string/app_name"
-        android:elevation="4dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:paddingRight="8dp" />
-
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        app:srcCompat="@mipmap/motivation" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/colorWhite"
+        android:visibility="invisible"
         app:itemIconTint="@drawable/nav_item_color_state"
         app:itemTextColor="@drawable/nav_item_color_state"
-        app:menu="@menu/bottom_navigation"
-        android:background="@color/colorWhite"
+        app:menu="@menu/bottom_navigation" />
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_start"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:minHeight="?attr/actionBarSize"
+        android:paddingRight="8dp"
+        android:theme="?attr/actionBarTheme"
+        android:visibility="invisible"
+        app:title="@string/app_name" />
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -43,5 +51,6 @@
         android:layout_above="@+id/bottom_navigation"
         android:layout_below="@+id/toolbar_start">
     </RelativeLayout>
+
 
 </RelativeLayout>

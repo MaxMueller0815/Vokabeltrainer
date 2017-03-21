@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LearnActivity">
+    tools:context=".Activities.LearnActivity">
 
 
     <LinearLayout
@@ -27,7 +27,8 @@
                 android:background="@color/colorAccent2"
                 android:gravity="center"
                 android:textColor="@color/colorWhite"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                tools:text="Solution" />
 
             <TextView
                 android:id="@+id/vocab_knowing_language_text_view"
@@ -35,11 +36,12 @@
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
                 android:background="@color/colorAccent3"
+                android:elevation="3dp"
                 android:gravity="center"
                 android:text="@string/vocab_knowing_language"
                 android:textColor="@color/colorWhite"
                 android:textSize="30sp"
-                android:elevation="3dp" />
+                android:visibility="invisible" />
 
         </RelativeLayout>
 

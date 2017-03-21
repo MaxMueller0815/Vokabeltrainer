@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingTop="0dp"
 
-    tools:context="com.example.puppetmaster.vokabeltrainer.UnitsActivity"
+    tools:context="com.example.puppetmaster.vokabeltrainer.Activities.UnitsActivity"
     android:paddingEnd="0dp"
     android:orientation="vertical">
 

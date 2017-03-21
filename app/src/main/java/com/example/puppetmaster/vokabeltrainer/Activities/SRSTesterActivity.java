@@ -1,4 +1,4 @@
-package com.example.puppetmaster.vokabeltrainer;
+package com.example.puppetmaster.vokabeltrainer.Activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
+import com.example.puppetmaster.vokabeltrainer.R;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.SpacedRepititionSystem;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 

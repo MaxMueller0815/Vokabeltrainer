@@ -7,21 +7,20 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
+import com.example.puppetmaster.vokabeltrainer.Entities.Topic;
+import com.example.puppetmaster.vokabeltrainer.Entities.Unit;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
-import com.example.puppetmaster.vokabeltrainer.Topic;
-import com.example.puppetmaster.vokabeltrainer.Unit;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 public class MyDatabase extends SQLiteAssetHelper {
 
     private static final String DATABASE_NAME = "vocabDB.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 4;
     private SQLiteDatabase db;
     private SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
@@ -109,7 +108,7 @@ public class MyDatabase extends SQLiteAssetHelper {
             while (!c.isAfterLast()) {
                 try {
                     translations = getTranslations(c.getInt(0));
-                    vocabList.add(new Vocab(c.getInt(0), c.getString(2), translations, c.getInt(3), c.getInt(4), c.getString(5), c.getString(6), c.getInt(7), c.getInt(8)));
+                    vocabList.add(new Vocab(c.getInt(0), c.getString(1), translations, c.getInt(2), c.getInt(3), c.getString(4), c.getString(5), c.getInt(6), c.getInt(7)));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -146,10 +145,6 @@ public class MyDatabase extends SQLiteAssetHelper {
         return translations;
     }
 
-    /*
-    * TODO die einzelne Vokabel in der Datenbank updaten
-    *
-    * */
     public void updateSingleVocab(Vocab updatedVocab) {
         db = this.getWritableDatabase();
         String whereClause = "id=" + updatedVocab.getId();
@@ -158,9 +153,13 @@ public class MyDatabase extends SQLiteAssetHelper {
         contentValues.put("countCorrect", updatedVocab.getCountCorrect());
         contentValues.put("countFalse", updatedVocab.getCountFalse());
         // TODO Date ins richtige Format bringen
+
+        // glaub es ist falsch das hier aufzurufen, da die daten dann bei jedem speichervorgang neu gesetzt werden?
+        // besser in checkanswer methode von SpacedRepititionSystem?
         updatedVocab.setLastRevision();
         updatedVocab.setNextRevision();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+
         String lastRevision = dateFormat.format(updatedVocab.getLastRevision());
         String nextRevision = dateFormat.format(updatedVocab.getNextRevision());
         contentValues.put("lastRevision", lastRevision);
@@ -204,7 +203,7 @@ public class MyDatabase extends SQLiteAssetHelper {
     public ArrayList<Object> getSettings() {
         ArrayList<Object> settings = new ArrayList<Object>();
         db = getReadableDatabase();
-        String[] sqlSelect = {"workload, exerciseStart, exerciseEnd"};
+        String[] sqlSelect = {"workload, exerciseStart, exerciseEnd, inputRequiresArticle, inputRequiresCapitalisation"};
         String sqlTables = "userPreferences";
 
         qb.setTables(sqlTables);
@@ -217,6 +216,8 @@ public class MyDatabase extends SQLiteAssetHelper {
             settings.add(c.getInt(0));
             settings.add(c.getString(1));
             settings.add(c.getString(2));
+            settings.add(c.getInt(3));
+            settings.add(c.getInt(4));
         } finally {
             c.close();
         }
@@ -244,13 +245,65 @@ public class MyDatabase extends SQLiteAssetHelper {
     }
 
     // TODO Set Workload
-    public void saveSettings(int workload, String strStart, String strEnd) {
+    public void saveSettings(int workload, String strStart, String strEnd, boolean withArticle, boolean caseSensitive) {
         db = this.getWritableDatabase();
         String whereClause = "ROWID=1";
         ContentValues contentValues = new ContentValues();
         contentValues.put("workload", workload);
         contentValues.put("exerciseStart", strStart);
         contentValues.put("exerciseEnd", strEnd);
+        int inputRequiresArticle;
+        if (withArticle) {
+            inputRequiresArticle = 1;
+        } else {
+            inputRequiresArticle = 0;
+        }
+        contentValues.put("inputRequiresArticle", inputRequiresArticle);
+
+        int inputRequiresCapitalisation;
+        if (caseSensitive) {
+            inputRequiresCapitalisation = 1;
+        } else {
+            inputRequiresCapitalisation = 0;
+        }
+        contentValues.put("inputRequiresCapitalisation", inputRequiresCapitalisation);
+
         db.update("userPreferences", contentValues, whereClause, null);
+        db.close();
+    }
+
+    public boolean[] getInputMode() {
+        boolean[] inputMode = new boolean[2];
+        boolean withArticle;
+        boolean caseSensitve;
+
+        db = getReadableDatabase();
+        String[] sqlSelect = {"inputRequiresArticle, inputRequiresCapitalisation"};
+        String sqlTables = "userPreferences";
+
+        qb.setTables(sqlTables);
+        Cursor c = qb.query(db, sqlSelect, null, null,
+                null, null, null);
+
+
+        try {
+            c.moveToFirst();
+            if (c.getInt(0) == 0) {
+                withArticle = false;
+            } else {
+                withArticle = true;
+            };
+
+            if (c.getInt(1) == 0) {
+                caseSensitve = false;
+            } else {
+                caseSensitve = true;
+            }
+        } finally {
+            c.close();
+        }
+        inputMode[0] = withArticle;
+        inputMode[1] = caseSensitve;
+        return inputMode;
     }
 }

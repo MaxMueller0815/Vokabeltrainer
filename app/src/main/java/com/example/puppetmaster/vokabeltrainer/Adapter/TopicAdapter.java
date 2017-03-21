@@ -10,9 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.puppetmaster.vokabeltrainer.Activities.UnitsActivity;
+import com.example.puppetmaster.vokabeltrainer.Entities.Topic;
 import com.example.puppetmaster.vokabeltrainer.R;
-import com.example.puppetmaster.vokabeltrainer.Topic;
-import com.example.puppetmaster.vokabeltrainer.UnitsActivity;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -62,7 +62,6 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
 
         return new TopicViewHolder(itemView);
     }
-
 
 
     public static class TopicViewHolder extends RecyclerView.ViewHolder {

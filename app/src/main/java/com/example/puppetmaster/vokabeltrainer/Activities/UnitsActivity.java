@@ -1,4 +1,4 @@
-package com.example.puppetmaster.vokabeltrainer;
+package com.example.puppetmaster.vokabeltrainer.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,9 +12,11 @@ import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener;
 import com.azoft.carousellayoutmanager.CenterScrollListener;
 import com.example.puppetmaster.vokabeltrainer.Adapter.UnitAdapter;
 import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
+import com.example.puppetmaster.vokabeltrainer.Entities.Topic;
+import com.example.puppetmaster.vokabeltrainer.Entities.Unit;
+import com.example.puppetmaster.vokabeltrainer.R;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 import com.google.gson.Gson;
-import com.google.gson.annotations.Until;
 
 import java.util.ArrayList;
 
@@ -22,7 +24,6 @@ public class UnitsActivity extends AppCompatActivity {
     private Topic topic;
     ArrayList<Unit> listOfUnits;
     private CarouselLayoutManager layoutManager;
-    private int scrollPosition = 0;
     private RecyclerView recyclerView;
 
     private int topicID;
@@ -47,22 +48,6 @@ public class UnitsActivity extends AppCompatActivity {
                 topicID = topic.getId();
                 listOfUnits = topic.getUnitsOfTopic();
             }
-
-            /*if (extras.containsKey("FINISHED_UNIT")) {
-                MyDatabase db = new MyDatabase(this);
-                listOfUnits = db.getTopics().get(topicID).getUnitsOfTopic();
-                int finishedUnitID = intent.getIntExtra("FINISHED_UNIT", -1);
-                int i = 0;
-                while (i < listOfUnits.size() - 1) {
-                    if (listOfUnits.get(i).getId() == finishedUnitID) {
-                        layoutManager.scrollToPosition(i);
-                        break;
-                    }
-                    i++;
-                }
-                calcStats();
-                initCarousel();
-            }*/
         }
     }
 
@@ -95,27 +80,8 @@ public class UnitsActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.addOnScrollListener(new CenterScrollListener());
         layoutManager.setPostLayoutListener(new CarouselZoomPostLayoutListener());
-        recyclerView.setAdapter(new UnitAdapter(listOfUnits));
+        recyclerView.setAdapter(new UnitAdapter(listOfUnits, topicID));
     }
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        MyDatabase db = new MyDatabase(this);
-//        listOfUnits = db.getTopics().get(topicID).getUnitsOfTopic();
-//
-//        int i = 0;
-//        while (i < listOfUnits.size() - 1) {
-//            if (listOfUnits.get(i).getId() == ) {
-//                layoutManager.scrollToPosition(i);
-//                break;
-//            }
-//            i++;
-//        }
-//        calcStats();
-//        initCarousel();
-//    }
-
 
     @Override
     protected void onRestart() {
@@ -123,16 +89,7 @@ public class UnitsActivity extends AppCompatActivity {
         MyDatabase db = new MyDatabase(this);
         Log.d("Topic", topicID + "");
         listOfUnits = db.getTopics().get(topicID - 1).getUnitsOfTopic();
-
-//        int i = 0;
-//        while (i < listOfUnits.size() - 1) {
-//            if (listOfUnits.get(i).getId() == 3) {
-//                layoutManager.scrollToPosition(i);
-//                break;
-//            }
-//            i++;
-//        }
         calcStats();
-        recyclerView.setAdapter(new UnitAdapter(listOfUnits));
+        recyclerView.setAdapter(new UnitAdapter(listOfUnits, topicID));
     }
 }
