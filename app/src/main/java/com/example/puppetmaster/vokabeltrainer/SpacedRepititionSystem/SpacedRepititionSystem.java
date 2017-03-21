@@ -59,6 +59,8 @@ public class SpacedRepititionSystem {
 
             newVocabRequestedToday = 0;
         }
+
+        initCurrentRequestList();
     }
 
     /*
@@ -71,21 +73,20 @@ public class SpacedRepititionSystem {
         if (currentRequestList.size() == 0) {
             initCurrentRequestList();
             System.out.println("request list ist leer.....");
-            return getVocabRequest();
-        }else{
-            currentVocab = currentRequestList.get(0);
-            currentRequestList.remove(0);
 
-            if (currentVocab.isNewVocab()) {
-                if (newVocabRequestedToday >= newVocabToRequestOnOneDay) {
-                    return getVocabRequest();
-                } else {
-                    newVocabRequestedToday += 1;
-                    return currentVocab;
-                }
+        }
+        currentVocab = currentRequestList.get(0);
+        currentRequestList.remove(0);
+
+        if (currentVocab.isNewVocab()) {
+            if (newVocabRequestedToday >= newVocabToRequestOnOneDay) {
+                return getVocabRequest();
             } else {
+                newVocabRequestedToday += 1;
                 return currentVocab;
             }
+        } else {
+            return currentVocab;
         }
     }
 
