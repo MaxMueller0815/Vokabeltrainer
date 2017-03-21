@@ -61,7 +61,7 @@
                 android:focusableInTouchMode="true"
                 android:gravity="center"
                 android:hint="Type solution…"
-                android:inputType="textPersonName" />
+                android:inputType="textNoSuggestions"/>
         </RelativeLayout>
 
     </LinearLayout>
