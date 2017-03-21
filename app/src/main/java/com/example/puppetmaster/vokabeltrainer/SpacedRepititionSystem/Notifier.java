@@ -82,18 +82,13 @@ public class Notifier {
 
     public static class PushProbabilityCalculator {
 
-        /*
-        *       Einstellungen einfügen
-        *
-        *       Optionen für die einzelnen Zeitblöcke
-        *       pushquote für annahme und abgabe von notifications
-        *       gewichtung für manuelle öffnung der app
-        *
-        * */
+        static double factorManual = 3.0;
 
-        public static double calculateProbabilityToPush(){
-            //TODO Formel einfügen
-            return 0.0;
+        public static double calculateProbabilityToPush(double accepted, double declined, double manual, double daytimefactor){
+
+            double result = daytimefactor * ((accepted + (manual*factorManual)) / (accepted + declined + (manual*factorManual)));
+
+            return result;
         }
 
     }
