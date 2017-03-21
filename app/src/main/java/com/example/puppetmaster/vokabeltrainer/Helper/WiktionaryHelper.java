@@ -44,7 +44,9 @@ public class WiktionaryHelper {
 
         doc.body().select("body>div").remove();
         for (Element segment : segments) {
-            doc.body().appendChild(segment);
+            if (segment != null) {
+                doc.body().appendChild(segment);
+            }
         }
     }
 
