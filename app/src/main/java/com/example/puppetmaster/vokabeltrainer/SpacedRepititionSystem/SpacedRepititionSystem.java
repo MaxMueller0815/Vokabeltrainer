@@ -70,6 +70,8 @@ public class SpacedRepititionSystem {
     * */
     public Vocab getVocabRequest() {
 
+        // TODO: async task einfügen, siehe startscreen
+
         if (currentRequestList.size() == 0) {
             initCurrentRequestList();
             System.out.println("request list ist leer.....");
