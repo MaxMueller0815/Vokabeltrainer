@@ -38,6 +38,13 @@ public class StartScreen extends AppCompatActivity {
     private static FragmentManager fragmentManager;
 
 
+    /*
+    *   Vorschlag: beim Appstart einmal die Settings aus der Datenbank laden und nochmal in die
+    *   SharedPreferences speichern, bei jedem Speichervorgang der Settings die Datenbank überschreiben
+    *   dadurch kann sichergestellt werden, dass die SharedPreferences beim Appgebrauch auf dem aktuellen Stand sind?
+    *
+    * */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

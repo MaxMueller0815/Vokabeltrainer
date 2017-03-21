@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.renderscript.Script;
 
 import java.util.Calendar;
 
@@ -15,16 +16,33 @@ import java.util.Calendar;
 
 public class Notifier {
 
-    private static int [] timeRange = {0,0};
+    private int [] timeRange = {0,0};
 
     private Intent alarmIntent;
     private PendingIntent pendingIntent;
     private AlarmManager manager;
     private SharedPreferences prefs;
 
+
+    /*
+    *   Konstruktor neu aufrufen, wenn in den Einstellungen etwas verändert wird,
+    *   sonst werden die neuen Zeitblöcke nicht gespeichert.
+    *
+    *
+    *   TODO: die ifabfrage rausnehmen, weil sonst der neue konstruktor bei neu gespeicherten
+    *   zeitblöcken ins leere läuft
+    *
+    * */
     public Notifier(Context context){
 
         this.prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+        // Notification Zeitpunkt Start
+        this.timeRange[0] = prefs.getInt("hourStart", 0);
+        // Notification Zeitpunkt Ende
+        this.timeRange[1] = prefs.getInt("hourEnd", 0);
+
+        int numberOfTimeBlocks = calculateNumberOfTimeBlocks();
 
         if (!prefs.getBoolean("firstTime", false)){
 
@@ -76,6 +94,13 @@ public class Notifier {
             editor.apply();
         }
 
+    }
+
+    // calculate the number of time blocks available in the defined time range
+    private int calculateNumberOfTimeBlocks(){
+        // divide the time range settings by 2 to get the number of available timeblocks with a range of 2hrs
+        double numberOfTimeBlocks = StrictMath.ceil(((double)timeRange[1] - (double)timeRange[0]) / 2.0);
+        return (int) numberOfTimeBlocks;
     }
 
     public static class PushProbabilityCalculator {

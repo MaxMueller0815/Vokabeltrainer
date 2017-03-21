@@ -1,6 +1,8 @@
 package com.example.puppetmaster.vokabeltrainer.Activities;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +32,8 @@ public class SettingsActivity extends AppCompatActivity {
     private int inputRequiresArticle;
     private int inputRequiresCapitalisation;
 
+    private SharedPreferences prefs;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +55,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
+    //TODO würde ich in die startscreen activity machen
     private void loadSettings() {
         // TODO Vermutlich ist es schöner wenn man die Uhrzeiten als Int speichert
         ArrayList<Object> settings = db.getSettings();
@@ -116,10 +121,29 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void saveSettings() {
+
+        this.prefs = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this);
+
+        System.out.println("####### ALTER WORKLOAD:  " + prefs.getInt("workload", 0));
+        System.out.println("####### ALTER HOURSTART:  " + prefs.getInt("hourStart", 0));
+        System.out.println("####### ALTER HOUREND:  " + prefs.getInt("hourEnd", 0));
+
         workload = Integer.parseInt(etWorkload.getText().toString());
         strStart = spinnerStart.getSelectedItem().toString();
         strEnd = spinnerEnd.getSelectedItem().toString();
         db.saveSettings(workload, strStart, strEnd, switchArticle.isChecked(), switchCapitalisation.isChecked());
+
+        // save to shared preferences
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("workload", workload);
+        editor.putInt("hourStart", Integer.parseInt(strStart.substring(0,2)));
+        editor.putInt("hourEnd", Integer.parseInt(strEnd.substring(0,2)));
+        editor.apply();
+
+        System.out.println("####### WORKLOAD:  " + prefs.getInt("workload", 0));
+        System.out.println("####### HOURSTART:  " + prefs.getInt("hourStart", 0));
+        System.out.println("####### HOUREND:  " + prefs.getInt("hourEnd", 0));
+
         }
 
     private void setSpinnerValue(Spinner spinner, String myString) {
