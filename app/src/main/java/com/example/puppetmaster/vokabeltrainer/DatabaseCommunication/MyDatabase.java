@@ -180,14 +180,14 @@ public class MyDatabase extends SQLiteAssetHelper {
         Cursor c = qb.query(db, sqlSelect, null, null,
                 null, null, null);
         ArrayList<Vocab> listOfAllVocab = new ArrayList<>();
-        ArrayList<String> translations = new ArrayList<String>();
+        ArrayList<String> translations = new ArrayList<>();
 
         try {
             c.moveToFirst();
             while (!c.isAfterLast()) {
                 try {
                     translations = getTranslations(c.getInt(0));
-                    listOfAllVocab.add(new Vocab(c.getInt(0), c.getString(1), translations, c.getInt(3), c.getInt(4), c.getString(5), c.getString(6), c.getInt(7), c.getInt(8)));
+                    listOfAllVocab.add(new Vocab(c.getInt(0), c.getString(1), translations, c.getInt(2), c.getInt(3), c.getString(4), c.getString(5), c.getInt(6), c.getInt(7)));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -214,8 +214,8 @@ public class MyDatabase extends SQLiteAssetHelper {
         try {
             c.moveToFirst();
             settings.add(c.getInt(0));
-            settings.add(c.getString(1));
-            settings.add(c.getString(2));
+            settings.add(c.getInt(1));
+            settings.add(c.getInt(2));
             settings.add(c.getInt(3));
             settings.add(c.getInt(4));
         } finally {
@@ -245,13 +245,13 @@ public class MyDatabase extends SQLiteAssetHelper {
     }
 
     // TODO Set Workload
-    public void saveSettings(int workload, String strStart, String strEnd, boolean withArticle, boolean caseSensitive) {
+    public void saveSettings(int workload, int start, int end, boolean withArticle, boolean caseSensitive) {
         db = this.getWritableDatabase();
         String whereClause = "ROWID=1";
         ContentValues contentValues = new ContentValues();
         contentValues.put("workload", workload);
-        contentValues.put("exerciseStart", strStart);
-        contentValues.put("exerciseEnd", strEnd);
+        contentValues.put("exerciseStart", start);
+        contentValues.put("exerciseEnd", end);
         int inputRequiresArticle;
         if (withArticle) {
             inputRequiresArticle = 1;

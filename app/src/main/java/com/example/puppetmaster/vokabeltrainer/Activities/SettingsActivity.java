@@ -80,19 +80,10 @@ public class SettingsActivity extends AppCompatActivity {
         spinnerEnd = (Spinner) findViewById(R.id.spinner_end);
         ArrayAdapter<String> adapter;
         List<String> list = new ArrayList<String>();
-        list.add("00:00");
-        list.add("02:00");
-        list.add("04:00");
-        list.add("06:00");
-        list.add("08:00");
-        list.add("10:00");
-        list.add("12:00");
-        list.add("14:00");
-        list.add("16:00");
-        list.add("18:00");
-        list.add("20:00");
-        list.add("22:00");
-        list.add("24:00");
+        int i;
+        for (i = 0; i <= 12; i = i + 2) {
+            list.add(String.format("%02d:00", i));
+        }
         adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, list);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -129,15 +120,16 @@ public class SettingsActivity extends AppCompatActivity {
         System.out.println("####### ALTER HOUREND:  " + prefs.getInt("hourEnd", 0));
 
         workload = Integer.parseInt(etWorkload.getText().toString());
-        strStart = spinnerStart.getSelectedItem().toString();
-        strEnd = spinnerEnd.getSelectedItem().toString();
-        db.saveSettings(workload, strStart, strEnd, switchArticle.isChecked(), switchCapitalisation.isChecked());
+        int start = Integer.parseInt(spinnerStart.getSelectedItem().toString().split(":")[0]);
+        int end = Integer.parseInt(spinnerEnd.getSelectedItem().toString().split(":")[0]);
+
+        db.saveSettings(workload, start, end, switchArticle.isChecked(), switchCapitalisation.isChecked());
 
         // save to shared preferences
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt("workload", workload);
-        editor.putInt("hourStart", Integer.parseInt(strStart.substring(0,2)));
-        editor.putInt("hourEnd", Integer.parseInt(strEnd.substring(0,2)));
+        editor.putInt("hourStart", start);
+        editor.putInt("hourEnd", end);
         editor.apply();
 
         System.out.println("####### WORKLOAD:  " + prefs.getInt("workload", 0));
