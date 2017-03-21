@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.renderscript.Script;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -22,6 +23,8 @@ public class Notifier {
     private PendingIntent pendingIntent;
     private AlarmManager manager;
     private SharedPreferences prefs;
+
+    private ArrayList<Calendar> timeblockList = new ArrayList<Calendar>();
 
 
     /*
@@ -43,6 +46,7 @@ public class Notifier {
         this.timeRange[1] = prefs.getInt("hourEnd", 0);
 
         int numberOfTimeBlocks = calculateNumberOfTimeBlocks();
+        initTimeBlockArrayList(timeRange[0], numberOfTimeBlocks);
 
         if (!prefs.getBoolean("firstTime", false)){
 
@@ -101,6 +105,11 @@ public class Notifier {
         // divide the time range settings by 2 to get the number of available timeblocks with a range of 2hrs
         double numberOfTimeBlocks = StrictMath.ceil(((double)timeRange[1] - (double)timeRange[0]) / 2.0);
         return (int) numberOfTimeBlocks;
+    }
+
+    private void initTimeBlockArrayList(int startTime, int numberOfTimeBlocks){
+        
+        System.out.println("Initializing time block array list....");
     }
 
     public static class PushProbabilityCalculator {
