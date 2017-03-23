@@ -37,6 +37,8 @@ public class SRSTesterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_srstester);
+        currentVocab = srs.getVocabRequest();
+
         showVocab();
 
         final Button updateBtn = (Button) findViewById(R.id.btn_update_vocab);
@@ -54,39 +56,74 @@ public class SRSTesterActivity extends AppCompatActivity {
     }
 
     private void showVocab() {
-        currentVocab = srs.getVocabRequest();
+
+        if (currentVocab == null) {
+
+            TextView tvId = (TextView) findViewById(R.id.tv_id);
+            tvId.setText("keine Vokabel vorhanden");
+
+            TextView tvEnglish = (TextView) findViewById(R.id.tv_english);
+            tvEnglish.setText("keine Vokabel vorhanden");
+
+            TextView tvGerman = (TextView) findViewById(R.id.tv_german);
+            tvGerman.setText("keine Vokabel vorhanden");
+
+            TextView tvLastRevision = (TextView) findViewById(R.id.tv_revision);
+            tvLastRevision.setText("keine Vokabel vorhanden");
+
+            etLevel = (EditText) findViewById(R.id.et_level);
+            etLevel.setText("keine Vokabel vorhanden");
+
+            lastRevision = new Date();
+            String strLastRevision = dateFormat.format(lastRevision);
+            etLastRevision = (EditText) findViewById(R.id.et_last_revision);
+            etLastRevision.setText(strLastRevision);
+
+            nextRevision = new Date();
+            String strNextRevision = dateFormat.format(nextRevision);
+            etNextRevision = (EditText) findViewById(R.id.et_next_revision);
+            etNextRevision.setText(strNextRevision);
+
+            etCountCorrect = (EditText) findViewById(R.id.et_correct);
+            etCountCorrect.setText("keine Vokabel vorhanden");
+
+            etCountFalse = (EditText) findViewById(R.id.et_false);
+            etCountFalse.setText("keine Vokabel vorhanden");
 
 
-        TextView tvId = (TextView) findViewById(R.id.tv_id);
-        tvId.setText("" + currentVocab.getId());
+        } else {
 
-        TextView tvEnglish = (TextView) findViewById(R.id.tv_english);
-        tvEnglish.setText(currentVocab.getEnglish());
+            TextView tvId = (TextView) findViewById(R.id.tv_id);
+            tvId.setText("" + currentVocab.getId());
 
-        TextView tvGerman = (TextView) findViewById(R.id.tv_german);
-        tvGerman.setText(currentVocab.getGerman().get(0));
+            TextView tvEnglish = (TextView) findViewById(R.id.tv_english);
+            tvEnglish.setText(currentVocab.getEnglish());
 
-        TextView tvLastRevision = (TextView) findViewById(R.id.tv_revision);
-        tvLastRevision.setText("" + currentVocab.getRevisionDifference());
+            TextView tvGerman = (TextView) findViewById(R.id.tv_german);
+            tvGerman.setText(currentVocab.getGerman().get(0));
 
-        etLevel = (EditText) findViewById(R.id.et_level);
-        etLevel.setText(currentVocab.getSrsLevel() + "");
+            TextView tvLastRevision = (TextView) findViewById(R.id.tv_revision);
+            tvLastRevision.setText("" + currentVocab.getRevisionDifference());
 
-        lastRevision = currentVocab.getLastRevision();
-        String strLastRevision = dateFormat.format(lastRevision);
-        etLastRevision = (EditText) findViewById(R.id.et_last_revision);
-        etLastRevision.setText(strLastRevision);
+            etLevel = (EditText) findViewById(R.id.et_level);
+            etLevel.setText(currentVocab.getSrsLevel() + "");
 
-        nextRevision = currentVocab.getNextRevision();
-        String strNextRevision = dateFormat.format(nextRevision);
-        etNextRevision = (EditText) findViewById(R.id.et_next_revision);
-        etNextRevision.setText(strNextRevision);
+            lastRevision = currentVocab.getLastRevision();
+            String strLastRevision = dateFormat.format(lastRevision);
+            etLastRevision = (EditText) findViewById(R.id.et_last_revision);
+            etLastRevision.setText(strLastRevision);
 
-        etCountCorrect = (EditText) findViewById(R.id.et_correct);
-        etCountCorrect.setText(currentVocab.getCountCorrect() + "");
+            nextRevision = currentVocab.getNextRevision();
+            String strNextRevision = dateFormat.format(nextRevision);
+            etNextRevision = (EditText) findViewById(R.id.et_next_revision);
+            etNextRevision.setText(strNextRevision);
 
-        etCountFalse = (EditText) findViewById(R.id.et_false);
-        etCountFalse.setText(currentVocab.getCountFalse() + "");
+            etCountCorrect = (EditText) findViewById(R.id.et_correct);
+            etCountCorrect.setText(currentVocab.getCountCorrect() + "");
+
+            etCountFalse = (EditText) findViewById(R.id.et_false);
+            etCountFalse.setText(currentVocab.getCountFalse() + "");
+        }
     }
 
 
