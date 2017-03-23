@@ -77,7 +77,7 @@ public class Notifier {
             timeblockList.add(timeblock);
         }
 
-        System.out.println("Initializing time block array list.... " + timeblockList.toString());
+        System.out.println("Initializing time block array list.... length " + timeblockList.size() + " , timerange: " + this.timeRange.toString());
     }
 
     public static class PushProbabilityCalculator {
