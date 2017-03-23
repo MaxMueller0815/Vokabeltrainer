@@ -39,7 +39,6 @@ public class HomeFragment extends Fragment {
     private int workload = 0;
     DataPoint[] datapointsLearned = new DataPoint[VISIBLE_DAYS];
     DataPoint[] datapointsWorkload = new DataPoint[VISIBLE_DAYS];
-    private boolean alreadyVisited = false;
 
 
     @Override
@@ -59,10 +58,6 @@ public class HomeFragment extends Fragment {
                 startActivity(new Intent(getContext(), SRSTesterActivity.class));
             }
         });
-        alreadyVisited = true;
-
-
-
         return view;
     }
 
@@ -180,16 +175,4 @@ public class HomeFragment extends Fragment {
                     }
                 });
     }
-
-/*    @Override
-    public void onResume() {
-        super.onResume();
-        if (alreadyVisited) {
-            topics = new MyDatabase(getContext()).getTopics();
-            retrieveWorkload();
-            calcStats();
-            initGraph();
-            initProgressBar();
-        }
-    }*/
 }

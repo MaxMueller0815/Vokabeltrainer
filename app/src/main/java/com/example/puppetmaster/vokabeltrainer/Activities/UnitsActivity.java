@@ -52,17 +52,9 @@ public class UnitsActivity extends AppCompatActivity {
     }
 
     private void calcStats() {
-        int vocabsInTopic = 0;
-        int practicedVocabs = 0;
-        for (Unit unit : listOfUnits) {
-            ArrayList<Vocab> vocabsOfUnit = unit.getVocabsOfUnit();
-            vocabsInTopic = vocabsInTopic + vocabsOfUnit.size();
-            for (Vocab vocab : vocabsOfUnit) {
-                if(vocab.isPracticed()) {
-                    practicedVocabs++;
-                }
-            }
-        }
+        int vocabsInTopic = topic.getNumOfAllVocabs();
+        int practicedVocabs = topic.getNumOfLearnedVocabs();
+
         TextView tvCount = (TextView) findViewById(R.id.tv_count);
         tvCount.setText("" + vocabsInTopic);
         TextView tvLearned = (TextView) findViewById(R.id.tv_learned);
@@ -88,7 +80,8 @@ public class UnitsActivity extends AppCompatActivity {
         super.onRestart();
         MyDatabase db = new MyDatabase(this);
         Log.d("Topic", topicID + "");
-        listOfUnits = db.getTopics().get(topicID - 1).getUnitsOfTopic();
+        topic = db.getTopics().get(topicID - 1);
+        listOfUnits = topic.getUnitsOfTopic();
         calcStats();
         recyclerView.setAdapter(new UnitAdapter(listOfUnits, topicID));
     }

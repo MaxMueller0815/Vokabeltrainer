@@ -36,7 +36,15 @@ import static android.text.Spanned.SPAN_INCLUSIVE_INCLUSIVE;
 
 public class LearnActivity extends AppCompatActivity {
 
-
+//
+//
+//
+//    TODO: Löschen
+//
+//
+//
+//
+//
     private RelativeLayout vocab_knowing_language;
     private TextView vocab_learning_language_text_view;
     private TextView vocab_knowing_language_text_view;

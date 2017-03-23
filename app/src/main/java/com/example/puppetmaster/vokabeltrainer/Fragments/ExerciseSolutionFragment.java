@@ -68,7 +68,6 @@ public class ExerciseSolutionFragment extends Fragment {
         }
 
         compareSolution();
-        playTTS();
         initUI();
         searchWiktionary();
         return view;
@@ -106,11 +105,19 @@ public class ExerciseSolutionFragment extends Fragment {
             tvAlternativeSolution.setText("Rarer: " + alternativeSolution);
         }
 
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_exercise_solution);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fabNext = (FloatingActionButton) view.findViewById(R.id.fab_exercise_solution);
+        fabNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((ExerciseActivity) getActivity()).evaluateResult(isCorrect);
+            }
+        });
+
+        FloatingActionButton fabAudio = (FloatingActionButton) view.findViewById(R.id.fab_audio);
+        fabAudio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                playTTS();
             }
         });
     }
@@ -119,7 +126,7 @@ public class ExerciseSolutionFragment extends Fragment {
         SpacedRepititionSystem srs = ((ExerciseActivity)this.getActivity()).getSrs();
         isCorrect = srs.handleAnswer(2, currentVocab, userAnswer);
     }
-    private void playTTS() {
+    public void playTTS() {
         String phrase = currentVocab.getGerman().get(0);
 
         if (WordHelper.isNoun(phrase)) {

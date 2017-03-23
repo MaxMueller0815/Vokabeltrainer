@@ -4,11 +4,12 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorAccent3Dark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/bg</item>
-        <item name="android:textColor">@color/md_blue_grey_900</item>
+        <item name="android:textColor">@color/colorAccent3Dark</item>
         <item name="android:navigationBarColor">@color/colorAccent3Dark</item>
+        <item name="actionMenuTextColor">@color/colorAccent3Dark</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="AppTheme">

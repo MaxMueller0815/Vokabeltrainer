@@ -41,18 +41,40 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <TextView
-                    android:id="@+id/tv_best_solution"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="48dp"
-                    android:gravity="center_horizontal"
-                    android:text="TextView"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="48dp">
+
+                    <TextView
+                        android:id="@+id/tv_best_solution"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerInParent="false"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="4dp"
+                        android:text="TextView"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/fab_audio"
+                        android:layout_width="32dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="false"
+                        android:layout_margin="4dp"
+                        android:layout_toEndOf="@+id/tv_best_solution"
+                        android:clickable="true"
+                        app:backgroundTint="@color/bg"
+                        app:elevation="2dp"
+                        app:fabSize="mini"
+                        app:srcCompat="@drawable/speak" />
+                </RelativeLayout>
 
                 <TextView
                     android:id="@+id/tv_term"

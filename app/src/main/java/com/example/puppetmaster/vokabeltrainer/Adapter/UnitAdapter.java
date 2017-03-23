@@ -56,7 +56,7 @@ public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.UnitViewHolder
                 Gson gson = new Gson();
                 String unitAsJson = gson.toJson(unit);
                 mBundle.putString("SELECTED_UNIT", unitAsJson);
-                mBundle.putInt("SELECTED_TOPIC", topicID);
+                //mBundle.putInt("SELECTED_TOPIC", topicID);
                 intent.putExtras(mBundle);
                 v.getContext().startActivity(intent);
             }
