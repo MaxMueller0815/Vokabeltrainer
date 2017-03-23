@@ -40,7 +40,7 @@ public class SpacedRepititionSystem {
     private ArrayList<Vocab> currentRequestList = new ArrayList<Vocab>();
     private Vocab currentVocab;
 
-    private int currentRequestListLength = 5;
+    private int currentRequestListLength = 100;
     private int newVocabRequestedToday = 0;
     private int newVocabToRequestOnOneDay = 15;
 
@@ -121,8 +121,10 @@ public class SpacedRepititionSystem {
 
         for (int i = 0; i < revisionDifferences.size(); i++) {
             for (int j = 1; j <= currentRequestListLength; j++) {
-                Vocab vocabToAdd = helperVocabHashMap.get(revisionDifferences.get(revisionDifferences.size() - j));
-                currentRequestList.add(vocabToAdd);
+                if(revisionDifferences.size() >= j){
+                    Vocab vocabToAdd = helperVocabHashMap.get(revisionDifferences.get(revisionDifferences.size() - j));
+                    currentRequestList.add(vocabToAdd);
+                }
             }
         }
 
