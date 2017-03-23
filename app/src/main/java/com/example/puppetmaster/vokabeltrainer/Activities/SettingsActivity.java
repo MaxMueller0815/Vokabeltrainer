@@ -81,7 +81,7 @@ public class SettingsActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter;
         List<String> list = new ArrayList<String>();
         int i;
-        for (i = 0; i <= 12; i = i + 2) {
+        for (i = 0; i <= 24; i = i + 2) {
             list.add(String.format("%02d:00", i));
         }
         adapter = new ArrayAdapter<String>(this,
