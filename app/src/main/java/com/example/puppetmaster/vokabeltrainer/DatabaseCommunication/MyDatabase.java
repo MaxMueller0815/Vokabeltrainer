@@ -306,4 +306,5 @@ public class MyDatabase extends SQLiteAssetHelper {
         inputMode[1] = caseSensitve;
         return inputMode;
     }
+
 }

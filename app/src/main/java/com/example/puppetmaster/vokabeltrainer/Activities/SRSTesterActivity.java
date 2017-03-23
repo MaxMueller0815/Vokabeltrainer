@@ -29,9 +29,13 @@ public class SRSTesterActivity extends AppCompatActivity {
     private Date nextRevision;
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.ENGLISH);
 
+    private SpacedRepititionSystem srs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.srs = new SpacedRepititionSystem(this);
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_srstester);
         showVocab();
 
@@ -50,7 +54,6 @@ public class SRSTesterActivity extends AppCompatActivity {
     }
 
     private void showVocab() {
-        SpacedRepititionSystem srs = new SpacedRepititionSystem(this);
         currentVocab = srs.getVocabRequest();
 
 

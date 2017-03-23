@@ -45,8 +45,8 @@ public class SpacedRepititionSystem {
     private int newVocabToRequestOnOneDay = 15;
 
     public SpacedRepititionSystem(Context context) {
-        notifier = new Notifier(context);
-        dbCommunicator = new SRSDataBaseCommunicator(context);
+        this.notifier = new Notifier(context);
+        this.dbCommunicator = new SRSDataBaseCommunicator(context);
 
         this.prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
@@ -69,27 +69,27 @@ public class SpacedRepititionSystem {
     *
     * */
     public Vocab getVocabRequest() {
+            // TODO: async task einfügen, siehe startscreen
 
-        // TODO: async task einfügen, siehe startscreen
+            if (currentRequestList.size() == 0) {
+                System.out.println("request list ist leer.....");
+                return null;
 
-        if (currentRequestList.size() == 0) {
-            initCurrentRequestList();
-            System.out.println("request list ist leer.....");
+            }else {
+                currentVocab = currentRequestList.get(0);
+                currentRequestList.remove(0);
 
-        }
-        currentVocab = currentRequestList.get(0);
-        currentRequestList.remove(0);
-
-        if (currentVocab.isNewVocab()) {
-            if (newVocabRequestedToday >= newVocabToRequestOnOneDay) {
-                return getVocabRequest();
-            } else {
-                newVocabRequestedToday += 1;
-                return currentVocab;
+                if (currentVocab.isNewVocab()) {
+                    if (newVocabRequestedToday >= newVocabToRequestOnOneDay) {
+                        return getVocabRequest();
+                    } else {
+                        newVocabRequestedToday += 1;
+                        return currentVocab;
+                    }
+                } else {
+                    return currentVocab;
+                }
             }
-        } else {
-            return currentVocab;
-        }
     }
 
     /*
@@ -99,6 +99,7 @@ public class SpacedRepititionSystem {
     *
     * */
     public void initCurrentRequestList() {
+
         // HashMap helps to sort the vocab by the datedifference (currentdate - nextRevision)
         HashMap<Long, Vocab> helperVocabHashMap = new HashMap<Long, Vocab>();
         ArrayList<Vocab> allVocab = new ArrayList<Vocab>();
