@@ -8,8 +8,11 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.renderscript.Script;
 
+import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.SRSDataBaseCommunicator;
+
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 /**
  * Created by florian on 12.01.17.
@@ -23,12 +26,14 @@ public class Notifier {
     private PendingIntent pendingIntent;
     private AlarmManager manager;
     private SharedPreferences prefs;
+    private SRSDataBaseCommunicator dbCommunicator;
 
     private ArrayList<Calendar> timeblockList = new ArrayList<Calendar>();
 
-    public Notifier(Context context){
+    public Notifier(Context context, SRSDataBaseCommunicator communicator){
 
         this.prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        this.dbCommunicator = communicator;
 
         // Notification Zeitpunkt Start
         this.timeRange[0] = prefs.getInt("hourStart", 0);
@@ -66,15 +71,28 @@ public class Notifier {
 
     private void initTimeBlockArrayList(int startTime, int numberOfTimeBlocks){
 
+        // get time block count information
+        // structure <key, [countDeclined, countAccepted, countManual]>
+        HashMap<Integer, Integer[]> timeBlockCountInfo = new HashMap<Integer, Integer[]>();
+        timeBlockCountInfo = dbCommunicator.getCountInformationForEveryTimeBlock();
+
         for(int i = 0; i < numberOfTimeBlocks; i++){
+
+            //increase the hourOfTheDay by 2 every loop run
+            int hourOfTheDay = startTime + (i*2);
 
             Calendar timeblock = Calendar.getInstance();
             timeblock.setTimeInMillis(System.currentTimeMillis());
-            timeblock.set(Calendar.HOUR_OF_DAY, (startTime + (i*2)));
+            timeblock.set(Calendar.HOUR_OF_DAY, hourOfTheDay);
             timeblock.set(Calendar.MINUTE, 0);
             timeblock.set(Calendar.SECOND, 1);
 
-            timeblockList.add(timeblock);
+            //calculate the probability of a push notification for the actual time block
+            Integer [] countInformation = timeBlockCountInfo.get(hourOfTheDay);
+            if(PushProbabilityCalculator.pushOnThisHourOfTheDay(countInformation[1], countInformation[0], countInformation[2], hourOfTheDay)) {
+                timeblockList.add(timeblock);
+                System.out.println("######## adding push notification for hour: " + hourOfTheDay);
+            }
         }
 
         System.out.println("Initializing time block array list.... length " + timeblockList.size() + " , timerange: " + this.timeRange.toString());
@@ -84,11 +102,12 @@ public class Notifier {
 
         static double factorManual = 3.0;
 
-        public static double calculateProbabilityToPush(double accepted, double declined, double manual, int hourOfTheDay){
+        public static boolean pushOnThisHourOfTheDay(double accepted, double declined, double manual, int hourOfTheDay){
             double daytimefactor = getDayTimeFactor(hourOfTheDay);
             double result = daytimefactor * ((accepted + (manual*factorManual)) / (accepted + declined + (manual*factorManual)));
 
-            return result;
+            // get random number between 0.0 and 1.0 to compare the probability of the notification to get pushed or not
+            return (result <= Math.random());
         }
 
         public static double getDayTimeFactor(int hourOfTheDay){

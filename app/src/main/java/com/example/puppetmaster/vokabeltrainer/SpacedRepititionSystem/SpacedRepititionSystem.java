@@ -45,8 +45,9 @@ public class SpacedRepititionSystem {
     private int newVocabToRequestOnOneDay = 15;
 
     public SpacedRepititionSystem(Context context) {
-        this.notifier = new Notifier(context);
+
         this.dbCommunicator = new SRSDataBaseCommunicator(context);
+        this.notifier = new Notifier(context, this.dbCommunicator);
 
         this.prefs = PreferenceManager.getDefaultSharedPreferences(context);
 

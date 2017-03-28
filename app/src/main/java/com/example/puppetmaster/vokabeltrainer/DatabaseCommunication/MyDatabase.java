@@ -16,6 +16,7 @@ import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MyDatabase extends SQLiteAssetHelper {
 
@@ -36,6 +37,36 @@ public class MyDatabase extends SQLiteAssetHelper {
         // call this method to force a database overwrite if the version number
         // is below a certain threshold:
         //setForcedUpgrade(2);
+    }
+
+    public HashMap<Integer, Integer[]> getCountInformationForEveryTimeBlock(){
+
+        HashMap<Integer, Integer[]> resultHashMap = new HashMap<Integer, Integer[]>();
+
+        db = getReadableDatabase();
+        String[] sqlSelect = {"*"};
+        String sqlTables = "pushNotificationLog";
+        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+        queryBuilder.setTables(sqlTables);
+        Cursor c = queryBuilder.query(db, sqlSelect, null, null,
+                null, null, null);
+
+        try {
+            c.moveToFirst();
+            while (!c.isAfterLast()) {
+                    Integer[] countArray = new Integer[3];
+                    countArray[0] = c.getInt(1);
+                    countArray[1] = c.getInt(2);
+                    countArray[2] = c.getInt(3);
+
+                    resultHashMap.put(Integer.parseInt(c.getString(0)), countArray);
+
+                    c.moveToNext();
+            }
+            } finally {
+                c.close();
+            }
+        return resultHashMap;
     }
 
     public ArrayList<Topic> getTopics() {

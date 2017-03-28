@@ -5,6 +5,7 @@ import android.content.Context;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by florian on 12.01.17.
@@ -27,6 +28,10 @@ public class SRSDataBaseCommunicator {
 
         //TODO
    // }
+
+    public HashMap<Integer, Integer[]> getCountInformationForEveryTimeBlock(){
+        return myDatabase.getCountInformationForEveryTimeBlock();
+    }
 
     public ArrayList<Vocab> getAllVocab(){
 
