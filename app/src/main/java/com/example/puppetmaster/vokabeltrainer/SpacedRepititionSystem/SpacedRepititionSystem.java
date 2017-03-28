@@ -61,6 +61,10 @@ public class SpacedRepititionSystem {
         }
 
         initCurrentRequestList();
+
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("numberOfWordsInWorkload", currentRequestList.size());
+        editor.apply();
     }
 
     /*
@@ -69,7 +73,6 @@ public class SpacedRepititionSystem {
     *
     * */
     public Vocab getVocabRequest() {
-            // TODO: async task einfügen, siehe startscreen
 
             if (currentRequestList.size() == 0) {
                 System.out.println("request list ist leer.....");
