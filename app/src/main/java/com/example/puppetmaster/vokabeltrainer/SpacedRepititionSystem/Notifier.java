@@ -84,11 +84,32 @@ public class Notifier {
 
         static double factorManual = 3.0;
 
-        public static double calculateProbabilityToPush(double accepted, double declined, double manual, double daytimefactor){
-
+        public static double calculateProbabilityToPush(double accepted, double declined, double manual, int hourOfTheDay){
+            double daytimefactor = getDayTimeFactor(hourOfTheDay);
             double result = daytimefactor * ((accepted + (manual*factorManual)) / (accepted + declined + (manual*factorManual)));
 
             return result;
+        }
+
+        public static double getDayTimeFactor(int hourOfTheDay){
+
+            //TODO tageszeitfaktoren einstellen
+
+            switch (hourOfTheDay){
+                case 2: return 1.0;
+                case 4: return 1.0;
+                case 6: return 1.0;
+                case 8: return 1.0;
+                case 10: return 1.0;
+                case 12: return 1.0;
+                case 14: return 1.0;
+                case 16: return 1.0;
+                case 18: return 1.0;
+                case 20: return 1.0;
+                case 22: return 1.0;
+                case 24: return 1.0;
+                default: return 1.0;
+            }
         }
 
     }
