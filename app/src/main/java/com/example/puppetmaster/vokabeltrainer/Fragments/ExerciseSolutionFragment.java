@@ -67,8 +67,10 @@ public class ExerciseSolutionFragment extends Fragment {
             userAnswer = inputBundle.getString("user_answer");
         }
 
+
         compareSolution();
         initUI();
+        initTTS();
         searchWiktionary();
         return view;
     }
@@ -122,6 +124,17 @@ public class ExerciseSolutionFragment extends Fragment {
         });
     }
 
+    private void initTTS() {
+        tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status != TextToSpeech.ERROR) {
+                    tts.setLanguage(Locale.GERMANY);
+                }
+            }
+        });
+    }
+
     private void compareSolution() {
         SpacedRepititionSystem srs = ((ExerciseActivity)this.getActivity()).getSrs();
         isCorrect = srs.handleAnswer(2, currentVocab, userAnswer);
@@ -134,18 +147,7 @@ public class ExerciseSolutionFragment extends Fragment {
         } else {
             phrase = WordHelper.cleanString(phrase);
         }
-        Log.v("TTS", phrase);
-        final String finalPhrase = phrase;
-        tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if (status != TextToSpeech.ERROR) {
-                    tts.setLanguage(Locale.GERMANY);
-                    String utteranceId = this.hashCode() + "";
-                    tts.speak(finalPhrase, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
-                }
-            }
-        });
+        tts.speak(phrase, TextToSpeech.QUEUE_FLUSH, null, this.hashCode() + "");
     }
 
     private class SiteFetcher extends AsyncTask<String, Void, WiktionaryHelper> {
