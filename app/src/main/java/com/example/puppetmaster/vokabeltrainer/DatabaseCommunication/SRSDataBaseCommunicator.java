@@ -13,7 +13,6 @@ import java.util.HashMap;
 
 public class SRSDataBaseCommunicator {
 
-    private boolean isReady = true;
     private MyDatabase myDatabase;
 
     public SRSDataBaseCommunicator(Context context){

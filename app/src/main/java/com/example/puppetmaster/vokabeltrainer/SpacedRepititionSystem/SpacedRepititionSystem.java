@@ -206,4 +206,11 @@ public class SpacedRepititionSystem {
         return Integer.parseInt(formatter.format(new Date()));
     }
 
+    public int getActualTimeBlockHour(){
+        SimpleDateFormat format = new SimpleDateFormat("H");
+        String formattedDate = format.format(new Date());
+        int hour = Integer.parseInt(formattedDate);
+        return hour;
+    }
+
 }
