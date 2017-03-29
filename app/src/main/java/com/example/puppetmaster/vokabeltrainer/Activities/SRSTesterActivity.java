@@ -60,7 +60,7 @@ public class SRSTesterActivity extends AppCompatActivity {
         if (currentVocab == null) {
 
             TextView tvId = (TextView) findViewById(R.id.tv_id);
-            tvId.setText("keine Vokabel vorhanden");
+            tvId.setText("0");
 
             TextView tvEnglish = (TextView) findViewById(R.id.tv_english);
             tvEnglish.setText("keine Vokabel vorhanden");
@@ -69,7 +69,7 @@ public class SRSTesterActivity extends AppCompatActivity {
             tvGerman.setText("keine Vokabel vorhanden");
 
             TextView tvLastRevision = (TextView) findViewById(R.id.tv_revision);
-            tvLastRevision.setText("keine Vokabel vorhanden");
+            tvLastRevision.setText("1");
 
             etLevel = (EditText) findViewById(R.id.et_level);
             etLevel.setText("keine Vokabel vorhanden");

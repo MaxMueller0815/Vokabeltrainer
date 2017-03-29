@@ -18,18 +18,6 @@ import java.util.HashMap;
  * Created by florian on 11.01.17.
  */
 
-    /*
-    *   TOODS:
-    *
-    *   push notifications
-    *   time stamps entsprechend neu setzen
-    *   sprachauswahl bei der abfrage (hier oder an anderer stelle)
-    *   time stamps setzen wenn eine neue unit angefangen wird
-    *
-    *
-    *
-    * */
-
 public class SpacedRepititionSystem {
 
     private Notifier notifier;
