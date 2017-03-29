@@ -160,7 +160,9 @@ public class SpacedRepititionSystem {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt("lastTrainingDay", getDateAsInt());
         editor.putInt("newVocabThisDay", newVocabRequestedToday);
+        editor.putInt("numberOfWordsInWorkload", currentRequestList.size());
         editor.apply();
+
         return isCorrect;
     }
 

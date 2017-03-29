@@ -1,11 +1,15 @@
 package com.example.puppetmaster.vokabeltrainer.Activities;
 
+import android.app.AlarmManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -24,8 +28,10 @@ import com.example.puppetmaster.vokabeltrainer.Fragments.ProfileFragment;
 import com.example.puppetmaster.vokabeltrainer.Fragments.TopicsFragment;
 import com.example.puppetmaster.vokabeltrainer.Helper.BottomNavigationViewHelper;
 import com.example.puppetmaster.vokabeltrainer.R;
+import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.PermanentAlarmReceiver;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class StartScreen extends AppCompatActivity {
     private Toolbar toolbar;
@@ -49,6 +55,33 @@ public class StartScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(StartScreen.this);
+
+        if(!prefs.getBoolean("firstTime", false)){
+            // Max du kannst hier deine Anweisungen für die introscreens einbauen
+
+            Intent permanentAlarmIntent = new Intent(this, PermanentAlarmReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, permanentAlarmIntent, 0);
+
+            AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 1);
+
+            manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                    AlarmManager.INTERVAL_DAY, pendingIntent);
+
+            System.out.println("______setze permanenten alarm auf 00:00:01 Uhr");
+
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("firstTime", true);
+            editor.apply();
+        }
+
         fragmentManager = this.getFragmentManager();
         GetTask getTask = new GetTask(getApplicationContext());
         getTask.execute();

@@ -43,8 +43,6 @@ public class Notifier {
         int numberOfTimeBlocks = calculateNumberOfTimeBlocks();
         initTimeBlockArrayList(timeRange[0], numberOfTimeBlocks);
 
-    //    if (!prefs.getBoolean("firstTime", false)){
-
             this.alarmIntent = new Intent(context, AlarmReceiver.class);
             this.pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
 
@@ -52,13 +50,8 @@ public class Notifier {
 
             // set alarm for every timeblock
             for (int i = 0; i<timeblockList.size(); i++) {
-                manager.setRepeating(AlarmManager.RTC_WAKEUP, timeblockList.get(i).getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+                manager.set(AlarmManager.RTC_WAKEUP, timeblockList.get(i).getTimeInMillis(), pendingIntent);
             }
-
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("firstTime", true);
-            editor.apply();
-     //   }
 
     }
 
