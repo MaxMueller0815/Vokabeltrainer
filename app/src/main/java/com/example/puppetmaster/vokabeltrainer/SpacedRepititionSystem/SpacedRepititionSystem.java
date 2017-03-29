@@ -125,17 +125,22 @@ public class SpacedRepititionSystem {
 
         allVocab = dbCommunicator.getAllVocab();
 
+        System.out.println( "Allvocabsize::::::   " + allVocab.size());
+
         for (int i = 0; i < allVocab.size(); i++) {
             Vocab vocab = allVocab.get(i);
             long revisionDifference = vocab.getRevisionDifference();
 
             if (revisionDifference > 0) {
+                System.out.println("revisiondifferenz gefunden:  #####################");
                 helperVocabHashMap.put(revisionDifference, vocab);
                 revisionDifferences.add(revisionDifference);
             }
         }
 
         Collections.sort(revisionDifferences);
+        System.out.println("helperVocabHashmap :  ###### " + helperVocabHashMap.size());
+        System.out.println(" #### revisiondifferences: " + revisionDifferences.toString());
 
         for (int i = 0; i < revisionDifferences.size(); i++) {
             for (int j = 1; j <= currentRequestListLength; j++) {

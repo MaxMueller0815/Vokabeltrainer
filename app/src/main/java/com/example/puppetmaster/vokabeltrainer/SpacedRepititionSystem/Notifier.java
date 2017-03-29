@@ -101,7 +101,7 @@ public class Notifier {
         editor.putString("pushNotificationHours", str.toString());
         editor.apply();
 
-        System.out.println("Initializing time block array list.... length " + timeblockList.size() + " , timerange: " + this.timeRange.toString());
+        System.out.println("Initializing time block array list.... greatest possible length " + timeblockList.size() + " , timerange: " + this.timeRange.toString());
     }
 
     public static class PushProbabilityCalculator {
