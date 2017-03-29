@@ -28,7 +28,7 @@ public class SRSDataBaseCommunicator {
         
     }
 
-    public void handleDeclinedInHour(int){
+    public void handleDeclinedInHour(int hourOfTheDay){
         
     }
 
