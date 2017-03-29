@@ -264,12 +264,7 @@ public class MyDatabase extends SQLiteAssetHelper {
         contentValues.put("srsLevel", updatedVocab.getSrsLevel());
         contentValues.put("countCorrect", updatedVocab.getCountCorrect());
         contentValues.put("countFalse", updatedVocab.getCountFalse());
-        // TODO Date ins richtige Format bringen
 
-        // glaub es ist falsch das hier aufzurufen, da die daten dann bei jedem speichervorgang neu gesetzt werden?
-        // besser in checkanswer methode von SpacedRepititionSystem?
-        updatedVocab.setLastRevision();
-        updatedVocab.setNextRevision();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
         String lastRevision = dateFormat.format(updatedVocab.getLastRevision());

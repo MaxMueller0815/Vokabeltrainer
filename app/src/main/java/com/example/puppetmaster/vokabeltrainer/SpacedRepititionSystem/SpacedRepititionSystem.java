@@ -162,8 +162,6 @@ public class SpacedRepititionSystem {
 
     public boolean handleAnswer(int language, Vocab vocab, String answer) {
 
-        //TODO count für den timeblock setzen
-
         boolean isCorrect = checkAnswer(language, vocab, answer);
         if (isCorrect) {
             vocab.increaseSrsLevel();
@@ -174,6 +172,7 @@ public class SpacedRepititionSystem {
         }
 
         vocab.setLastRevision();
+        vocab.setNextRevision();
         dbCommunicator.updateVocab(vocab);
 
         // if actual time block hour is not in the list, add it
