@@ -69,6 +69,87 @@ public class MyDatabase extends SQLiteAssetHelper {
         return resultHashMap;
     }
 
+    public void updateLogForHour(double [] logInfo){
+        db = this.getWritableDatabase();
+        String whereClause = "timeSlot=" + (int)logInfo[0];
+
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("counterDeclined", (int)logInfo[1]);
+        contentValues.put("counterAccepted", (int)logInfo[2]);
+        contentValues.put("counterManual", (int)logInfo[3]);
+        contentValues.put("multiplier", (float)logInfo[4]);
+
+        db.update("pushNotificationLog", contentValues, whereClause, null);
+    }
+
+    public double [] getLogInfoForHour (int hour){
+        db = getReadableDatabase();
+
+        String[] sqlSelect = {"*"};
+        String sqlTables = "pushNotificationLog";
+        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+        queryBuilder.setTables(sqlTables);
+        queryBuilder.appendWhere("timeSlot=" + hour);
+        Cursor c = queryBuilder.query(db, sqlSelect, null, null,
+                null, null, null);
+
+        double [] logInfo = new double[5];
+
+        try {
+            c.moveToFirst();
+            while (!c.isAfterLast()) {
+
+                logInfo[0] = (double)c.getInt(0);
+                logInfo[1] = (double)c.getInt(1);
+                logInfo[2] = (double)c.getInt(2);
+                logInfo[3] = (double)c.getInt(3);
+                logInfo[4] = (double)c.getInt(4);
+
+                c.moveToNext();
+            }
+        } finally {
+            c.close();
+        }
+
+        return logInfo;
+    }
+
+    public ArrayList<double []> getLogInfoWithoutHour (int hour){
+        db = getReadableDatabase();
+
+        ArrayList<double []> resultList = new ArrayList<double[]>();
+
+        String[] sqlSelect = {"*"};
+        String sqlTables = "pushNotificationLog";
+        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+        queryBuilder.setTables(sqlTables);
+        queryBuilder.appendWhere("NOT timeSlot=" + hour);
+        Cursor c = queryBuilder.query(db, sqlSelect, null, null,
+                null, null, null);
+
+        try {
+            c.moveToFirst();
+            while (!c.isAfterLast()) {
+
+                double [] logInfo = new double[5];
+
+                logInfo[0] = (double)c.getInt(0);
+                logInfo[1] = (double)c.getInt(1);
+                logInfo[2] = (double)c.getInt(2);
+                logInfo[3] = (double)c.getInt(3);
+                logInfo[4] = (double)c.getInt(4);
+
+                resultList.add(logInfo);
+                c.moveToNext();
+            }
+        } finally {
+            c.close();
+        }
+
+        return resultList;
+    }
+
     public ArrayList<Topic> getTopics() {
         db = getReadableDatabase();
         String[] sqlSelect = {"id, title"};

@@ -78,6 +78,9 @@ public class StartScreen extends AppCompatActivity {
             System.out.println("______setze permanenten alarm auf 00:00:01 Uhr");
 
             SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt("workload", 40);
+            editor.putInt("hourStart", 10);
+            editor.putInt("hourEnd", 18);
             editor.putBoolean("firstTime", true);
             editor.apply();
         }

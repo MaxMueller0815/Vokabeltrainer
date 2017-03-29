@@ -65,13 +65,15 @@ public class SpacedRepititionSystem {
 
         initCurrentRequestList();
 
-        String trainingHours = prefs.getString("trainingVocabHours", "");
+
+        // dafault value 100 just if nothing is stored yet
+        String trainingHours = prefs.getString("trainingVocabHours", "100");
         String[] st2 = trainingHours.split(",");
 
         int[] savedList2 = new int[st2.length];
-        for (int i = 0; i < st2.length; i++) {
-            savedList2 [i] = Integer.parseInt(st2[i]);
-        }
+            for (int i = 0; i < st2.length; i++) {
+                savedList2[i] = Integer.parseInt(st2[i]);
+            }
 
         this.vocabTrainingHours = savedList2;
 
@@ -179,6 +181,7 @@ public class SpacedRepititionSystem {
             this.vocabTrainingHours = newVocabTrainingHours;
         }
 
+        //append stuff to the shared preferences
         SharedPreferences.Editor editor = prefs.edit();
 
         StringBuilder str = new StringBuilder();

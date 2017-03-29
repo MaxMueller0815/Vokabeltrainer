@@ -24,17 +24,31 @@ public class SRSDataBaseCommunicator {
     }
 
     public void handleAcceptedInHour(int hourOfTheDay){
-        
+        double [] logInfo = myDatabase.getLogInfoForHour(hourOfTheDay);
+        double [] newLogInfo = new double[logInfo.length];
+
+        newLogInfo[2] = logInfo[2] + 1.0;
+
+        myDatabase.updateLogForHour(newLogInfo);
     }
 
     public void handleDeclinedInHour(int hourOfTheDay){
-        
+        double [] logInfo = myDatabase.getLogInfoForHour(hourOfTheDay);
+        double [] newLogInfo = new double[logInfo.length];
+
+        newLogInfo[1] = logInfo[1] + 1.0;
+
+        myDatabase.updateLogForHour(newLogInfo);
     }
 
- //   public Vocab getVocab(int id){
+    public void handleManualInHour(int hourOfTheDay){
+        double [] logInfo = myDatabase.getLogInfoForHour(hourOfTheDay);
+        double [] newLogInfo = new double[logInfo.length];
 
-        //TODO
-   // }
+        newLogInfo[3] = logInfo[3] + 1.0;
+
+        myDatabase.updateLogForHour(newLogInfo);
+    }
 
     public HashMap<Integer, Integer[]> getCountInformationForEveryTimeBlock(){
         return myDatabase.getCountInformationForEveryTimeBlock();
