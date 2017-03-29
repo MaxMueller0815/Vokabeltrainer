@@ -24,7 +24,11 @@ public class SRSDataBaseCommunicator {
         myDatabase.updateSingleVocab(vocab);
     }
 
-    public void increaseMultiplierForTimeslot(int hourOfTheDay){
+    public void handleAcceptedInHour(int hourOfTheDay){
+        
+    }
+
+    public void handleDeclinedInHour(int){
         
     }
 
