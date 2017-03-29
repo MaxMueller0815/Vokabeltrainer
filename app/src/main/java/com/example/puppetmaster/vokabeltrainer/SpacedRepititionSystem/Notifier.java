@@ -64,6 +64,8 @@ public class Notifier {
 
     private void initTimeBlockArrayList(int startTime, int numberOfTimeBlocks){
 
+        int [] timeBlockStartHours = new int [numberOfTimeBlocks];
+
         // get time block count information
         // structure <key, [countDeclined, countAccepted, countManual]>
         HashMap<Integer, Integer[]> timeBlockCountInfo = new HashMap<Integer, Integer[]>();
@@ -84,9 +86,20 @@ public class Notifier {
             Integer [] countInformation = timeBlockCountInfo.get(hourOfTheDay);
             if(PushProbabilityCalculator.pushOnThisHourOfTheDay(countInformation[1], countInformation[0], countInformation[2], hourOfTheDay)) {
                 timeblockList.add(timeblock);
+                timeBlockStartHours[i] = hourOfTheDay;
                 System.out.println("######## adding push notification for hour: " + hourOfTheDay);
             }
         }
+
+        // convert the int [] to String for saving it in the shared preferences
+        StringBuilder str = new StringBuilder();
+        for (int i = 0; i < timeBlockStartHours.length; i++) {
+            str.append(timeBlockStartHours[i]).append(",");
+        }
+
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("pushNotificationHours", str.toString());
+        editor.apply();
 
         System.out.println("Initializing time block array list.... length " + timeblockList.size() + " , timerange: " + this.timeRange.toString());
     }

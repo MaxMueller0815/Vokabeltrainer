@@ -44,6 +44,8 @@ public class SpacedRepititionSystem {
     private int newVocabRequestedToday = 0;
     private int newVocabToRequestOnOneDay = 15;
 
+    private int [] vocabTrainingHours;
+
     public SpacedRepititionSystem(Context context) {
 
         this.dbCommunicator = new SRSDataBaseCommunicator(context);
@@ -62,6 +64,16 @@ public class SpacedRepititionSystem {
         }
 
         initCurrentRequestList();
+
+        String trainingHours = prefs.getString("trainingVocabHours", "");
+        String[] st2 = trainingHours.split(",");
+
+        int[] savedList2 = new int[st2.length];
+        for (int i = 0; i < st2.length; i++) {
+            savedList2 [i] = Integer.parseInt(st2[i]);
+        }
+
+        this.vocabTrainingHours = savedList2;
 
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt("numberOfWordsInWorkload", currentRequestList.size());
@@ -157,7 +169,24 @@ public class SpacedRepititionSystem {
         vocab.setLastRevision();
         dbCommunicator.updateVocab(vocab);
 
+        // if actual time block hour is not in the list, add it
+        if(!contains(vocabTrainingHours, getActualTimeBlockHour())){
+            int [] newVocabTrainingHours = new int [vocabTrainingHours.length+1];
+            for(int i = 0; i < vocabTrainingHours.length; i++){
+                newVocabTrainingHours[i] = vocabTrainingHours[i];
+            }
+            newVocabTrainingHours[vocabTrainingHours.length+1] = getActualTimeBlockHour();
+            this.vocabTrainingHours = newVocabTrainingHours;
+        }
+
         SharedPreferences.Editor editor = prefs.edit();
+
+        StringBuilder str = new StringBuilder();
+        for (int i = 0; i < vocabTrainingHours.length; i++) {
+            str.append(vocabTrainingHours[i]).append(",");
+        }
+
+        editor.putString("trainingVocabHours", str.toString());
         editor.putInt("lastTrainingDay", getDateAsInt());
         editor.putInt("newVocabThisDay", newVocabRequestedToday);
         editor.putInt("numberOfWordsInWorkload", currentRequestList.size());
@@ -176,6 +205,7 @@ public class SpacedRepititionSystem {
     *
     * */
     public boolean checkAnswer(int language, Vocab vocab, String answer) {
+
         if (language == 1) {
             return vocab.getEnglish().equals(answer);
         } else if (language == 2) {
@@ -212,7 +242,22 @@ public class SpacedRepititionSystem {
         SimpleDateFormat format = new SimpleDateFormat("H");
         String formattedDate = format.format(new Date());
         int hour = Integer.parseInt(formattedDate);
+
+        // check if hour is even, otherwise substract 1 to get the beginning of the time block
+        if(!((hour%2) == 0)){
+            hour -=1;
+        }
+
         return hour;
+    }
+
+    public static boolean contains(int[] arr, int item) {
+        for (int n : arr) {
+            if (item == n) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
