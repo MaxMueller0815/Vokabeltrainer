@@ -9,6 +9,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
+import com.example.puppetmaster.vokabeltrainer.R;
+
 public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
@@ -22,7 +24,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         NotificationManager notif=(NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
         Notification notify=new Notification.Builder
                 (context).setContentTitle("lEarned push notification").setContentText(wordsWaitingForRevision + " words are currently waiting for revision.").
-                setContentTitle("lEarned").build();
+                setContentTitle("lEarned").setSmallIcon(R.drawable.ic_launcher).build();
 
         notify.flags |= Notification.FLAG_AUTO_CANCEL;
         notif.notify(0, notify);
