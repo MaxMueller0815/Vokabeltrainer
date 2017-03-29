@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/label1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Here you can choose your settings. Later changeable. In parentheses is the recommendation."
+        android:textSize="22dp"
+        android:paddingLeft="15px"
+        android:paddingTop="15px"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+
+    <LinearLayout
+        android:id="@+id/linLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/label1"
+        android:layout_alignParentStart="true">
+
+
+        <TextView
+            android:id="@+id/textViewMotivation1"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:padding="15sp"
+            android:text="How many words would you like to learn every day? (30)"
+            android:textSize="18sp"
+            android:layout_margin="5sp"
+            android:layout_weight="0.9" />
+
+        <EditText
+            android:id="@+id/editTextNumWords"
+            android:layout_width="40sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:layout_marginRight="10sp"
+            android:layout_marginTop="20sp"
+            android:ems="10"
+            android:textSize="25sp"
+            android:inputType="number"
+            android:text="30" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/labelLearn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="What method would you prefer?"
+        android:textSize="22dp"
+        android:paddingLeft="15px"
+        android:paddingTop="15px"
+        android:layout_below="@+id/linLayout"
+        android:layout_marginTop="10dp" />
+
+    <LinearLayout
+        android:id="@+id/linLayoutMethod"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/labelLearn"
+        android:layout_alignParentStart="true"
+        android:paddingLeft="30sp"
+        android:paddingRight="30sp">
+
+        <Button
+            android:id="@+id/buttonTime"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textSize="25sp"
+            android:textAllCaps="false"
+            android:text="time"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_weight="0.5"
+            android:layout_margin="0dp"/>
+
+        <Button
+            android:id="@+id/buttonWords"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textSize="25sp"
+            android:textAllCaps="false"
+            android:text="words"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_weight="0.5"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linLayoutPerBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/linLayoutMethod"
+        android:layout_alignParentStart="true">
+
+
+        <TextView
+            android:id="@+id/textViewPerBlock"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="15sp"
+            android:text="Words per learn block (10)"
+            android:textSize="18sp"
+            android:layout_margin="5sp"
+            android:layout_weight="0.9" />
+
+        <EditText
+            android:id="@+id/editTextNumWordsPerBlock"
+            android:layout_width="40sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:layout_marginRight="10sp"
+            android:layout_marginTop="5sp"
+            android:ems="10"
+            android:textSize="25sp"
+            android:inputType="number"
+            android:text="10" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/labelHabits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sleeping Habits:"
+        android:textSize="22sp"
+        android:paddingStart="15sp"
+        android:paddingTop="15sp"
+        android:layout_below="@+id/linLayoutPerBlock" />
+
+    <LinearLayout
+        android:id="@+id/linLayoutWake"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/labelHabits"
+        android:layout_alignParentStart="true">
+
+
+        <TextView
+            android:id="@+id/textViewWake"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="15sp"
+            android:text="When do wake up?"
+            android:textSize="18sp"
+            android:layout_weight="0.7" />
+
+        <EditText
+            android:id="@+id/editTextWake"
+            android:layout_width="20sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:layout_marginRight="10sp"
+            android:ems="10"
+            android:textSize="18sp"
+            android:inputType="number"
+            android:text="8" />
+
+        <TextView
+            android:id="@+id/textViewPM"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:textSize="22sp"
+            android:layout_margin="0sp"
+            android:text="a.m." />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linLayoutSleep"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/linLayoutWake"
+        android:layout_alignParentStart="true">
+
+
+        <TextView
+            android:id="@+id/textViewSleep"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="15sp"
+            android:text="When do go to bed?"
+            android:textSize="18sp"
+            android:layout_weight="0.7" />
+
+        <EditText
+            android:id="@+id/editTextSleep"
+            android:layout_width="20sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:layout_marginEnd="10sp"
+            android:ems="10"
+            android:textSize="18sp"
+            android:inputType="number"
+            android:text="11" />
+
+        <TextView
+            android:id="@+id/textViewAM"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:textSize="22sp"
+            android:layout_margin="0sp"
+            android:text="p.m." />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" >
+
+        <Button
+            android:id="@+id/buttonBack"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textSize="25sp"
+            android:textAllCaps="false"
+            android:text="Back"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_weight="0.3"
+            android:layout_margin="0dp"/>
+
+        <Button
+            android:id="@+id/buttonNext"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textSize="25sp"
+            android:textAllCaps="false"
+            android:text="Next"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_weight="0.5"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

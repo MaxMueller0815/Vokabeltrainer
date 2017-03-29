@@ -36,5 +36,11 @@
     <string name="language_positive_button">Erstellen</string>
     <string name="language_negative_button">Abbrechen</string>
 
+    <!-- Introduction Texts -->
+    <string name="intro_motivation1">This information should provide you ideas to successfully
+        learn german language. At this point do not rush. Take ten minutes for the introduction, due to its important
+        impact on your motivation and development of your learning skills. It will safe you energy and time. So listen:
+    </string>
+
 
 </resources>
