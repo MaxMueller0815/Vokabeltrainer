@@ -34,10 +34,9 @@ public class ExerciseFinalScoreFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_exercise_final_score, container, false);
         counterCorrect = ((ExerciseActivity)this.getActivity()).getCounterCorrect();
-        allVocab = ((ExerciseActivity)this.getActivity()).getAllVocab();
 
         ImageView ivSolution = (ImageView) view.findViewById(R.id.iv_solution);
-        int listSize = allVocab.size();
+        int listSize = ((ExerciseActivity)this.getActivity()).getMaxTurns();
         double result = (double) counterCorrect / (double) listSize ;
         String title = "";
         String description = "Du hast " + counterCorrect +  " von "  + listSize +  " Vokabeln richtig!";

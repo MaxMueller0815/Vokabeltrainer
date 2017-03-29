@@ -89,7 +89,7 @@ public class ExerciseLearnFragment extends Fragment {
         fabNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((ExerciseActivity) getActivity()).markAsLearned();
+                ((ExerciseActivity) getActivity()).startNextTurn();
             }
         });
 
@@ -171,5 +171,4 @@ public class ExerciseLearnFragment extends Fragment {
         }
         super.onDestroy();
     }
-
 }

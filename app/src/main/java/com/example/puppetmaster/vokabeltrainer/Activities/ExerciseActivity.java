@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
@@ -21,77 +20,82 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 
 public class ExerciseActivity extends AppCompatActivity {
-    private ArrayList<Vocab> allVocabs = new ArrayList<>();
+    private ArrayList<Vocab> learnedVocabs = new ArrayList<>();
     private ArrayList<Vocab> newVocabs = new ArrayList<>();
+    private Vocab currentVocab;
+    private boolean fromSRS;
     private static FragmentManager fragmentManager;
     private int turn = 0;
+    final int MAX_TURNS = 10;
     private int counterCorrect = 0;
     public SpacedRepititionSystem srs;
     private FragmentTransaction ft;
-
-    public SpacedRepititionSystem getSrs() {
-        return srs;
-    }
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
+        progressBar = (ProgressBar) findViewById(R.id.pb_exercise);
+        fromSRS = checkSource();
+        if (!fromSRS) {
+            readIntent();
+        }
         srs = new SpacedRepititionSystem(this);
         fragmentManager = getFragmentManager();
-        readIntent();
         startNextTurn();
-
     }
 
-    private void readIntent() {
-        Intent intent = getIntent();
-        if (intent.hasExtra("SELECTED_UNIT")) { //Null Checking
-            Gson gson = new Gson();
-            Unit unit = gson.fromJson(intent.getStringExtra("SELECTED_UNIT"), Unit.class);
-            for (Vocab vocab : unit.getVocabsOfUnit()) {
-                if (vocab.getSrsLevel() == 0) {
-                    newVocabs.add(vocab);
+    public void startNextTurn() {
+        ft = fragmentManager.beginTransaction();
+        ft.setCustomAnimations(R.animator.flight_left_in, R.animator.flip_right_out);
+        if (hasNextTurn()) {
+            //currentVocab = pickANewVocab();
+            if (fromSRS) {
+                if (turn <= MAX_TURNS) {
+                    progressBar.setMax(MAX_TURNS);
+                    progressBar.setProgress(turn + 1);
+                    currentVocab = srs.getVocabRequest();
+                    ft.replace(R.id.container_exercise, new ExerciseInputFragment()).commit();
+                    turn++;
+                }
+            } else if (!fromSRS) {
+                progressBar.setMax(getMaxTurns());
+                if (newVocabs.size() > 0)  {
+                    currentVocab = newVocabs.remove(0);
+                    learnedVocabs.add(currentVocab);
+                    ft.replace(R.id.container_exercise, new ExerciseLearnFragment()).commit();
                 } else {
-                    allVocabs.add(vocab);
+                    currentVocab = learnedVocabs.get(turn);
+                    turn++;
+                    progressBar.setProgress(turn);
+                    ft.replace(R.id.container_exercise, new ExerciseInputFragment()).commit();
                 }
             }
         } else {
-            allVocabs.add(srs.getVocabRequest());
-        }
-    }
-
-    private void startNextTurn() {
-        ft = fragmentManager.beginTransaction();
-        ft.setCustomAnimations(R.animator.flight_left_in, R.animator.flip_right_out);
-
-        if (newVocabs.size() > 0) {
-            ft.replace(R.id.container_exercise, new ExerciseLearnFragment()).commit();
-        } else if(turn < allVocabs.size()) {
-            ProgressBar progressBar = (ProgressBar) findViewById(R.id.pb_exercise);
-            progressBar.setMax(allVocabs.size() + newVocabs.size());
-            progressBar.setProgress(turn + 1);
-            ft.replace(R.id.container_exercise, new ExerciseInputFragment()).commit();
-        } else {
             ft.replace(R.id.container_exercise, new ExerciseFinalScoreFragment()).commit();
         }
+
     }
 
     public void evaluateResult(boolean isCorrect) {
         if (isCorrect) {
             counterCorrect++;
         }
-        turn++;
         startNextTurn();
     }
 
     public Vocab getCurrentVocab() {
-        if (newVocabs.size() > 0) {
-            return newVocabs.get(turn);
-        } else if (allVocabs.size() > 0){
-            return allVocabs.get(turn);
+        return currentVocab;
+    }
+
+    private boolean hasNextTurn() {
+        if (fromSRS && turn < getMaxTurns()) {
+            return true;
+        } else if (turn < getMaxTurns()) {
+            return true;
         } else {
-            return null;
+            return false;
         }
     }
 
@@ -99,9 +103,9 @@ public class ExerciseActivity extends AppCompatActivity {
         return counterCorrect;
     }
 
-    public ArrayList<Vocab> getAllVocab() {
-        return allVocabs;
-    }
+  /*  public ArrayList<Vocab> getAllVocab() {
+        return learnedVocabs;
+    }*/
 
     @Override
     public void onBackPressed() {
@@ -139,12 +143,36 @@ public class ExerciseActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+    public SpacedRepititionSystem getSrs() {
+        return srs;
+    }
 
-    public void markAsLearned() {
 
-        if (newVocabs.size() > 0) {
-            allVocabs.add(newVocabs.remove(0));
+    private boolean checkSource() {
+        if (getIntent().hasExtra("SELECTED_UNIT")) { //Null Checking
+            return false;
+        } else {
+            return true;
         }
-        startNextTurn();
+    }
+
+    public int getMaxTurns() {
+        if (fromSRS) {
+            return MAX_TURNS;
+        } else {
+            return newVocabs.size() + learnedVocabs.size();
+        }
+    }
+
+    private void readIntent() {
+        Gson gson = new Gson();
+        Unit unit = gson.fromJson(getIntent().getStringExtra("SELECTED_UNIT"), Unit.class);
+        for (Vocab vocab : unit.getVocabsOfUnit()) {
+            if (vocab.getSrsLevel() == 0) {
+                newVocabs.add(vocab);
+            } else {
+                learnedVocabs.add(vocab);
+            }
+        }
     }
 }
