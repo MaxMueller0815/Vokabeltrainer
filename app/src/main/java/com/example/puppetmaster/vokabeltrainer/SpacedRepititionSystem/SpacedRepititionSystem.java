@@ -177,7 +177,7 @@ public class SpacedRepititionSystem {
             for(int i = 0; i < vocabTrainingHours.length; i++){
                 newVocabTrainingHours[i] = vocabTrainingHours[i];
             }
-            newVocabTrainingHours[vocabTrainingHours.length+1] = getActualTimeBlockHour();
+            newVocabTrainingHours[vocabTrainingHours.length] = getActualTimeBlockHour();
             this.vocabTrainingHours = newVocabTrainingHours;
         }
 

@@ -114,12 +114,10 @@ public class Notifier {
             double result = daytimefactor * ((accepted + (manual*factorManual)) / (accepted + declined + (manual*factorManual)));
 
             // get random number between 0.0 and 1.0 to compare the probability of the notification to get pushed or not
-            return (result <= Math.random());
+            return (result >= Math.random());
         }
 
         public static double getDayTimeFactor(int hourOfTheDay){
-
-            //TODO tageszeitfaktoren einstellen
 
             switch (hourOfTheDay){
                 case 2: return 1.0;
