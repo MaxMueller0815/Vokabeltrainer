@@ -142,6 +142,9 @@ public class SpacedRepititionSystem {
     * */
 
     public boolean handleAnswer(int language, Vocab vocab, String answer) {
+
+        //TODO count für den timeblock setzen
+
         boolean isCorrect = checkAnswer(language, vocab, answer);
         if (isCorrect) {
             vocab.increaseSrsLevel();
