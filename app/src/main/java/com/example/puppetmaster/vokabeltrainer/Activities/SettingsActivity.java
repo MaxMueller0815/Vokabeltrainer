@@ -22,15 +22,16 @@ import java.util.List;
 public class SettingsActivity extends AppCompatActivity {
     private MyDatabase db;
     private Spinner spinnerStart;
-    private String strStart;
+    private int startTime;
     private Spinner spinnerEnd;
-    private String strEnd;
+    private int endTime;
     private EditText etWorkload;
     private int workload;
     Switch switchArticle;
     Switch switchCapitalisation;
     private int inputRequiresArticle;
     private int inputRequiresCapitalisation;
+    private final int TIMESLOT_DURATION = 2;
 
     private SharedPreferences prefs;
 
@@ -60,8 +61,8 @@ public class SettingsActivity extends AppCompatActivity {
         // TODO Vermutlich ist es schöner wenn man die Uhrzeiten als Int speichert
         ArrayList<Object> settings = db.getSettings();
         workload = (int) settings.get(0);
-        strStart = settings.get(1).toString();
-        strEnd = settings.get(2).toString();
+        startTime = (int) settings.get(1);
+        endTime = (int) settings.get(2) + TIMESLOT_DURATION;
         inputRequiresArticle = (int) settings.get(3);
         inputRequiresCapitalisation = (int) settings.get(4);
         initSpinner();
@@ -90,8 +91,8 @@ public class SettingsActivity extends AppCompatActivity {
         spinnerStart.setAdapter(adapter);
         spinnerEnd.setAdapter(adapter);
 
-        setSpinnerValue(spinnerStart, strStart);
-        setSpinnerValue(spinnerEnd, strEnd);
+        setSpinnerValue(spinnerStart, startTime);
+        setSpinnerValue(spinnerEnd, endTime);
     }
 
     private void initInputMode() {
@@ -121,7 +122,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         workload = Integer.parseInt(etWorkload.getText().toString());
         int start = Integer.parseInt(spinnerStart.getSelectedItem().toString().split(":")[0]);
-        int end = Integer.parseInt(spinnerEnd.getSelectedItem().toString().split(":")[0]);
+        int end = Integer.parseInt(spinnerEnd.getSelectedItem().toString().split(":")[0]) - TIMESLOT_DURATION;
 
         db.saveSettings(workload, start, end, switchArticle.isChecked(), switchCapitalisation.isChecked());
 
@@ -138,10 +139,11 @@ public class SettingsActivity extends AppCompatActivity {
 
         }
 
-    private void setSpinnerValue(Spinner spinner, String myString) {
+    private void setSpinnerValue(Spinner spinner, int hour) {
         int index = 0;
         for(int i = 0; i < spinner.getCount(); i++){
-            if(spinner.getItemAtPosition(i).toString().equals(myString)){
+            // Die Zeitslots dauern immer zwei Stunden. Es werden zwei Stunden zum Startpunkt addiert, weil in der DB der Anfang des Zeitslot vermerkt ist
+            if(spinner.getItemAtPosition(i).toString().equals(String.format("%02d:00", hour))){
                 spinner.setSelection(i);
                 break;
             }
