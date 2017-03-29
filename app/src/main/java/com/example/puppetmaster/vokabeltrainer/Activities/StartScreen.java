@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
 import com.example.puppetmaster.vokabeltrainer.Entities.Topic;
@@ -35,6 +36,7 @@ import java.util.Calendar;
 
 public class StartScreen extends AppCompatActivity {
     private Toolbar toolbar;
+    private BottomNavigationView bottomNavigationView;
 
     public ArrayList<Topic> getTopics() {
         return topics;
@@ -91,7 +93,7 @@ public class StartScreen extends AppCompatActivity {
     }
 
     private void initBottomNavigation() {
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -100,12 +102,10 @@ public class StartScreen extends AppCompatActivity {
                         switch (item.getItemId()) {
                             case R.id.action_start:
                                 Fragment homeFragment = new HomeFragment();//Get Fragment Instance
-                                //homeFragment.setArguments(topicAsBundle());//Finally set argument bundle to fragment
                                 fragmentManager.beginTransaction().replace(R.id.container_start, homeFragment).commit();
                                 break;
                             case R.id.action_topics:
                                 Fragment topicsFragment = new TopicsFragment();//Get Fragment Instance
-                                //topicsFragment.setArguments(topicAsBundle());//Finally set argument bundle to fragment
                                 fragmentManager.beginTransaction().replace(R.id.container_start, topicsFragment).commit();
                                 break;
                             case R.id.action_game:
@@ -154,12 +154,12 @@ public class StartScreen extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
+    /*@Override
     public void onRestart() {
         super.onRestart();
             GetTask getTask = new GetTask(getApplicationContext());
             getTask.execute();
-    }
+    }*/
 
     private class GetTask extends AsyncTask<Object, Void, Void> {
         Context context;
@@ -177,16 +177,21 @@ public class StartScreen extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void v) {
             super.onPostExecute(v);
-            initToolBar();
-            initBottomNavigation();
+            Fragment homeFragment = new HomeFragment();
+            fragmentManager.beginTransaction().replace(R.id.container_start, homeFragment).commit();
             //TODO: Richtiges Fragment aufrufen
             if (!alreadyVisited) {
-                Fragment homeFragment = new HomeFragment();
-                fragmentManager.beginTransaction().replace(R.id.container_start, homeFragment).commit();
+                initToolBar();
+                initBottomNavigation();
                 ImageView loadingImage = (ImageView) findViewById(R.id.iv_loading);
                 loadingImage.setVisibility(View.GONE);
+            } else {
+                Toast.makeText(context, "Updating stats…",
+                        Toast.LENGTH_SHORT).show();
+                bottomNavigationView.setSelectedItemId(R.id.action_start);
+
             }
-            //alreadyVisited = true;
+            alreadyVisited = true;
         }
     }
 }

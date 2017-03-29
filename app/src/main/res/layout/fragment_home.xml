@@ -218,7 +218,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/btn_learn_words"
+            android:id="@+id/btn_srs_repetition"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ll_stats"
@@ -232,7 +232,7 @@
             android:id="@+id/tv_stats"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/btn_learn_words"
+            android:layout_below="@+id/btn_srs_repetition"
             android:layout_marginBottom="16dp"
             android:gravity="center"
             android:text="Daily Progress"

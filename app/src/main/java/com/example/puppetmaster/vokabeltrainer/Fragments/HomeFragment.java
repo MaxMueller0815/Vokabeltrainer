@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.puppetmaster.vokabeltrainer.Activities.ExerciseActivity;
 import com.example.puppetmaster.vokabeltrainer.Activities.SRSTesterActivity;
 import com.example.puppetmaster.vokabeltrainer.Activities.StartScreen;
 import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
@@ -19,6 +20,7 @@ import com.example.puppetmaster.vokabeltrainer.Entities.Unit;
 import com.example.puppetmaster.vokabeltrainer.R;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 import com.github.lzyzsd.circleprogress.ArcProgress;
+import com.google.gson.Gson;
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
@@ -56,6 +58,14 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getContext(), SRSTesterActivity.class));
+            }
+        });
+
+        Button repetitionButton = (Button) view.findViewById(R.id.btn_srs_repetition);
+        repetitionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), ExerciseActivity.class));
             }
         });
         return view;
