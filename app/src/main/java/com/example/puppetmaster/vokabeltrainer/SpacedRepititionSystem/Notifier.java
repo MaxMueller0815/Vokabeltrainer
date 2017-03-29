@@ -100,6 +100,7 @@ public class Notifier {
 
     public static class PushProbabilityCalculator {
 
+        // higher weight for manual app opening
         static double factorManual = 3.0;
 
         public static boolean pushOnThisHourOfTheDay(double accepted, double declined, double manual, int hourOfTheDay){

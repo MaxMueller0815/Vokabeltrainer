@@ -59,7 +59,7 @@ public class MyDatabase extends SQLiteAssetHelper {
                     countArray[1] = c.getInt(2);
                     countArray[2] = c.getInt(3);
 
-                    resultHashMap.put(Integer.parseInt(c.getString(0)), countArray);
+                    resultHashMap.put(c.getInt(0), countArray);
 
                     c.moveToNext();
             }
