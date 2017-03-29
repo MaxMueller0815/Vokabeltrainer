@@ -1,0 +1,138 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.puppetmaster.vokabeltrainer.Fragments.ExerciseLearnFragment">
+
+    <LinearLayout
+        android:id="@+id/ll_exercise_solution"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:weightSum="2">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/colorAccent2Dark"
+            android:elevation="4dp"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_best_solution"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="4dp"
+                    android:text="TextView"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_term"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="TextView"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14sp" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab_audio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="false"
+                    android:layout_margin="4dp"
+                    android:layout_toEndOf="@+id/tv_best_solution"
+                    android:clickable="true"
+                    app:backgroundTint="@color/colorPrimary"
+                    app:elevation="2dp"
+                    app:fabSize="mini"
+                    app:srcCompat="@drawable/speak" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="48dp">
+
+                </RelativeLayout>
+
+                <ProgressBar
+                    android:id="@+id/pb_wiktionary_loader"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="32dp" />
+
+                <WebView
+                    android:id="@+id/wv_wiki"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:clickable="false"
+                    android:longClickable="false"
+                    android:padding="16dp"
+                    android:visibility="invisible">
+
+                </WebView>
+
+                <TextView
+                    android:id="@+id/tv_no_wiki_found"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:gravity="center_horizontal"
+                    android:text="No Wiktionary entry found"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent3"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+        </ScrollView>
+
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_exercise_solution"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:clickable="true"
+        android:src="@drawable/ic_arrow_forward"
+        app:backgroundTint="@color/colorAccent2"
+        app:fabSize="normal"
+        app:srcCompat="@color/colorAccent2" />
+
+</RelativeLayout>

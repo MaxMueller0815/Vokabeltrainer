@@ -1,7 +1,6 @@
 package com.example.puppetmaster.vokabeltrainer.Activities;
 
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
@@ -13,6 +12,7 @@ import android.widget.ProgressBar;
 import com.example.puppetmaster.vokabeltrainer.Entities.Unit;
 import com.example.puppetmaster.vokabeltrainer.Fragments.ExerciseFinalScoreFragment;
 import com.example.puppetmaster.vokabeltrainer.Fragments.ExerciseInputFragment;
+import com.example.puppetmaster.vokabeltrainer.Fragments.ExerciseLearnFragment;
 import com.example.puppetmaster.vokabeltrainer.R;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.SpacedRepititionSystem;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
@@ -21,12 +21,13 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 
 public class ExerciseActivity extends AppCompatActivity {
-    private ArrayList<Vocab> allVocab;
+    private ArrayList<Vocab> allVocabs = new ArrayList<>();
+    private ArrayList<Vocab> newVocabs = new ArrayList<>();
     private static FragmentManager fragmentManager;
     private int turn = 0;
     private int counterCorrect = 0;
-    public Vocab currentVocab;
     public SpacedRepititionSystem srs;
+    private FragmentTransaction ft;
 
     public SpacedRepititionSystem getSrs() {
         return srs;
@@ -36,37 +37,43 @@ public class ExerciseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
+        srs = new SpacedRepititionSystem(this);
         fragmentManager = getFragmentManager();
         readIntent();
         startNextTurn();
-        srs = new SpacedRepititionSystem(this);
 
     }
 
     private void readIntent() {
         Intent intent = getIntent();
-        if (null != intent) { //Null Checking
+        if (intent.hasExtra("SELECTED_UNIT")) { //Null Checking
             Gson gson = new Gson();
             Unit unit = gson.fromJson(intent.getStringExtra("SELECTED_UNIT"), Unit.class);
-            allVocab = unit.getVocabsOfUnit();
+            for (Vocab vocab : unit.getVocabsOfUnit()) {
+                if (vocab.getSrsLevel() == 0) {
+                    newVocabs.add(vocab);
+                } else {
+                    allVocabs.add(vocab);
+                }
+            }
+        } else {
+            allVocabs.add(srs.getVocabRequest());
         }
     }
 
     private void startNextTurn() {
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-        if(turn > 0) {
-            ft.setCustomAnimations(R.animator.flight_left_in, R.animator.flip_right_out);
-        }
+        ft = fragmentManager.beginTransaction();
+        ft.setCustomAnimations(R.animator.flight_left_in, R.animator.flip_right_out);
 
-        if (turn < allVocab.size()) {
+        if (newVocabs.size() > 0) {
+            ft.replace(R.id.container_exercise, new ExerciseLearnFragment()).commit();
+        } else if(turn < allVocabs.size()) {
             ProgressBar progressBar = (ProgressBar) findViewById(R.id.pb_exercise);
-            progressBar.setMax(allVocab.size());
+            progressBar.setMax(allVocabs.size() + newVocabs.size());
             progressBar.setProgress(turn + 1);
-            Fragment exerciseInputFragment = new ExerciseInputFragment();//Get Fragment Instance
-            ft.replace(R.id.container_exercise, exerciseInputFragment).commit();
+            ft.replace(R.id.container_exercise, new ExerciseInputFragment()).commit();
         } else {
-            Fragment exerciseResultFragment= new ExerciseFinalScoreFragment();
-            ft.replace(R.id.container_exercise, exerciseResultFragment).commit();
+            ft.replace(R.id.container_exercise, new ExerciseFinalScoreFragment()).commit();
         }
     }
 
@@ -79,7 +86,13 @@ public class ExerciseActivity extends AppCompatActivity {
     }
 
     public Vocab getCurrentVocab() {
-        return allVocab.get(turn);
+        if (newVocabs.size() > 0) {
+            return newVocabs.get(turn);
+        } else if (allVocabs.size() > 0){
+            return allVocabs.get(turn);
+        } else {
+            return null;
+        }
     }
 
     public int getCounterCorrect() {
@@ -87,7 +100,7 @@ public class ExerciseActivity extends AppCompatActivity {
     }
 
     public ArrayList<Vocab> getAllVocab() {
-        return allVocab;
+        return allVocabs;
     }
 
     @Override
@@ -127,5 +140,11 @@ public class ExerciseActivity extends AppCompatActivity {
     }
 
 
+    public void markAsLearned() {
 
+        if (newVocabs.size() > 0) {
+            allVocabs.add(newVocabs.remove(0));
+        }
+        startNextTurn();
+    }
 }
