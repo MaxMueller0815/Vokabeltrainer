@@ -30,6 +30,7 @@ import com.example.puppetmaster.vokabeltrainer.Fragments.TopicsFragment;
 import com.example.puppetmaster.vokabeltrainer.Helper.BottomNavigationViewHelper;
 import com.example.puppetmaster.vokabeltrainer.R;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.PermanentAlarmReceiver;
+import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.SpacedRepititionSystem;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -83,10 +84,13 @@ public class StartScreen extends AppCompatActivity {
             editor.putInt("workload", 40);
             editor.putInt("hourStart", 10);
             editor.putInt("hourEnd", 18);
+            editor.putInt("alarmIntentCount", 1);
+            editor.putInt("numberOfAlarmsSet", 0);
             editor.putBoolean("firstTime", true);
             editor.apply();
         }
 
+        SpacedRepititionSystem srs = new SpacedRepititionSystem(StartScreen.this);
         fragmentManager = this.getFragmentManager();
         GetTask getTask = new GetTask(getApplicationContext());
         getTask.execute();

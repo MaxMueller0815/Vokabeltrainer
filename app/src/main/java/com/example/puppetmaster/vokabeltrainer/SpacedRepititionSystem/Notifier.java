@@ -44,12 +44,12 @@ public class Notifier {
         initTimeBlockArrayList(timeRange[0], numberOfTimeBlocks);
 
             this.alarmIntent = new Intent(context, AlarmReceiver.class);
-            this.pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
 
             this.manager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
 
             // set alarm for every timeblock
             for (int i = 0; i<timeblockList.size(); i++) {
+                this.pendingIntent = PendingIntent.getBroadcast(context, timeblockList.get(i).get(Calendar.HOUR_OF_DAY), alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 manager.set(AlarmManager.RTC_WAKEUP, timeblockList.get(i).getTimeInMillis(), pendingIntent);
             }
 
