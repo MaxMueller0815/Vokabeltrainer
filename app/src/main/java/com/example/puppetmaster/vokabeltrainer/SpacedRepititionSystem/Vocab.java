@@ -20,23 +20,23 @@ public class Vocab {
     private ArrayList<String> german;
     private int unitId;
     private int srsLevel;
-    private Date lastRevision;
-    private Date nextRevision;
+    private long lastRevision;
+    private long nextRevision;
     private int countCorrect;
     private int countFalse;
 
     public Vocab(int id, String english, ArrayList<String> german, int unitId, int srsLevel,
-                      String lastRevision, String nextRevision, int countCorrect, int countFalse) throws ParseException {
+                      long lastRevision, long nextRevision, int countCorrect, int countFalse) throws ParseException {
 
-        DateFormat format = new SimpleDateFormat(dateFormatString, Locale.ENGLISH);
+       // DateFormat format = new SimpleDateFormat(dateFormatString, Locale.ENGLISH);
 
         this.id = id;
         this.english = english;
         this.german = german;
         this.unitId = unitId;
         this.srsLevel = srsLevel;
-        this.lastRevision = format.parse(lastRevision);
-        this.nextRevision = format.parse(nextRevision);
+        this.lastRevision = lastRevision;
+        this.nextRevision = nextRevision;
         this.countCorrect = countCorrect;
         this.countFalse = countFalse;
 
@@ -64,8 +64,12 @@ public class Vocab {
     public void pushIntoWorkload(){
         this.srsLevel = 1;
 
+        Calendar calendar = Calendar.getInstance();
+
         Date currentDate = new Date();
-        this.nextRevision = new Date(currentDate.getTime() - 2 * 24 * 3600 * 1000);
+        calendar.add(Calendar.HOUR, 5);
+      //  this.nextRevision = new Date(currentDate.getTime() - 2 * 24 * 3600 * 1000);
+        this.nextRevision = calendar.getTimeInMillis();
 
     }
 
@@ -74,12 +78,13 @@ public class Vocab {
     }
 
     public void setLastRevision(){
-        this.lastRevision = new Date();
+        Calendar calendar = Calendar.getInstance();
+        this.lastRevision = calendar.getTimeInMillis();
     }
 
     public void setNextRevision(){
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(getLastRevision());
+        calendar.setTimeInMillis(getLastRevision());
 
         if (srsLevel == 1) {
             calendar.add(Calendar.HOUR, 5);
@@ -101,7 +106,7 @@ public class Vocab {
             calendar.add(Calendar.MONTH, 3);
         }
 
-        this.nextRevision = calendar.getTime();
+        this.nextRevision = calendar.getTimeInMillis();
     }
 
     public String getEnglish(){
@@ -137,9 +142,11 @@ public class Vocab {
 
     public long getRevisionDifference(){
 
-        long nextRevisionAsLong = nextRevision.getTime();
-        long currentTime = new Date().getTime();
-        return currentTime - nextRevisionAsLong;
+        Calendar calendar = Calendar.getInstance();
+
+      //  long nextRevisionAsLong = nextRevision.getTime();
+        long currentTime = calendar.getTimeInMillis();
+        return currentTime - nextRevision;
 
     }
 
@@ -148,12 +155,12 @@ public class Vocab {
     }
 
     //TODO: Funktion löschen, nur für Testing
-    public Date getLastRevision() {
+    public long getLastRevision() {
         return lastRevision;
     }
 
     //TODO: Funktion löschen, nur für Testing
-    public Date getNextRevision() {
+    public long getNextRevision() {
         return nextRevision;
     }
 

@@ -135,7 +135,7 @@ public class HomeFragment extends Fragment {
             double counterDay = 0;
             for (Vocab vocab : vocabs) {
                 Calendar calenderOfVocab = Calendar.getInstance();
-                calenderOfVocab.setTime(vocab.getLastRevision());
+                calenderOfVocab.setTimeInMillis(vocab.getLastRevision());
                 if (calenderOfVocab.get(Calendar.YEAR) == calendarPast.get(Calendar.YEAR) &&
                         calenderOfVocab.get(Calendar.DAY_OF_YEAR) == calendarPast.get(Calendar.DAY_OF_YEAR)) {
                     counterDay++;

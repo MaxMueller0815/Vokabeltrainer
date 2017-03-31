@@ -14,6 +14,7 @@ import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -25,8 +26,8 @@ public class SRSTesterActivity extends AppCompatActivity {
     private EditText etLastRevision;
     private EditText etCountCorrect;
     private EditText etCountFalse;
-    private Date lastRevision;
-    private Date nextRevision;
+    private long lastRevision;
+    private long nextRevision;
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.ENGLISH);
 
     private SpacedRepititionSystem srs;
@@ -74,12 +75,12 @@ public class SRSTesterActivity extends AppCompatActivity {
             etLevel = (EditText) findViewById(R.id.et_level);
             etLevel.setText("keine Vokabel vorhanden");
 
-            lastRevision = new Date();
+            lastRevision = Calendar.getInstance().getTimeInMillis();
             String strLastRevision = dateFormat.format(lastRevision);
             etLastRevision = (EditText) findViewById(R.id.et_last_revision);
             etLastRevision.setText(strLastRevision);
 
-            nextRevision = new Date();
+            nextRevision = Calendar.getInstance().getTimeInMillis();
             String strNextRevision = dateFormat.format(nextRevision);
             etNextRevision = (EditText) findViewById(R.id.et_next_revision);
             etNextRevision.setText(strNextRevision);

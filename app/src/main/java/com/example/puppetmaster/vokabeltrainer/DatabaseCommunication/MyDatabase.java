@@ -220,7 +220,7 @@ public class MyDatabase extends SQLiteAssetHelper {
             while (!c.isAfterLast()) {
                 try {
                     translations = getTranslations(c.getInt(0));
-                    vocabList.add(new Vocab(c.getInt(0), c.getString(1), translations, c.getInt(2), c.getInt(3), c.getString(4), c.getString(5), c.getInt(6), c.getInt(7)));
+                    vocabList.add(new Vocab(c.getInt(0), c.getString(1), translations, c.getInt(2), c.getInt(3), (long)c.getDouble(4), (long)c.getDouble(5), c.getInt(6), c.getInt(7)));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -294,7 +294,7 @@ public class MyDatabase extends SQLiteAssetHelper {
             while (!c.isAfterLast()) {
                 try {
                     translations = getTranslations(c.getInt(0));
-                    listOfAllVocab.add(new Vocab(c.getInt(0), c.getString(1), translations, c.getInt(2), c.getInt(3), c.getString(4), c.getString(5), c.getInt(6), c.getInt(7)));
+                    listOfAllVocab.add(new Vocab(c.getInt(0), c.getString(1), translations, c.getInt(2), c.getInt(3), (long)c.getDouble(4), (long)c.getDouble(5), c.getInt(6), c.getInt(7)));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
