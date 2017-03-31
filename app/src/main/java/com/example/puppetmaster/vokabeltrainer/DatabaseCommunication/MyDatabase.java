@@ -21,7 +21,7 @@ import java.util.HashMap;
 public class MyDatabase extends SQLiteAssetHelper {
 
     private static final String DATABASE_NAME = "vocabDB.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 1;
     private SQLiteDatabase db;
     private SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
