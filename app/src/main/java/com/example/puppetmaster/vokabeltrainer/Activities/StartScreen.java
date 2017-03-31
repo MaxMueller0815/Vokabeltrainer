@@ -65,7 +65,7 @@ public class StartScreen extends AppCompatActivity {
             // Max du kannst hier deine Anweisungen für die introscreens einbauen
 
             Intent permanentAlarmIntent = new Intent(this, PermanentAlarmReceiver.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, permanentAlarmIntent, 0);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, permanentAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
