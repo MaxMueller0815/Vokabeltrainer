@@ -14,7 +14,7 @@ import java.util.Locale;
 
 public class Vocab {
 
-    private String dateFormatString = "yyyy-MM-dd'T'HH:mm";
+  //  private String dateFormatString = "yyyy-MM-dd'T'HH:mm";
     private int id;
     private String english;
     private ArrayList<String> german;
