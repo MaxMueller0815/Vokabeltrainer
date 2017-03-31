@@ -264,13 +264,8 @@ public class MyDatabase extends SQLiteAssetHelper {
         contentValues.put("srsLevel", updatedVocab.getSrsLevel());
         contentValues.put("countCorrect", updatedVocab.getCountCorrect());
         contentValues.put("countFalse", updatedVocab.getCountFalse());
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-
-        String lastRevision = dateFormat.format(updatedVocab.getLastRevision());
-        String nextRevision = dateFormat.format(updatedVocab.getNextRevision());
-        contentValues.put("lastRevision", lastRevision);
-        contentValues.put("nextRevision", nextRevision);
+        contentValues.put("lastRevision", updatedVocab.getLastRevision());
+        contentValues.put("nextRevision", updatedVocab.getNextRevision());
         db.update("srs", contentValues, whereClause, null);
         Log.i("MyDatabase", updatedVocab.getGerman()+ ": "+contentValues.toString());
     }
