@@ -30,7 +30,7 @@ public class SpacedRepititionSystem {
 
     private int currentRequestListLength = 100;
     private int newVocabRequestedToday = 0;
-    private int newVocabToRequestOnOneDay = 15;
+    private int newVocabToRequestOnOneDay = 12;
 
     private int [] vocabTrainingHours;
 
