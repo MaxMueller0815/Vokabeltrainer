@@ -1,5 +1,4 @@
-﻿# Vokabeltrainer mit Assistenzsystem
- ### lEarned
+﻿# lEarned: Vokabeltrainer mit Assistenzsystem
  
  ### Features:
  - Spaced Repetition System: Effektives und effizientes Vokabellernen 
