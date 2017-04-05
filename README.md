@@ -1,4 +1,2 @@
-﻿# Vokabeltrainer
-
-i Love Pizza
-holahollllallaallallaskdlaks
+﻿# Vokabeltrainer mit Assistenzsystem
+ ### lEarned
