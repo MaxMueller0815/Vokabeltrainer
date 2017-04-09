@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.puppetmaster.vokabeltrainer.Fragments.TopicsFragment">
+    tools:context="com.example.puppetmaster.vokabeltrainer.Fragments.TopicsFragment"
+    android:tag="fragment_topics">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_topics"

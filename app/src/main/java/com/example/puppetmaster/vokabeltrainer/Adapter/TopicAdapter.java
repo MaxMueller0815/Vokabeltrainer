@@ -39,6 +39,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
         topicViewHolder.vCard.setTag(topic);
         topicViewHolder.vImage.setImageResource(topic.getImage());
         topicViewHolder.vTitle.setText(topic.getTitle());
+        topicViewHolder.vProgress.setText(topic.getProgress() + "%");
 
         topicViewHolder.vCard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,12 +69,14 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
         protected CardView vCard;
         protected ImageView vImage;
         protected TextView vTitle;
+        protected TextView vProgress;
 
         public TopicViewHolder(View v) {
             super(v);
             vCard = (CardView) v.findViewById(R.id.card_topic);
             vImage =  (ImageView) v.findViewById(R.id.iv_topic);
             vTitle = (TextView)  v.findViewById(R.id.tv_topic_title);
+            vProgress = (TextView) v.findViewById(R.id.tv_progress);
         }
     }
 }

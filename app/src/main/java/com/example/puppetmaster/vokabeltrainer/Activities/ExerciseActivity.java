@@ -14,6 +14,7 @@ import com.example.puppetmaster.vokabeltrainer.Entities.Unit;
 import com.example.puppetmaster.vokabeltrainer.Fragments.ExerciseFinalScoreFragment;
 import com.example.puppetmaster.vokabeltrainer.Fragments.ExerciseInputFragment;
 import com.example.puppetmaster.vokabeltrainer.R;
+import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.SpacedRepititionSystem;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 import com.google.gson.Gson;
 
@@ -25,14 +26,10 @@ public class ExerciseActivity extends AppCompatActivity {
     private int turn = 0;
     private int counterCorrect = 0;
     public Vocab currentVocab;
+    public SpacedRepititionSystem srs;
 
-
-    public int getTurn() {
-        return turn;
-    }
-
-    public int getSizeOfExercise() {
-        return allVocab.size();
+    public SpacedRepititionSystem getSrs() {
+        return srs;
     }
 
     @Override
@@ -42,6 +39,7 @@ public class ExerciseActivity extends AppCompatActivity {
         fragmentManager = getFragmentManager();
         readIntent();
         startNextTurn();
+        srs = new SpacedRepititionSystem(this);
 
     }
 

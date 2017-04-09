@@ -30,4 +30,18 @@ public class Unit {
     public ArrayList<Vocab> getVocabsOfUnit() {
         return vocabsOfUnit;
     }
+
+    public int getNumOfAllVocabs() {
+        return vocabsOfUnit.size();
+    }
+
+    public int getNumOfLearnedVocabs() {
+        int learnedVocabs = 0;
+        for (Vocab vocab : vocabsOfUnit) {
+            if(vocab.isPracticed()) {
+                learnedVocabs++;
+            }
+        }
+        return learnedVocabs;
+    }
 }

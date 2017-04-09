@@ -36,7 +36,14 @@ public class StartScreen extends AppCompatActivity {
 
     private ArrayList<Topic> topics = new ArrayList<Topic>();
     private static FragmentManager fragmentManager;
+    private boolean alreadyVisited = false;
 
+    /*
+    *   Vorschlag: beim Appstart einmal die Settings aus der Datenbank laden und nochmal in die
+    *   SharedPreferences speichern, bei jedem Speichervorgang der Settings die Datenbank überschreiben
+    *   dadurch kann sichergestellt werden, dass die SharedPreferences beim Appgebrauch auf dem aktuellen Stand sind?
+    *
+    * */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,14 +90,6 @@ public class StartScreen extends AppCompatActivity {
         bottomNavigationView.setVisibility(View.VISIBLE);
     }
 
-    /*private Bundle topicAsBundle() {
-        Bundle topicData = new Bundle();//Use bundle to pass data
-        Gson gson = new Gson();
-        String strTopics = gson.toJson(topics);
-        topicData.putString("topics", strTopics);//put string, int, etc in bundle with a key value
-        return topicData;
-    }*/
-
     public void initToolBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar_start);
         setSupportActionBar(toolbar);
@@ -113,14 +112,18 @@ public class StartScreen extends AppCompatActivity {
                 break;
             case R.id.menu_list_of_vocabs:
                 Intent intent = new Intent(getApplicationContext(), AllVocabsActivity.class);
-                //intent.putExtras(topicAsBundle());
                 startActivity(intent);
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-
+    @Override
+    public void onRestart() {
+        super.onRestart();
+            GetTask getTask = new GetTask(getApplicationContext());
+            getTask.execute();
+    }
 
     private class GetTask extends AsyncTask<Object, Void, Void> {
         Context context;
@@ -140,11 +143,14 @@ public class StartScreen extends AppCompatActivity {
             super.onPostExecute(v);
             initToolBar();
             initBottomNavigation();
-            Fragment homeFragment = new HomeFragment();//Get Fragment Instance
-            //homeFragment.setArguments(topicAsBundle());//Finally set argument bundle to fragment
-            fragmentManager.beginTransaction().replace(R.id.container_start, homeFragment).commit();
-            ImageView loadingImage = (ImageView) findViewById(R.id.iv_loading);
-            loadingImage.setVisibility(View.GONE);
+            //TODO: Richtiges Fragment aufrufen
+            if (!alreadyVisited) {
+                Fragment homeFragment = new HomeFragment();
+                fragmentManager.beginTransaction().replace(R.id.container_start, homeFragment).commit();
+                ImageView loadingImage = (ImageView) findViewById(R.id.iv_loading);
+                loadingImage.setVisibility(View.GONE);
+            }
+            //alreadyVisited = true;
         }
     }
 }

@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.puppetmaster.vokabeltrainer.Fragments.HomeFragment">
+    tools:context="com.example.puppetmaster.vokabeltrainer.Fragments.HomeFragment"
+    android:tag="fragment_home">
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 public class SRSDataBaseCommunicator {
 
+    private boolean isReady = true;
     private MyDatabase myDatabase;
 
     public SRSDataBaseCommunicator(Context context){
@@ -39,5 +40,6 @@ public class SRSDataBaseCommunicator {
     public ArrayList<Vocab> getVocabOfUnit(int id){
         return myDatabase.getListOfAllVocab();
     }
+
 
 }

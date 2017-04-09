@@ -1,6 +1,8 @@
 package com.example.puppetmaster.vokabeltrainer.Activities;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +32,8 @@ public class SettingsActivity extends AppCompatActivity {
     private int inputRequiresArticle;
     private int inputRequiresCapitalisation;
 
+    private SharedPreferences prefs;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +55,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
+    //TODO würde ich in die startscreen activity machen
     private void loadSettings() {
         // TODO Vermutlich ist es schöner wenn man die Uhrzeiten als Int speichert
         ArrayList<Object> settings = db.getSettings();
@@ -75,19 +80,10 @@ public class SettingsActivity extends AppCompatActivity {
         spinnerEnd = (Spinner) findViewById(R.id.spinner_end);
         ArrayAdapter<String> adapter;
         List<String> list = new ArrayList<String>();
-        list.add("00:00");
-        list.add("02:00");
-        list.add("04:00");
-        list.add("06:00");
-        list.add("08:00");
-        list.add("10:00");
-        list.add("12:00");
-        list.add("14:00");
-        list.add("16:00");
-        list.add("18:00");
-        list.add("20:00");
-        list.add("22:00");
-        list.add("24:00");
+        int i;
+        for (i = 0; i < 24; i = i + 2) {
+            list.add(String.format("%02d:00", i));
+        }
         adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, list);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -116,10 +112,30 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void saveSettings() {
+
+        this.prefs = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this);
+
+        System.out.println("####### ALTER WORKLOAD:  " + prefs.getInt("workload", 0));
+        System.out.println("####### ALTER HOURSTART:  " + prefs.getInt("hourStart", 0));
+        System.out.println("####### ALTER HOUREND:  " + prefs.getInt("hourEnd", 0));
+
         workload = Integer.parseInt(etWorkload.getText().toString());
-        strStart = spinnerStart.getSelectedItem().toString();
-        strEnd = spinnerEnd.getSelectedItem().toString();
-        db.saveSettings(workload, strStart, strEnd, switchArticle.isChecked(), switchCapitalisation.isChecked());
+        int start = Integer.parseInt(spinnerStart.getSelectedItem().toString().split(":")[0]);
+        int end = Integer.parseInt(spinnerEnd.getSelectedItem().toString().split(":")[0]);
+
+        db.saveSettings(workload, start, end, switchArticle.isChecked(), switchCapitalisation.isChecked());
+
+        // save to shared preferences
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("workload", workload);
+        editor.putInt("hourStart", start);
+        editor.putInt("hourEnd", end);
+        editor.apply();
+
+        System.out.println("####### WORKLOAD:  " + prefs.getInt("workload", 0));
+        System.out.println("####### HOURSTART:  " + prefs.getInt("hourStart", 0));
+        System.out.println("####### HOUREND:  " + prefs.getInt("hourEnd", 0));
+
         }
 
     private void setSpinnerValue(Spinner spinner, String myString) {

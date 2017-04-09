@@ -25,6 +25,7 @@ import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
 import com.example.puppetmaster.vokabeltrainer.Helper.WordHelper;
 import com.example.puppetmaster.vokabeltrainer.Helper.WiktionaryHelper;
 import com.example.puppetmaster.vokabeltrainer.R;
+import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.SpacedRepititionSystem;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 
 import org.jsoup.Jsoup;
@@ -60,13 +61,13 @@ public class ExerciseSolutionFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_exercise_solution, container, false);
         context = getContext();
         currentVocab = ((ExerciseActivity) this.getActivity()).getCurrentVocab();
+        translations = currentVocab.getGerman();
         Bundle inputBundle = this.getArguments();
         if (inputBundle != null) {
             userAnswer = inputBundle.getString("user_answer");
         }
 
         compareSolution();
-        playTTS();
         initUI();
         searchWiktionary();
         return view;
@@ -104,38 +105,28 @@ public class ExerciseSolutionFragment extends Fragment {
             tvAlternativeSolution.setText("Rarer: " + alternativeSolution);
         }
 
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_exercise_solution);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fabNext = (FloatingActionButton) view.findViewById(R.id.fab_exercise_solution);
+        fabNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((ExerciseActivity) getActivity()).evaluateResult(isCorrect);
             }
         });
+
+        FloatingActionButton fabAudio = (FloatingActionButton) view.findViewById(R.id.fab_audio);
+        fabAudio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                playTTS();
+            }
+        });
     }
 
     private void compareSolution() {
-        translations = currentVocab.getGerman();
-        userAnswer = WordHelper.cleanString(userAnswer.toLowerCase());
-        for (int i = 0; i < translations.size(); i++) {
-            if (userAnswer.equals(WordHelper.cleanString(translations.get(i).toLowerCase()))) {
-                isCorrect = true;
-                if (isCorrect && i > 0) {
-                    alternativeSolution = translations.get(i);
-                }
-            }
-        }
-        if (isCorrect) {
-            currentVocab.increaseCountCorrect();
-            currentVocab.increaseSrsLevel();
-        } else {
-            currentVocab.increaseCountFalse();
-            currentVocab.decreaseSrsLevel();
-        }
-        MyDatabase db = new MyDatabase(context);
-        db.updateSingleVocab(currentVocab);
-        db.close();
+        SpacedRepititionSystem srs = ((ExerciseActivity)this.getActivity()).getSrs();
+        isCorrect = srs.handleAnswer(2, currentVocab, userAnswer);
     }
-    private void playTTS() {
+    public void playTTS() {
         String phrase = currentVocab.getGerman().get(0);
 
         if (WordHelper.isNoun(phrase)) {
@@ -150,8 +141,6 @@ public class ExerciseSolutionFragment extends Fragment {
             public void onInit(int status) {
                 if (status != TextToSpeech.ERROR) {
                     tts.setLanguage(Locale.GERMANY);
-                    //tts.setPitch((float) 0.5);
-                    tts.setSpeechRate((float) 1);
                     String utteranceId = this.hashCode() + "";
                     tts.speak(finalPhrase, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
                 }
@@ -195,5 +184,15 @@ public class ExerciseSolutionFragment extends Fragment {
                 noEntry.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        //Close the Text to Speech Library
+        if(tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onDestroy();
     }
 }

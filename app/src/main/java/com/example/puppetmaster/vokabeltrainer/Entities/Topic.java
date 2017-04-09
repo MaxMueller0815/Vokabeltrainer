@@ -1,6 +1,7 @@
 package com.example.puppetmaster.vokabeltrainer.Entities;
 
 import com.example.puppetmaster.vokabeltrainer.R;
+import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 
 import java.util.ArrayList;
 
@@ -58,5 +59,25 @@ public class Topic {
 
     public ArrayList<Unit> getUnitsOfTopic() {
         return unitsOfTopic;
+    }
+
+    public int getProgress() {
+        return getNumOfLearnedVocabs() * 100 / getNumOfAllVocabs();
+    }
+
+    public int getNumOfAllVocabs() {
+        int allVocabs = 0;
+        for (Unit unit: unitsOfTopic) {
+            allVocabs += unit.getNumOfAllVocabs();
+        }
+        return allVocabs;
+    }
+
+    public int getNumOfLearnedVocabs() {
+        int learnedVocabs = 0;
+        for (Unit unit: unitsOfTopic) {
+            learnedVocabs += unit.getNumOfLearnedVocabs();
+        }
+        return learnedVocabs;
     }
 }

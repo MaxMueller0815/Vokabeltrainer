@@ -9,6 +9,9 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        //TODO random number generieren
+
         // TODO zu push notification ändern
         Toast.makeText(context, "Alarm running", Toast.LENGTH_SHORT).show();
     }
