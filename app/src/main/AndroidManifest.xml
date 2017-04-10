@@ -22,12 +22,8 @@
         <activity
             android:name=".Activities.StartScreen"
             android:theme="@style/AppTheme.NoActionBar">
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <activity
             android:name=".Activities.LearnActivity"
@@ -52,6 +48,34 @@
         <activity android:name=".Activities.ExerciseActivity"
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+
+        <activity
+            android:name=".Introduction.FirstName"
+            android:theme="@style/AppTheme.NoActionBar">
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Introduction.SecondIntroMotivation1"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Introduction.ThirdMotivationText"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Introduction.FourthImages"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Introduction.FifthSettings"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Introduction.SixthExplanation"
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>

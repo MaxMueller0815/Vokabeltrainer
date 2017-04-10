@@ -35,6 +35,9 @@ public class SecondIntroMotivation1 extends AppCompatActivity {
         buttonPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), FirstName.class);
+                startActivity(i);
+                finish();
             }
         });
     }

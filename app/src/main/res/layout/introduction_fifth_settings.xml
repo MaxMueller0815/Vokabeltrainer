@@ -47,57 +47,15 @@
             android:text="30" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/labelLearn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="What method would you prefer?"
-        android:textSize="22dp"
-        android:paddingLeft="15px"
-        android:paddingTop="15px"
-        android:layout_below="@+id/linLayout"
-        android:layout_marginTop="10dp" />
 
-    <LinearLayout
-        android:id="@+id/linLayoutMethod"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@id/labelLearn"
-        android:layout_alignParentStart="true"
-        android:paddingLeft="30sp"
-        android:paddingRight="30sp">
 
-        <Button
-            android:id="@+id/buttonTime"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:textSize="25sp"
-            android:textAllCaps="false"
-            android:text="time"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:layout_weight="0.5"
-            android:layout_margin="0dp"/>
-
-        <Button
-            android:id="@+id/buttonWords"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:textSize="25sp"
-            android:textAllCaps="false"
-            android:text="words"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:layout_weight="0.5"/>
-
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linLayoutPerBlock"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@id/linLayoutMethod"
+        android:layout_below="@id/linLayout"
         android:layout_alignParentStart="true">
 
 
@@ -106,7 +64,7 @@
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:paddingStart="15sp"
-            android:text="Words per learn block (10)"
+            android:text="How many words would like to learn per learn block? (10)"
             android:textSize="18sp"
             android:layout_margin="5sp"
             android:layout_weight="0.9" />
@@ -117,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.1"
             android:layout_marginRight="10sp"
-            android:layout_marginTop="5sp"
+            android:layout_marginTop="15sp"
             android:ems="10"
             android:textSize="25sp"
             android:inputType="number"
@@ -131,7 +89,7 @@
         android:text="Sleeping Habits:"
         android:textSize="22sp"
         android:paddingStart="15sp"
-        android:paddingTop="15sp"
+        android:layout_marginTop="15sp"
         android:layout_below="@+id/linLayoutPerBlock" />
 
     <LinearLayout

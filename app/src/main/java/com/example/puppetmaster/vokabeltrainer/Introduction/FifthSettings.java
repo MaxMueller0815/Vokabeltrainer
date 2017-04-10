@@ -33,7 +33,7 @@ public class FifthSettings extends AppCompatActivity {
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), FifthSettings.class);
+                Intent i = new Intent(getApplicationContext(), SixthExplanation.class);
                 startActivity(i);
                 finish();
             }

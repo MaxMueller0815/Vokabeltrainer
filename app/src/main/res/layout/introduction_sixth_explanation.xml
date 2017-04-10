@@ -9,8 +9,54 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="15sp"
-        android:text="How does this app work?"
+        android:text="The following points describe how the app works:"
         android:textSize="25sp" />
+
+
+    <TextView
+        android:id="@+id/labelExplanationNewWords"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15sp"
+        android:text="Learn new words"
+        android:textSize="25sp"
+        android:layout_below="@id/labelExplanationGeneral"/>
+
+    <TextView
+        android:id="@+id/textViewNewWords"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15sp"
+        android:text="In the navigation point words you can learn new words or go to button 'learn new words' "
+        android:textSize="18sp"
+        android:layout_below="@id/labelExplanationNewWords"/>
+
+    <TextView
+        android:id="@+id/labelExplanationSpacedRepitionSystem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15sp"
+        android:text="Spaced Repetition System"
+        android:textSize="25sp"
+        android:layout_below="@id/textViewNewWords"/>
+
+    <TextView
+        android:id="@+id/textViewSRS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15sp"
+        android:text="This app saves your progress and how often you learn what word. The system will show you the words that you should learn to the best time."
+        android:textSize="18sp"
+        android:layout_below="@id/labelExplanationSpacedRepitionSystem"/>
+
+    <TextView
+        android:id="@+id/labelExplanationSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15sp"
+        android:text="Settings"
+        android:textSize="25sp"
+        android:layout_below="@id/textViewSRS"/>
 
 
 
