@@ -30,6 +30,14 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New word"
+                    android:textColor="@color/colorAccentLight"
+                    android:textStyle="bold" />
+
+                <TextView
                     android:id="@+id/tv_best_solution"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -46,14 +54,14 @@
                     android:gravity="center_horizontal"
                     android:text="TextView"
                     android:textColor="@color/colorWhite"
-                    android:textSize="14sp" />
+                    android:textSize="18sp" />
 
                 <android.support.design.widget.FloatingActionButton
                     android:id="@+id/fab_audio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="false"
-                    android:layout_margin="4dp"
+                    android:layout_marginTop="8dp"
                     android:layout_toEndOf="@+id/tv_best_solution"
                     android:clickable="true"
                     app:backgroundTint="@color/colorPrimary"
@@ -77,25 +85,18 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="48dp">
-
-                </RelativeLayout>
-
                 <ProgressBar
                     android:id="@+id/pb_wiktionary_loader"
                     style="?android:attr/progressBarStyle"
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
-                    android:layout_marginTop="32dp" />
+                    android:layout_marginTop="16dp" />
 
                 <WebView
                     android:id="@+id/wv_wiki"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="16dp"
                     android:clickable="false"
                     android:longClickable="false"
                     android:padding="16dp"
@@ -107,7 +108,7 @@
                     android:id="@+id/tv_no_wiki_found"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="16dp"
                     android:gravity="center_horizontal"
                     android:text="No Wiktionary entry found"
                     android:textAlignment="center"
