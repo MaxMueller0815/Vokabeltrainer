@@ -21,7 +21,7 @@ import java.util.HashMap;
 public class MyDatabase extends SQLiteAssetHelper {
 
     private static final String DATABASE_NAME = "vocabDB.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
     private SQLiteDatabase db;
     private SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
@@ -258,16 +258,20 @@ public class MyDatabase extends SQLiteAssetHelper {
     }
 
     public void updateSingleVocab(Vocab updatedVocab) {
-        db = this.getWritableDatabase();
-        String whereClause = "id=" + updatedVocab.getId();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("srsLevel", updatedVocab.getSrsLevel());
-        contentValues.put("countCorrect", updatedVocab.getCountCorrect());
-        contentValues.put("countFalse", updatedVocab.getCountFalse());
-        contentValues.put("lastRevision", updatedVocab.getLastRevision());
-        contentValues.put("nextRevision", updatedVocab.getNextRevision());
-        db.update("srs", contentValues, whereClause, null);
-        Log.i("MyDatabase", updatedVocab.getGerman()+ ": "+contentValues.toString());
+        try {
+            db = this.getWritableDatabase();
+            String whereClause = "id=" + updatedVocab.getId();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("srsLevel", updatedVocab.getSrsLevel());
+            contentValues.put("countCorrect", updatedVocab.getCountCorrect());
+            contentValues.put("countFalse", updatedVocab.getCountFalse());
+            contentValues.put("lastRevision", updatedVocab.getLastRevision());
+            contentValues.put("nextRevision", updatedVocab.getNextRevision());
+            db.update("srs", contentValues, whereClause, null);
+            Log.i("MyDatabase", updatedVocab.getGerman()+ ": "+contentValues.toString());
+        } finally {
+            db.close();
+        }
     }
 
     /*
