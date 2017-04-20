@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,15 @@ import java.util.ArrayList;
 
 public class TopicsFragment extends Fragment {
     ArrayList<Topic> topics = new ArrayList<>();
+    TopicAdapter adapter;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.v("TopicFragement","Has been resumed");
+        topics =  ((StartScreen)this.getActivity()).getTopics();
+        adapter.notifyDataSetChanged();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,8 +39,8 @@ public class TopicsFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);
-        TopicAdapter ta = new TopicAdapter(topics);
-        recList.setAdapter(ta);
+        adapter = new TopicAdapter(topics);
+        recList.setAdapter(adapter);
         return view;
     }
 

@@ -64,6 +64,12 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
         return new TopicViewHolder(itemView);
     }
 
+    public void updateData(ArrayList<Topic> updatedList){
+        topicList.clear();
+        this.topicList = updatedList;
+        notifyDataSetChanged();
+    }
+
 
     public static class TopicViewHolder extends RecyclerView.ViewHolder {
         protected CardView vCard;

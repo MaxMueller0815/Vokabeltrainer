@@ -3,6 +3,7 @@ package com.example.puppetmaster.vokabeltrainer.Activities;
 import android.app.AlarmManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -34,6 +35,7 @@ import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.SpacedRepi
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class StartScreen extends AppCompatActivity {
     private Toolbar toolbar;
@@ -105,12 +107,13 @@ public class StartScreen extends AppCompatActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.action_start:
-                                Fragment homeFragment = new HomeFragment();//Get Fragment Instance
-                                fragmentManager.beginTransaction().replace(R.id.container_start, homeFragment).commit();
+                                fragmentManager.beginTransaction().replace(R.id.container_start, new HomeFragment()).addToBackStack("HOME_FRAGMENT").commit();
+                                //fragmentManager.beginTransaction().replace(R.id.container_start, new HomeFragment(), "HOME_FRAGMENT").commit();
                                 break;
                             case R.id.action_topics:
-                                Fragment topicsFragment = new TopicsFragment();//Get Fragment Instance
-                                fragmentManager.beginTransaction().replace(R.id.container_start, topicsFragment).commit();
+                                fragmentManager.beginTransaction().replace(R.id.container_start, new TopicsFragment()).addToBackStack("TOPICS_FRAGMENT").commit();
+
+                                //fragmentManager.beginTransaction().replace(R.id.container_start, new TopicsFragment(), "TOPICS_FRAGMENT").commit();
                                 break;
                             case R.id.action_game:
                                 fragmentManager.beginTransaction()
@@ -158,12 +161,12 @@ public class StartScreen extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /*@Override
+    @Override
     public void onRestart() {
         super.onRestart();
             GetTask getTask = new GetTask(getApplicationContext());
             getTask.execute();
-    }*/
+    }
 
     private class GetTask extends AsyncTask<Object, Void, Void> {
         Context context;
@@ -181,19 +184,25 @@ public class StartScreen extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void v) {
             super.onPostExecute(v);
-            Fragment homeFragment = new HomeFragment();
-            fragmentManager.beginTransaction().replace(R.id.container_start, homeFragment).commit();
             //TODO: Richtiges Fragment aufrufen
             if (!alreadyVisited) {
                 initToolBar();
                 initBottomNavigation();
+                fragmentManager.beginTransaction().replace(R.id.container_start, new HomeFragment()).addToBackStack("HOME_FRAGMENT").commit();
+                // Hide splashscreen
                 ImageView loadingImage = (ImageView) findViewById(R.id.iv_loading);
                 loadingImage.setVisibility(View.GONE);
             } else {
-                Toast.makeText(context, "Updating stats…",
-                        Toast.LENGTH_SHORT).show();
-                bottomNavigationView.setSelectedItemId(R.id.action_start);
+                int index = bottomNavigationView.getSelectedItemId();
+                if (index == 0) {
+                    fragmentManager.beginTransaction().replace(R.id.container_start, new HomeFragment()).addToBackStack("HOME_FRAGMENT").commit();
+                } else {
+                    /*Log.v("BackStackEntryCount", ""+fragmentManager.getBackStackEntryCount());
+                    fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1);*/
 
+                    fragmentManager.beginTransaction().replace(R.id.container_start, new TopicsFragment()).addToBackStack(null).commit();
+                }
+                Toast.makeText(context, "Updating stats…", Toast.LENGTH_SHORT).show();
             }
             alreadyVisited = true;
         }

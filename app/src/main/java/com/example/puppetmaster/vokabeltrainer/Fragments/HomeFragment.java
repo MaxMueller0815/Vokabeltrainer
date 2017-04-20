@@ -2,7 +2,9 @@ package com.example.puppetmaster.vokabeltrainer.Fragments;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,12 +64,19 @@ public class HomeFragment extends Fragment {
         });
 
         Button repetitionButton = (Button) view.findViewById(R.id.btn_srs_repetition);
-        repetitionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getContext(), ExerciseActivity.class));
-            }
-        });
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getContext());
+        int wordsInSRS = settings.getInt("numberOfWordsInWorkload", 0);
+        if (wordsInSRS > 0) {
+            repetitionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getContext(), ExerciseActivity.class));
+                }
+            });
+        } else {
+            repetitionButton.setVisibility(View.GONE);
+        }
+
         return view;
     }
 
@@ -75,6 +84,10 @@ public class HomeFragment extends Fragment {
         workload = new MyDatabase(getContext()).getWorkload();
         TextView tvWorkload = (TextView) view.findViewById(R.id.tv_workload);
         tvWorkload.setText("" + workload + " words");
+    }
+
+    private void retrieveNumberOfWords() {
+
     }
 
     private void retrieveTopics() {
