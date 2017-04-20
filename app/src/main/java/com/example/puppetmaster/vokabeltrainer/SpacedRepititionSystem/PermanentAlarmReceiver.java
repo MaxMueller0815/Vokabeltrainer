@@ -71,9 +71,7 @@ public class PermanentAlarmReceiver extends BroadcastReceiver {
         editor.putString("pushNotificationHours", "100");
         editor.putString("trainingVocabHours", "100");
         editor.apply();
-
-        // initialize srs to set the notifications for the new day
-        SpacedRepititionSystem srs = new SpacedRepititionSystem(context);
+        
     }
 
     private void initializeArraysForCountManagement(int [] notList, int [] trainList){
