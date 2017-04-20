@@ -46,6 +46,11 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         //only push the notification if actual time matches the defined time settings
         if(actualTimeFrame >= hourStart && actualTimeFrame < hourEnd && pushNotification){
+
+            // at first add the actual time frame to the shared preferences
+            addActualTimeToSharedPreferences(actualTimeFrame, prefs);
+
+            //now build the notification
             NotificationManager notif=(NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
             Notification.Builder builder = new Notification.Builder(context);
             builder.setContentTitle("lEarned push notification")
@@ -82,5 +87,26 @@ public class AlarmReceiver extends BroadcastReceiver {
         }else{
             return (calendar.get(Calendar.HOUR_OF_DAY) - 1);
         }
+    }
+
+    public void addActualTimeToSharedPreferences(int time, SharedPreferences prefs){
+        String savedString = prefs.getString("pushNotificationHours", "100");
+        String[] st = savedString.split(",");
+
+        int[] notList = new int[st.length + 1];
+        for (int i = 0; i < st.length; i++) {
+            notList [i] = Integer.parseInt(st[i]);
+        }
+
+        notList[notList.length-1] = time;
+
+        StringBuilder strb = new StringBuilder();
+        for (int i = 0; i < notList.length; i++) {
+            strb.append(notList[i]).append(",");
+        }
+
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("pushNotificationHours", strb.toString());
+        editor.apply();
     }
 }
