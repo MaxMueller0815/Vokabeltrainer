@@ -1,5 +1,6 @@
 package com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,7 +13,7 @@ import java.util.Locale;
  * Created by florian on 11.01.17.
  */
 
-public class Vocab {
+public class Vocab implements Serializable {
 
   //  private String dateFormatString = "yyyy-MM-dd'T'HH:mm";
     private int id;
@@ -85,7 +86,6 @@ public class Vocab {
     public void setNextRevision(){
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(getLastRevision());
-
         if (srsLevel == 1) {
             calendar.add(Calendar.HOUR, 5);
         } else if (srsLevel == 2) {
@@ -105,6 +105,28 @@ public class Vocab {
         } else if (srsLevel == 9) {
             calendar.add(Calendar.MONTH, 3);
         }
+
+
+        /*// TEST VALUES
+        if (srsLevel == 1) {
+            calendar.add(Calendar.MINUTE, 1);
+        } else if (srsLevel == 2) {
+            calendar.add(Calendar.MINUTE, 3);
+        } else if (srsLevel == 3) {
+            calendar.add(Calendar.MINUTE, 5);
+        } else if (srsLevel == 4) {
+            calendar.add(Calendar.DATE, 2);
+        } else if (srsLevel == 5) {
+            calendar.add(Calendar.DATE, 5);
+        } else if (srsLevel == 6) {
+            calendar.add(Calendar.DATE, 14);
+        } else if (srsLevel == 7) {
+            calendar.add(Calendar.MONTH, 1);
+        } else if (srsLevel == 8) {
+            calendar.add(Calendar.MONTH, 2);
+        } else if (srsLevel == 9) {
+            calendar.add(Calendar.MONTH, 3);
+        }*/
 
         this.nextRevision = calendar.getTimeInMillis();
     }
