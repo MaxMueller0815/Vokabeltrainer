@@ -3,6 +3,7 @@ package com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.SRSDataBaseCommunicator;
 import com.example.puppetmaster.vokabeltrainer.Helper.WordHelper;
@@ -26,6 +27,7 @@ public class SpacedRepititionSystem {
     private SharedPreferences prefs;
 
     private ArrayList<Vocab> currentRequestList = new ArrayList<Vocab>();
+
     private Vocab currentVocab;
 
     private int currentRequestListLength = 100;
@@ -105,7 +107,6 @@ public class SpacedRepititionSystem {
     *
     * */
     public void initCurrentRequestList() {
-
         // HashMap helps to sort the vocab by the datedifference (currentdate - nextRevision)
         HashMap<Long, Vocab> helperVocabHashMap = new HashMap<Long, Vocab>();
         ArrayList<Vocab> allVocab = new ArrayList<Vocab>();
@@ -120,7 +121,8 @@ public class SpacedRepititionSystem {
             long revisionDifference = vocab.getRevisionDifference();
 
             if (revisionDifference > 0) {
-                System.out.println("revisiondifferenz gefunden:  #####################");
+                //System.out.println("revisiondifferenz gefunden:  #####################");
+                Log.v("Revision-Diff. gefunden", vocab.getEnglish() + ": " + revisionDifference/3600000 + "h");
                 helperVocabHashMap.put(revisionDifference, vocab);
                 revisionDifferences.add(revisionDifference);
             }
@@ -130,14 +132,15 @@ public class SpacedRepititionSystem {
         System.out.println("helperVocabHashmap :  ###### " + helperVocabHashMap.size());
         System.out.println(" #### revisiondifferences: " + revisionDifferences.toString());
 
-        for (int i = 0; i < revisionDifferences.size(); i++) {
+        // Ich glaube, die doppelte For-Schleife ist falsch und führt zu Duplikaten - oder übersehe ich da was?
+        //for (int i = 0; i < revisionDifferences.size(); i++) {
             for (int j = 1; j <= currentRequestListLength; j++) {
                 if(revisionDifferences.size() >= j){
                     Vocab vocabToAdd = helperVocabHashMap.get(revisionDifferences.get(revisionDifferences.size() - j));
                     currentRequestList.add(vocabToAdd);
                 }
             }
-        }
+        //}
 
         System.out.println("requestlist initialisiert:  " + currentRequestList.toString());
     }
@@ -254,5 +257,10 @@ public class SpacedRepititionSystem {
         }
         return false;
     }
+
+    public ArrayList<Vocab> getCurrentRequestList() {
+        return currentRequestList;
+    }
+
 
 }
