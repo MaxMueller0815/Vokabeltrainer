@@ -52,12 +52,7 @@ public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.UnitViewHolder
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), ExerciseActivity.class);
-                Bundle mBundle = new Bundle();
-                Gson gson = new Gson();
-                String unitAsJson = gson.toJson(unit);
-                mBundle.putString("SELECTED_UNIT", unitAsJson);
-                //mBundle.putInt("SELECTED_TOPIC", topicID);
-                intent.putExtras(mBundle);
+                intent.putExtra("WORD_LIST", unit.getVocabsOfUnit());
                 v.getContext().startActivity(intent);
             }
         });
