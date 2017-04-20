@@ -17,11 +17,14 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.puppetmaster.vokabeltrainer.Activities.ExerciseActivity;
+import com.example.puppetmaster.vokabeltrainer.Adapter.VocabAdapter;
 import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
+import com.example.puppetmaster.vokabeltrainer.Entities.ExerciseLogic;
 import com.example.puppetmaster.vokabeltrainer.Helper.WordHelper;
 import com.example.puppetmaster.vokabeltrainer.Helper.WiktionaryHelper;
 import com.example.puppetmaster.vokabeltrainer.R;
@@ -60,7 +63,7 @@ public class ExerciseSolutionFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_exercise_solution, container, false);
         context = getContext();
-        currentVocab = ((ExerciseActivity) this.getActivity()).getCurrentVocab();
+        currentVocab = ((ExerciseActivity) this.getActivity()).getExercise().getCurrentVocab();
         translations = currentVocab.getGerman();
         Bundle inputBundle = this.getArguments();
         if (inputBundle != null) {

@@ -56,7 +56,7 @@ public class ExerciseLearnFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_learn, container, false);
         context = getContext();
-        currentVocab = ((ExerciseActivity) this.getActivity()).getCurrentVocab();
+        currentVocab = ((ExerciseActivity) this.getActivity()).getExercise().getCurrentVocab();
         translations = currentVocab.getGerman();
 
         initUI();
@@ -89,7 +89,7 @@ public class ExerciseLearnFragment extends Fragment {
         fabNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((ExerciseActivity) getActivity()).startNextTurn();
+                ((ExerciseActivity) getActivity()).markAsLearned();
             }
         });
 

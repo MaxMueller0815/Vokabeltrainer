@@ -36,7 +36,7 @@ public class ExerciseInputFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_exercise_input, container, false);
-        currentVocab = ((ExerciseActivity)this.getActivity()).getCurrentVocab();
+        currentVocab = ((ExerciseActivity) this.getActivity()).getExercise().getCurrentVocab();
         TextView tvQuestion = (TextView) view.findViewById(R.id.tv_question);
         tvQuestion.setText(currentVocab.getEnglish());
         solutionInput = (EditText) view.findViewById(R.id.et_user_answer);
