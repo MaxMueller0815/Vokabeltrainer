@@ -40,18 +40,30 @@ public class Notifier {
         // Notification Zeitpunkt Ende
         this.timeRange[1] = prefs.getInt("hourEnd", 0);
 
-        int numberOfTimeBlocks = calculateNumberOfTimeBlocks();
-        initTimeBlockArrayList(timeRange[0], numberOfTimeBlocks);
+     //   int numberOfTimeBlocks = calculateNumberOfTimeBlocks();
+     //   initTimeBlockArrayList(timeRange[0], numberOfTimeBlocks);
 
-            this.alarmIntent = new Intent(context, AlarmReceiver.class);
-
-            this.manager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
-
+        this.alarmIntent = new Intent(context, AlarmReceiver.class);
+        this.manager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+/**
             // set alarm for every timeblock
             for (int i = 0; i<timeblockList.size(); i++) {
                 this.pendingIntent = PendingIntent.getBroadcast(context, timeblockList.get(i).get(Calendar.HOUR_OF_DAY), alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 manager.set(AlarmManager.RTC_WAKEUP, timeblockList.get(i).getTimeInMillis(), pendingIntent);
             }
+
+ **/
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 1);
+
+        //set alarm every two hours on every day
+        for(int i = 0; i<12; i++){
+            calendar.set(Calendar.HOUR_OF_DAY, (i*2));
+            this.pendingIntent = PendingIntent.getBroadcast(context, (i*2), this.alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            this.manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, this.pendingIntent);
+        }
 
     }
 

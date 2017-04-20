@@ -39,7 +39,6 @@ public class SpacedRepititionSystem {
     public SpacedRepititionSystem(Context context) {
 
         this.dbCommunicator = new SRSDataBaseCommunicator(context);
-        this.notifier = new Notifier(context, this.dbCommunicator);
 
         this.prefs = PreferenceManager.getDefaultSharedPreferences(context);
 

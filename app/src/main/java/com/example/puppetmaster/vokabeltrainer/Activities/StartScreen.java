@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
+import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.SRSDataBaseCommunicator;
 import com.example.puppetmaster.vokabeltrainer.Entities.Topic;
 import com.example.puppetmaster.vokabeltrainer.Fragments.GameFragment;
 import com.example.puppetmaster.vokabeltrainer.Fragments.HomeFragment;
@@ -30,6 +31,7 @@ import com.example.puppetmaster.vokabeltrainer.Fragments.ProfileFragment;
 import com.example.puppetmaster.vokabeltrainer.Fragments.TopicsFragment;
 import com.example.puppetmaster.vokabeltrainer.Helper.BottomNavigationViewHelper;
 import com.example.puppetmaster.vokabeltrainer.R;
+import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Notifier;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.PermanentAlarmReceiver;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.SpacedRepititionSystem;
 
@@ -81,6 +83,8 @@ public class StartScreen extends AppCompatActivity {
                     AlarmManager.INTERVAL_DAY, pendingIntent);
 
             System.out.println("______setze permanenten alarm auf 00:00:01 Uhr");
+
+            Notifier notifier = new Notifier(this, new SRSDataBaseCommunicator(this));
 
             SharedPreferences.Editor editor = prefs.edit();
             editor.putInt("workload", 40);
