@@ -7,9 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.example.puppetmaster.vokabeltrainer.Activities.ExerciseActivity;
+import com.example.puppetmaster.vokabeltrainer.Adapter.VocabAdapter;
+import com.example.puppetmaster.vokabeltrainer.Entities.ExerciseLogic;
 import com.example.puppetmaster.vokabeltrainer.R;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 
@@ -17,8 +21,6 @@ import java.util.ArrayList;
 
 public class ExerciseFinalScoreFragment extends Fragment {
     View view;
-    int counterCorrect;
-    ArrayList<Vocab> allVocab;
     public ExerciseFinalScoreFragment() {
         // Required empty public constructor
     }
@@ -33,10 +35,11 @@ public class ExerciseFinalScoreFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_exercise_final_score, container, false);
-        counterCorrect = ((ExerciseActivity)this.getActivity()).getCounterCorrect();
+        ExerciseLogic exercise = ((ExerciseActivity)this.getActivity()).getExercise();
+        int counterCorrect = exercise.getVocabsCorrect().size();
+        int listSize = ((ExerciseActivity)this.getActivity()).getExercise().getVocabsAll().size();
 
         ImageView ivSolution = (ImageView) view.findViewById(R.id.iv_solution);
-        int listSize = ((ExerciseActivity)this.getActivity()).getMaxTurns();
         double result = (double) counterCorrect / (double) listSize ;
         String title = "";
         String description = "Du hast " + counterCorrect +  " von "  + listSize +  " Vokabeln richtig!";
@@ -70,6 +73,43 @@ public class ExerciseFinalScoreFragment extends Fragment {
                 getActivity().finish();
             }
         });
+
+        ListView listViewFalse = (ListView) view.findViewById(R.id.list_false_vocabs);
+        if (exercise.getVocabsCorrect().size() > 0) {
+            VocabAdapter adapterFalse = new VocabAdapter(getContext(), exercise.getVocabsFalse());
+            listViewFalse.setAdapter(adapterFalse);
+        } else {
+            listViewFalse.setVisibility(View.GONE);
+        }
+
+        ListView listViewCorrect = (ListView) view.findViewById(R.id.list_correct_vocabs);
+        if (exercise.getVocabsCorrect().size() > 0) {
+            VocabAdapter adapterCorrect = new VocabAdapter(getContext(), exercise.getVocabsCorrect());
+            listViewCorrect.setAdapter(adapterCorrect);
+        } else {
+            listViewCorrect.setVisibility(View.GONE);
+        }
+
+        TabHost host = (TabHost) view.findViewById(R.id.tabHost);
+        host.setup();
+
+        //Tab 1
+        TabHost.TabSpec spec = host.newTabSpec("Overview");
+        spec.setContent(R.id.tab1);
+        spec.setIndicator("Overview");
+        host.addTab(spec);
+
+        //Tab 2
+        spec = host.newTabSpec("False");
+        spec.setContent(R.id.tab2);
+        spec.setIndicator("False");
+        host.addTab(spec);
+
+        //Tab 3
+        spec = host.newTabSpec("Correct");
+        spec.setContent(R.id.tab3);
+        spec.setIndicator("Correct");
+        host.addTab(spec);
         return view;
     }
 
