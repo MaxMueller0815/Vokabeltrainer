@@ -18,6 +18,15 @@ import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 
 import java.util.ArrayList;
 
+/*Die Exercise-Activity wird angezeigt, wenn der Nutzer Wörter einer Unit lernen möchte oder Wörter wiederholt, die vom SRS-Hintergrundservice vorgeschlagen werden. Die Activity zeigt aufeinanderfolgend folgende 4 Fragments an:
+- ExerciseLearnFragment: Neue Wörter werden eingeblendet, damit der Nutzer sie sich einprägen kann, es findet keine Abfrage statt
+- ExerciseInputFragment: Hier muss der Nutzer die richtige Übersetzung eintippen
+- ExerciseSolutionFragment: Ob die Vokabel richtig übersetzt wurde, wird in diesem Fragment angezeigt
+- ExerciseFinalScoreFragment: Zu Ende eines Sets erhält der Nutzer eine Auswertung seiner Gesamtleistung in dieser Runde
+
+Die rundenbasierte Logik wird durch ExerciseLogic geregelt. */
+
+
 public class ExerciseActivity extends AppCompatActivity {
     ExerciseLogic exercise;
     private boolean fromSRS;
@@ -30,13 +39,19 @@ public class ExerciseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
-        srs = new SpacedRepititionSystem(this);
         progressBar = (ProgressBar) findViewById(R.id.pb_exercise);
 
+        // SRS wird später für die Auswertung und Aktualisierung in der DB benötigt
+        srs = new SpacedRepititionSystem(this);
+
+
         if (getIntent().hasExtra("WORD_LIST")) { //Null Checking
+            // Wenn der Nutzer (manuell) eine Unit auswählt, die er/sie lernen möchte
+            // TODO: Die Unterscheidung zwischen fromSRS müsste man eingentlich löschen können
             fromSRS = false;
             exercise = new ExerciseLogic((ArrayList<Vocab>) getIntent().getSerializableExtra("WORD_LIST"));
         } else {
+            // Wenn es sich um eine Wiederholung bereits gelernter Wörter handelt, die durch das Notification-System ausgelöst werden, werden die Liste der abzuarbeitenden Vokabeln vom SRS ausgewählt.
             exercise = new ExerciseLogic(new SpacedRepititionSystem(getApplicationContext()).getCurrentRequestList());
         }
 
@@ -48,40 +63,47 @@ public class ExerciseActivity extends AppCompatActivity {
         ft = fragmentManager.beginTransaction();
         ft.setCustomAnimations(R.animator.flight_left_in, R.animator.flip_right_out);
 
+
         if (exercise.nextVocab().getSrsLevel() == 0) {
+            // Ansicht laden, in der der Nutzer neue, unbekannte Vokabeln erlernt (allg. Wörter auf SRS-Level 0)
             ft.replace(R.id.container_exercise, new ExerciseLearnFragment()).commit();
         } else {
+            // Ansicht laden, in dem das Wort direkt abgefragt wird
             progressBar.setProgress(exercise.getNextTurn());
             ft.replace(R.id.container_exercise, new ExerciseInputFragment()).commit();
         }
     }
 
+    // Diese Funktion wird im ExerciseSolutionFragement aufgerufen
     public void evaluateResult(boolean isCorrect) {
         exercise.evaluate(isCorrect);
         if (exercise.hasNextTurn()) {
             startNextTurn();
         } else {
-            // Show final score
+            // Finale Bewertung einblenden, wenn keine weiteren Wörter gelernt/wiederholt werden müssen
             ft = fragmentManager.beginTransaction();
             ft.setCustomAnimations(R.animator.flight_left_in, R.animator.flip_right_out);
             ft.replace(R.id.container_exercise, new ExerciseFinalScoreFragment()).commit();
         }
     }
 
-    public ExerciseLogic getExercise() {
-        return exercise;
-    }
-
+    // Sorgt dafür, dass nachdem ein unbekanntes Wort zum ersten Mal angezeigt wurde, direkt danach eine Abfrage stattfindet
     public void markAsLearned() {
         ft = fragmentManager.beginTransaction();
         ft.setCustomAnimations(R.animator.flight_left_in, R.animator.flip_right_out);
         ft.replace(R.id.container_exercise, new ExerciseInputFragment()).commit();
     }
 
+    // Diverse Getter, die in den zur Activity gehörenden Fragements aufgerufen werden
+    public ExerciseLogic getExercise() {
+        return exercise;
+    }
+
     public SpacedRepititionSystem getSrs() {
         return srs;
     }
 
+    // Eine AlertBox bittet den Nutzer darum, den Vorzeitigen Abbruch eines Übung-Sets zu bestätigen
     @Override
     public void onBackPressed() {
         showAlertDialogExit();
