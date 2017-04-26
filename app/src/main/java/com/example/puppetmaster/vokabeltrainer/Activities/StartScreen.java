@@ -49,7 +49,7 @@ public class StartScreen extends AppCompatActivity {
 
     private ArrayList<Topic> topics = new ArrayList<Topic>();
     private static FragmentManager fragmentManager;
-    private boolean alreadyVisited = false;
+    private boolean firstVisit = true;
 
     /*
     *   Vorschlag: beim Appstart einmal die Settings aus der Datenbank laden und nochmal in die
@@ -143,6 +143,27 @@ public class StartScreen extends AppCompatActivity {
         toolbar.setVisibility(View.VISIBLE);
     }
 
+    public void loadFragment(int intentFragment) {
+            switch (intentFragment) {
+                case R.id.action_start:
+                    bottomNavigationView.setSelectedItemId(R.id.action_start);
+                    break;
+                case R.id.action_topics:
+                    bottomNavigationView.setSelectedItemId(R.id.action_topics);
+                    break;
+                case R.id.action_game:
+                    bottomNavigationView.setSelectedItemId(R.id.action_game);
+                    break;
+                case R.id.action_profile:
+                    bottomNavigationView.setSelectedItemId(R.id.action_profile);
+                    break;
+                default:
+                    bottomNavigationView.setSelectedItemId(R.id.action_topics);
+                    break;
+            }
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -165,12 +186,12 @@ public class StartScreen extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onRestart() {
-        super.onRestart();
-            GetTask getTask = new GetTask(getApplicationContext());
-            getTask.execute();
-    }
+//    @Override
+//    public void onRestart() {
+//        super.onRestart();
+//            GetTask getTask = new GetTask(getApplicationContext());
+//            getTask.execute();
+//    }
 
     private class GetTask extends AsyncTask<Object, Void, Void> {
         Context context;
@@ -188,27 +209,20 @@ public class StartScreen extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void v) {
             super.onPostExecute(v);
-            //TODO: Richtiges Fragment aufrufen
-            if (!alreadyVisited) {
-                initToolBar();
-                initBottomNavigation();
-                fragmentManager.beginTransaction().replace(R.id.container_start, new HomeFragment()).addToBackStack("HOME_FRAGMENT").commit();
-                // Hide splashscreen
-                ImageView loadingImage = (ImageView) findViewById(R.id.iv_loading);
-                loadingImage.setVisibility(View.GONE);
-            } else {
-                int index = bottomNavigationView.getSelectedItemId();
-                if (index == 0) {
-                    fragmentManager.beginTransaction().replace(R.id.container_start, new HomeFragment()).addToBackStack("HOME_FRAGMENT").commit();
-                } else {
-                    /*Log.v("BackStackEntryCount", ""+fragmentManager.getBackStackEntryCount());
-                    fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1);*/
 
-                    fragmentManager.beginTransaction().replace(R.id.container_start, new TopicsFragment()).addToBackStack(null).commit();
-                }
+            initToolBar();
+            initBottomNavigation();
+
+            //Hide Splash Screen
+            ImageView loadingImage = (ImageView) findViewById(R.id.iv_loading);
+            loadingImage.setVisibility(View.GONE);
+
+            if (getIntent().hasExtra("frgToLoad")) {
                 Toast.makeText(context, "Updating stats…", Toast.LENGTH_SHORT).show();
+                loadFragment(getIntent().getExtras().getInt("frgToLoad"));
+            } else {
+                loadFragment(R.id.action_start);
             }
-            alreadyVisited = true;
         }
     }
 }

@@ -64,6 +64,7 @@ public class HomeFragment extends Fragment {
         });
 
         Button repetitionButton = (Button) view.findViewById(R.id.btn_srs_repetition);
+        Button learnButton = (Button) view.findViewById(R.id.btn_learn);
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getContext());
         int wordsInSRS = settings.getInt("numberOfWordsInWorkload", 0);
         if (wordsInSRS > 0) {
@@ -73,7 +74,14 @@ public class HomeFragment extends Fragment {
                     startActivity(new Intent(getContext(), ExerciseActivity.class));
                 }
             });
+            learnButton.setVisibility(View.GONE);
         } else {
+            learnButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((StartScreen) getActivity()).loadFragment(R.id.action_topics);
+                }
+            });
             repetitionButton.setVisibility(View.GONE);
         }
 
@@ -84,10 +92,6 @@ public class HomeFragment extends Fragment {
         workload = new MyDatabase(getContext()).getWorkload();
         TextView tvWorkload = (TextView) view.findViewById(R.id.tv_workload);
         tvWorkload.setText("" + workload + " words");
-    }
-
-    private void retrieveNumberOfWords() {
-
     }
 
     private void retrieveTopics() {

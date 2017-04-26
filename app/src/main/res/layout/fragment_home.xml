@@ -227,6 +227,16 @@
             android:text="Repeat learned words"
             android:textColor="@color/colorWhite" />
 
+        <Button
+            android:id="@+id/btn_learn"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_stats"
+            android:layout_centerHorizontal="true"
+            android:text="Learn something new"
+            android:textColor="@color/colorWhite" />
+
         <TextView
             android:id="@+id/tv_stats"
             android:layout_width="match_parent"

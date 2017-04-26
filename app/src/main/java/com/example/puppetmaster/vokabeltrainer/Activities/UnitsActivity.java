@@ -89,19 +89,10 @@ public class UnitsActivity extends AppCompatActivity {
         recyclerView.setAdapter(new UnitAdapter(listOfUnits, topicID));
     }
 
-    private Fragment getCurrentFragment(){
-        FragmentManager fragmentManager = getFragmentManager();
-        String fragmentTag = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1).getName();
-        Fragment currentFragment = fragmentManager.findFragmentByTag(fragmentTag);
-        return currentFragment;
-    }
-
-    @Override
-    public void onBackPressed() {
-        //Fragment fragmentBeforeBackPress = getCurrentFragment();
-        // Perform the usual back action
-        super.onBackPressed();
-        //Fragment fragmentAfterBackPress = getCurrentFragment();
-        this.getFragmentManager().popBackStack();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        Intent topicsIntent = new Intent(getApplicationContext(), StartScreen.class);
+//        topicsIntent.putExtra("frgToLoad", R.id.action_topics);
+//        startActivity(topicsIntent);
+//    }
 }

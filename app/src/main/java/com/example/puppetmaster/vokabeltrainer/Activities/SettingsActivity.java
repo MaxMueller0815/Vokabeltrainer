@@ -21,19 +21,24 @@ import java.util.List;
 
 public class SettingsActivity extends AppCompatActivity {
     private MyDatabase db;
-    private Spinner spinnerStart;
+    private SharedPreferences prefs;
+
+
+    private final int TIMESLOT_DURATION = 2;
     private int startTime;
-    private Spinner spinnerEnd;
     private int endTime;
-    private EditText etWorkload;
     private int workload;
-    Switch switchArticle;
-    Switch switchCapitalisation;
+    // Ersatz für Booleans, die von SQLite nicht unterstützt werden
     private int inputRequiresArticle;
     private int inputRequiresCapitalisation;
-    private final int TIMESLOT_DURATION = 2;
 
-    private SharedPreferences prefs;
+
+    // UI Elemente
+    private Spinner spinnerStart;
+    private Spinner spinnerEnd;
+    private EditText etWorkload;
+    private Switch switchArticle;
+    private Switch switchCapitalisation;
 
 
     @Override
@@ -44,9 +49,7 @@ public class SettingsActivity extends AppCompatActivity {
         loadSettings();
     }
 
-    //TODO würde ich in die startscreen activity machen
     private void loadSettings() {
-        // TODO Vermutlich ist es schöner wenn man die Uhrzeiten als Int speichert
         ArrayList<Object> settings = db.getSettings();
         workload = (int) settings.get(0);
         startTime = (int) settings.get(1);
@@ -56,7 +59,6 @@ public class SettingsActivity extends AppCompatActivity {
         initSpinner();
         initWorkload();
         initInputMode();
-
     }
 
     private void initWorkload() {
@@ -83,6 +85,7 @@ public class SettingsActivity extends AppCompatActivity {
         setSpinnerValue(spinnerEnd, endTime);
     }
 
+    // TODO: Muss noch umgesetzt werden im Abfragemodus
     private void initInputMode() {
         switchArticle = (Switch) findViewById(R.id.switch_article);
         switchCapitalisation = (Switch) findViewById(R.id.switch_case_sensitive);
@@ -100,8 +103,9 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
+    //Einstellungen werden in den SharedPreferences und der DB gespeichert
+    //TODO: Warum wird das nochmals doppelt gemacht - Weil wir uns nicht sicher sind, ob/wann die SharedPreferences zurückgesetzt werden
     private void saveSettings() {
-
         this.prefs = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this);
 
         System.out.println("####### ALTER WORKLOAD:  " + prefs.getInt("workload", 0));
@@ -127,10 +131,10 @@ public class SettingsActivity extends AppCompatActivity {
 
         }
 
+    // Spinner zeigt die Stunden an, in denen Notifications eingeblendet werden können
     private void setSpinnerValue(Spinner spinner, int hour) {
         int index = 0;
         for(int i = 0; i < spinner.getCount(); i++){
-            // Die Zeitslots dauern immer zwei Stunden. Es werden zwei Stunden zum Startpunkt addiert, weil in der DB der Anfang des Zeitslot vermerkt ist
             if(spinner.getItemAtPosition(i).toString().equals(String.format("%02d:00", hour))){
                 spinner.setSelection(i);
                 break;
@@ -138,6 +142,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
+    // Einstellungen werden beim Drücken des Zurück-Buttons gespeichert
     @Override
     public void onBackPressed() {
         saveSettings();
