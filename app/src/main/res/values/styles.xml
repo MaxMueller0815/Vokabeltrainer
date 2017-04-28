@@ -17,4 +17,8 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="ButtonCircleTheme">
+        <item name="android:background">@drawable/button_add_circle</item>
+    </style>
+
 </resources>

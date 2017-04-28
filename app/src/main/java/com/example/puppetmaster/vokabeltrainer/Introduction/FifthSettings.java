@@ -42,7 +42,7 @@ public class FifthSettings extends AppCompatActivity {
         buttonPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), ThirdMotivationText.class);
+                Intent i = new Intent(getApplicationContext(), FourthImages.class);
                 startActivity(i);
                 finish();
             }

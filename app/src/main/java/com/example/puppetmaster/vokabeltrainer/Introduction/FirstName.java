@@ -6,12 +6,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.puppetmaster.vokabeltrainer.Activities.StartScreen;
+import com.example.puppetmaster.vokabeltrainer.services.LocalStore;
 import com.example.puppetmaster.vokabeltrainer.R;
 
 
@@ -22,6 +24,8 @@ public class FirstName extends AppCompatActivity {
     private EditText editTextName;
     private int startIntro = 0;
 
+    private LocalStore localStore;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +34,9 @@ public class FirstName extends AppCompatActivity {
 
         initLayout();
         initClickListener();
+        startServices();
         checkPrefs();
         setUserName();
-        setPrefsStart();
 
     }
 
@@ -70,27 +74,23 @@ public class FirstName extends AppCompatActivity {
     }
 
     private void setUserName() {
-        String userName = prefs.getString("userName", "");
-        editTextName.setText(userName);
+        if (localStore.loadName()!= null) {
+            String userName = localStore.loadName();
+            Log.d("intro","##### loaded name: " + userName);
+            editTextName.setText(userName);
+        }
+
     }
 
-    private void setPrefsStart(){
-        SharedPreferences.Editor editor = prefs.edit();
-
-        editor.putInt("startedIntro", startIntro);
-
-        editor.apply();
-    }
 
     private boolean checkName() {
         String userName = editTextName.getText().toString();
         if (userName.length() > 0) {
-            this.prefs = PreferenceManager.getDefaultSharedPreferences(FirstName.this);
 
-            // save to shared preferences
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putString("userName", userName);
-            editor.apply();
+            // save to shared preferences via localStore class
+            localStore.saveName(userName);
+            Log.d("intro","#####saved name: " + userName);
+
 
             return true;
         }
@@ -107,5 +107,9 @@ public class FirstName extends AppCompatActivity {
 
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
+    }
+
+    private void startServices (){
+        localStore = new LocalStore(getApplication());
     }
 }

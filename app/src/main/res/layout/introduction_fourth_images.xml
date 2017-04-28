@@ -18,14 +18,20 @@
             android:text="Are there any images you connect with your goals to learn german? Add them here and see them as a reminder for your motivation."
             android:textSize="25sp" />
 
-        <Button
-            android:id="@+id/buttonAddImage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10sp"
-            android:textSize="5sp"
-            android:drawableTop="@android:drawable/ic_input_add" />
 
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10"
+            android:padding="10dp">
+
+            <fragment
+                android:id="@+id/images_fragment"
+                class="com.example.puppetmaster.vokabeltrainer.Fragments.ImageFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </ScrollView>
 
     </LinearLayout>
 
