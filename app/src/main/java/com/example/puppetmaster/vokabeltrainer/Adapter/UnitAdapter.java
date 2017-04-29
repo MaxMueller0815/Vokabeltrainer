@@ -43,7 +43,7 @@ public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.UnitViewHolder
     @Override
     public void onBindViewHolder(UnitViewHolder unitViewHolder, int i) {
         final Unit unit = unitList.get(i);
-        unitViewHolder.vNumberOfUnit.setText("Unit " + (i + 1) + " of " + unitList.size());
+        unitViewHolder.vNumberOfUnit.setText("Unit " + unit.getTopicId() + "." + (i + 1));
         unitViewHolder.vTitle.setText(unit.getTitle());
         VocabAdapter vocabAdapter = new VocabAdapter(context, unit.getVocabsOfUnit());
         unitViewHolder.vList.setAdapter(vocabAdapter);

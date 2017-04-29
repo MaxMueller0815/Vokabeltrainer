@@ -12,11 +12,13 @@ public class Unit {
     private int id;
     private String title;
     private ArrayList<Vocab> vocabsOfUnit;
+    private int topicId;
 
-    public Unit(int id, String title, ArrayList<Vocab> vocabsOfUnit) {
+    public Unit(int id, String title, ArrayList<Vocab> vocabsOfUnit, int topicId) {
         this.id = id;
         this.title = title;
         this.vocabsOfUnit = vocabsOfUnit;
+        this.topicId = topicId;
     }
 
     public int getId() {
@@ -43,5 +45,9 @@ public class Unit {
             }
         }
         return learnedVocabs;
+    }
+
+    public int getTopicId() {
+        return topicId;
     }
 }

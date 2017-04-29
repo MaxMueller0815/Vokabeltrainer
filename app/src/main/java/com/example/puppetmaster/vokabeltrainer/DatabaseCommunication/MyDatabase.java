@@ -192,7 +192,7 @@ public class MyDatabase extends SQLiteAssetHelper {
                 int unitID = c.getInt(0);
                 String title = c.getString(1);
                 ArrayList<Vocab> vocabsOfUnit = getVocabOfUnit(unitID);
-                unitsList.add(new Unit(unitID, title, vocabsOfUnit));
+                unitsList.add(new Unit(unitID, title, vocabsOfUnit, topicID));
                 c.moveToNext();
             }
         } finally {
