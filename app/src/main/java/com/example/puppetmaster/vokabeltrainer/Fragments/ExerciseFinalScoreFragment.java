@@ -41,25 +41,37 @@ public class ExerciseFinalScoreFragment extends Fragment {
 
         ImageView ivSolution = (ImageView) view.findViewById(R.id.iv_solution);
         double result = (double) counterCorrect / (double) listSize ;
+
+
+
+        // Set up tabs
+        TabHost host = (TabHost) view.findViewById(R.id.tabHost);
+        host.setup();
+
+        //Tab Overview
+        TabHost.TabSpec spec = host.newTabSpec("Overview");
+        spec.setContent(R.id.tab_overview);
+        spec.setIndicator("Overview");
+        host.addTab(spec);
         String title = "";
-        String description = "Du hast " + counterCorrect +  " von "  + listSize +  " Vokabeln richtig!";
+        String description = "You translated " + counterCorrect +  " out of "  + listSize +  " vocabs correctly.";
 
         if(result >= 0.90){
             ivSolution.setImageResource(R.drawable.smiley_1);
-            title = "Super!";
+            title = "Excellent!";
         }else if(result < 0.90 && result >= 0.60){
             ivSolution.setImageResource(R.drawable.smiley_2);
-            title = "Glückwunsch!";
+            title = "Good job!";
         } else if(result < 0.60 && result >= 0.20){
             ivSolution.setImageResource(R.drawable.smiley_3);
-            title = "Das geht besser!";
+            title = "There's room for improvement.";
         } else if(result < 0.20 && result > 0.00){
             ivSolution.setImageResource(R.drawable.smiley_4);
-            title = "Schade!";
+            title = "Celebrate every tiny victory!";
         }else {
             ivSolution.setImageResource(R.drawable.smiley_5);
-            title = "Schade!";
-            description = "Du hast keine einzige Vokabel richtig!";
+            title = "At least you tried";
+            description = "But you should work harder!";
         }
         TextView tvTitle = (TextView) view.findViewById(R.id.tv_solution_title);
         tvTitle.setText(title);
@@ -74,6 +86,8 @@ public class ExerciseFinalScoreFragment extends Fragment {
             }
         });
 
+
+        //Tab False Words
         ListView listViewFalse = (ListView) view.findViewById(R.id.list_false_vocabs);
         if (exercise.getVocabsCorrect().size() > 0) {
             VocabAdapter adapterFalse = new VocabAdapter(getContext(), exercise.getVocabsFalse());
@@ -82,6 +96,12 @@ public class ExerciseFinalScoreFragment extends Fragment {
             listViewFalse.setVisibility(View.GONE);
         }
 
+        spec = host.newTabSpec("False");
+        spec.setContent(R.id.tab_false);
+        spec.setIndicator("False");
+        host.addTab(spec);
+
+        //Tab Correct Words
         ListView listViewCorrect = (ListView) view.findViewById(R.id.list_correct_vocabs);
         if (exercise.getVocabsCorrect().size() > 0) {
             VocabAdapter adapterCorrect = new VocabAdapter(getContext(), exercise.getVocabsCorrect());
@@ -90,24 +110,8 @@ public class ExerciseFinalScoreFragment extends Fragment {
             listViewCorrect.setVisibility(View.GONE);
         }
 
-        TabHost host = (TabHost) view.findViewById(R.id.tabHost);
-        host.setup();
-
-        //Tab 1
-        TabHost.TabSpec spec = host.newTabSpec("Overview");
-        spec.setContent(R.id.tab1);
-        spec.setIndicator("Overview");
-        host.addTab(spec);
-
-        //Tab 2
-        spec = host.newTabSpec("False");
-        spec.setContent(R.id.tab2);
-        spec.setIndicator("False");
-        host.addTab(spec);
-
-        //Tab 3
         spec = host.newTabSpec("Correct");
-        spec.setContent(R.id.tab3);
+        spec.setContent(R.id.tab_correct);
         spec.setIndicator("Correct");
         host.addTab(spec);
         return view;
