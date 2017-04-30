@@ -165,13 +165,15 @@ public class SpacedRepititionSystem {
         vocab.setNextRevision();
         dbCommunicator.updateVocab(vocab);
 
+        int actualTimeBlockHour = getActualTimeBlockHour();
+
         // if actual time block hour is not in the list, add it
-        if(!contains(vocabTrainingHours, getActualTimeBlockHour())){
+        if(!contains(vocabTrainingHours, actualTimeBlockHour)){
             int [] newVocabTrainingHours = new int [vocabTrainingHours.length+1];
             for(int i = 0; i < vocabTrainingHours.length; i++){
                 newVocabTrainingHours[i] = vocabTrainingHours[i];
             }
-            newVocabTrainingHours[vocabTrainingHours.length] = getActualTimeBlockHour();
+            newVocabTrainingHours[vocabTrainingHours.length] = actualTimeBlockHour;
             this.vocabTrainingHours = newVocabTrainingHours;
         }
 

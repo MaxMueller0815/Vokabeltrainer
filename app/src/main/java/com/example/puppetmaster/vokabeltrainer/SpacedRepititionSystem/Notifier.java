@@ -79,8 +79,8 @@ public class Notifier {
         int [] timeBlockStartHours = new int [numberOfTimeBlocks];
 
         // get time block count information
-        // structure <key, [countDeclined, countAccepted, countManual]>
-        HashMap<Integer, Integer[]> timeBlockCountInfo = new HashMap<Integer, Integer[]>();
+        // structure <key, [countDeclined, countAccepted, countManual, multiplier]>
+        HashMap<Integer, Double[]> timeBlockCountInfo = new HashMap<Integer, Double[]>();
         timeBlockCountInfo = dbCommunicator.getCountInformationForEveryTimeBlock();
 
         for(int i = 0; i < numberOfTimeBlocks; i++){
@@ -95,7 +95,7 @@ public class Notifier {
             timeblock.set(Calendar.SECOND, 1);
 
             //calculate the probability of a push notification for the actual time block
-            Integer [] countInformation = timeBlockCountInfo.get(hourOfTheDay);
+            Double [] countInformation = timeBlockCountInfo.get(hourOfTheDay);
             if(PushProbabilityCalculator.pushOnThisHourOfTheDay(countInformation[1], countInformation[0], countInformation[2], hourOfTheDay)) {
                 timeblockList.add(timeblock);
                 timeBlockStartHours[i] = hourOfTheDay;
@@ -121,14 +121,19 @@ public class Notifier {
         // higher weight for manual app opening
         static double factorManual = 3.0;
 
-        public static boolean pushOnThisHourOfTheDay(double accepted, double declined, double manual, int hourOfTheDay){
-            double daytimefactor = getDayTimeFactor(hourOfTheDay);
-            double result = daytimefactor * ((accepted + (manual*factorManual)) / (accepted + declined + (manual*factorManual)));
+        public static boolean pushOnThisHourOfTheDay(double accepted, double declined, double manual, double multiplier){
+        //    double daytimefactor = getDayTimeFactor(hourOfTheDay);
+            double result = multiplier * ((accepted + (manual*factorManual)) / (accepted + declined + (manual*factorManual)));
 
             // get random number between 0.0 and 1.0 to compare the probability of the notification to get pushed or not
             return (result >= Math.random());
         }
 
+        /*
+        *
+        *   old settings method, will be stored in the database now, consequently not actually used
+        *
+        * */
         public static double getDayTimeFactor(int hourOfTheDay){
 
             switch (hourOfTheDay){

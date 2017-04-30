@@ -13,6 +13,13 @@ import java.util.HashMap;
 
 public class SRSDataBaseCommunicator {
 
+    /*
+    *       define the hour multiplier behaviour in these doubles
+    *       the MULTIPLIER_PART should be 1/11 of the MULTIPLIER_FULL
+    * */
+    private static double MULTIPLIER_FULL = 0.011;
+    private static double MULTIPLIER_PART = 0.001;
+
     private MyDatabase myDatabase;
 
     public SRSDataBaseCommunicator(Context context){
@@ -24,33 +31,59 @@ public class SRSDataBaseCommunicator {
     }
 
     public void handleAcceptedInHour(int hourOfTheDay){
-        double [] logInfo = myDatabase.getLogInfoForHour(hourOfTheDay);
-        double [] newLogInfo = new double[logInfo.length];
 
-        newLogInfo[2] = logInfo[2] + 1.0;
+        for (int i=0; i<12; i++){
+            double [] logInformation = myDatabase.getLogInfoForHour(i*2);
+            double [] newLogInformation = new double[logInformation.length];
 
-        myDatabase.updateLogForHour(newLogInfo);
+            if(i*2 == hourOfTheDay){
+                newLogInformation[2] = logInformation[2] + 1.0;
+                newLogInformation[4] = logInformation[4] + MULTIPLIER_FULL;
+            }else{
+                newLogInformation[4] = logInformation[4] - MULTIPLIER_PART;
+            }
+
+            myDatabase.updateLogForHour(newLogInformation);
+        }
+
     }
 
     public void handleDeclinedInHour(int hourOfTheDay){
-        double [] logInfo = myDatabase.getLogInfoForHour(hourOfTheDay);
-        double [] newLogInfo = new double[logInfo.length];
 
-        newLogInfo[1] = logInfo[1] + 1.0;
+        for (int i=0; i<12; i++){
+            double [] logInformation = myDatabase.getLogInfoForHour(i*2);
+            double [] newLogInformation = new double[logInformation.length];
 
-        myDatabase.updateLogForHour(newLogInfo);
+            if(i*2 == hourOfTheDay){
+                newLogInformation[1] = logInformation[1] + 1.0;
+                newLogInformation[4] = logInformation[4] - MULTIPLIER_FULL;
+            }else{
+                newLogInformation[4] = logInformation[4] + MULTIPLIER_PART;
+            }
+
+            myDatabase.updateLogForHour(newLogInformation);
+        }
+
     }
 
     public void handleManualInHour(int hourOfTheDay){
-        double [] logInfo = myDatabase.getLogInfoForHour(hourOfTheDay);
-        double [] newLogInfo = new double[logInfo.length];
 
-        newLogInfo[3] = logInfo[3] + 1.0;
+        for (int i=0; i<12; i++){
+            double [] logInformation = myDatabase.getLogInfoForHour(i*2);
+            double [] newLogInformation = new double[logInformation.length];
 
-        myDatabase.updateLogForHour(newLogInfo);
+            if(i*2 == hourOfTheDay){
+                newLogInformation[3] = logInformation[3] + 1.0;
+                newLogInformation[4] = logInformation[4] + MULTIPLIER_FULL;
+            }else{
+                newLogInformation[4] = logInformation[4] - MULTIPLIER_PART;
+            }
+
+            myDatabase.updateLogForHour(newLogInformation);
+        }
     }
 
-    public HashMap<Integer, Integer[]> getCountInformationForEveryTimeBlock(){
+    public HashMap<Integer, Double[]> getCountInformationForEveryTimeBlock(){
         return myDatabase.getCountInformationForEveryTimeBlock();
     }
 

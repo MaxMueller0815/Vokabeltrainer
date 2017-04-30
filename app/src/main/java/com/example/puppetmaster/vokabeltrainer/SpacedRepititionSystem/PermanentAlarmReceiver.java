@@ -71,7 +71,7 @@ public class PermanentAlarmReceiver extends BroadcastReceiver {
         editor.putString("pushNotificationHours", "100");
         editor.putString("trainingVocabHours", "100");
         editor.apply();
-        
+
     }
 
     private void initializeArraysForCountManagement(int [] notList, int [] trainList){

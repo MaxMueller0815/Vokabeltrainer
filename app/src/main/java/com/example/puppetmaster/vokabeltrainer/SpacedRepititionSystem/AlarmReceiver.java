@@ -29,14 +29,14 @@ public class AlarmReceiver extends BroadcastReceiver {
         int actualTimeFrame = getActualTimeFrame();
 
         // get time block count information
-        // structure <key, [countDeclined, countAccepted, countManual]>
-        HashMap<Integer, Integer[]> timeBlockCountInfo = new HashMap<Integer, Integer[]>();
+        // structure <key, [countDeclined, countAccepted, countManual, multiplier]>
+        HashMap<Integer, Double[]> timeBlockCountInfo = new HashMap<Integer, Double[]>();
         timeBlockCountInfo = dbCommunicator.getCountInformationForEveryTimeBlock();
-        Integer [] countInformation = timeBlockCountInfo.get(actualTimeFrame);
+        Double [] countInformation = timeBlockCountInfo.get(actualTimeFrame);
 
         //calculate whether to push a notification now or not
         boolean pushNotification = false;
-        pushNotification = Notifier.PushProbabilityCalculator.pushOnThisHourOfTheDay(countInformation[1], countInformation[0], countInformation[2], actualTimeFrame);
+        pushNotification = Notifier.PushProbabilityCalculator.pushOnThisHourOfTheDay(countInformation[1], countInformation[0], countInformation[2], countInformation[3]);
 
         // Toast.makeText(context, "Alarm running", Toast.LENGTH_SHORT).show();
         // TODO: Können wir das noch so machen, dass die Notification nur geschickt wird, wenn man mehr als 0 Wörter hat? Von mir aus könnten wir auch 5 Wörter als Minimum definieren, wernn das nicht alles komplizierter macht.

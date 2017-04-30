@@ -39,9 +39,15 @@ public class MyDatabase extends SQLiteAssetHelper {
         //setForcedUpgrade(2);
     }
 
-    public HashMap<Integer, Integer[]> getCountInformationForEveryTimeBlock(){
 
-        HashMap<Integer, Integer[]> resultHashMap = new HashMap<Integer, Integer[]>();
+    /*
+    * returns the content of the count information table in the following structure:
+    *
+    *       <key, [countDeclined, countAccepted, countManual, multiplier]>
+    * */
+    public HashMap<Integer, Double[]> getCountInformationForEveryTimeBlock(){
+
+        HashMap<Integer, Double[]> resultHashMap = new HashMap<Integer, Double[]>();
 
         db = getReadableDatabase();
         String[] sqlSelect = {"*"};
@@ -54,10 +60,11 @@ public class MyDatabase extends SQLiteAssetHelper {
         try {
             c.moveToFirst();
             while (!c.isAfterLast()) {
-                    Integer[] countArray = new Integer[3];
-                    countArray[0] = c.getInt(1);
-                    countArray[1] = c.getInt(2);
-                    countArray[2] = c.getInt(3);
+                    Double[] countArray = new Double[4];
+                    countArray[0] = (double)c.getInt(1);
+                    countArray[1] = (double)c.getInt(2);
+                    countArray[2] = (double)c.getInt(3);
+                    countArray[3] = (double)c.getFloat(4);
 
                     resultHashMap.put(c.getInt(0), countArray);
 
