@@ -55,9 +55,7 @@
 
     <string name="key_images">images</string>
     <string name="key_user_name">key_name</string>
-
-
-
+    <string name="key_motivation_id">key_motivation_id</string>
 
 
 </resources>

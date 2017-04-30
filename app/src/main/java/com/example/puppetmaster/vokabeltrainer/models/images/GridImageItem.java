@@ -2,10 +2,6 @@ package com.example.puppetmaster.vokabeltrainer.models.images;
 
 import android.net.Uri;
 
-/**
- * @author Anastasia.
- * @since 3/2/17.
- */
 
 public class GridImageItem implements GridItem {
 

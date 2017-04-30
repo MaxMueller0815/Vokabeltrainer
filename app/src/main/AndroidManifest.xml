@@ -67,6 +67,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Introduction.ThirdMotivationText"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Introduction.FourthImages"

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/motivation_item"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:padding="12dp"
+    android:descendantFocusability="blocksDescendants" >
+
+    <TextView
+        android:id="@+id/motivation_text"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:ellipsize="marquee"
+        android:gravity="center_vertical"
+        android:padding="5dp"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/delete_button"
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:padding="5dp"
+        android:drawableTop="@android:drawable/ic_delete"
+        />
+
+</RelativeLayout>
