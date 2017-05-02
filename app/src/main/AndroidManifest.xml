@@ -30,10 +30,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.LearnActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
             android:name=".Activities.UnitsActivity"
             android:label="@string/title_activity_units"
             android:parentActivityName=".Activities.StartScreen"/>
