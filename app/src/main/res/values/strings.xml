@@ -16,14 +16,6 @@
     <!-- Sample String -->
     <string name="sample_string">Beispieltext</string>
 
-    <!-- LearnActivity -->
-    <string name="vocab_learning_language">Los geht\'s!</string>
-    <string name="vocab_knowing_language">Gib dein Bestes!</string>
-    <string name="vocab_counter">0</string>
-    <string name="number_of_meanings">*</string>
-    <string name="vocab_hint">Vokabel eingeben</string>
-    <string name="toast_manual">Swipe nach links: Du weißt die Vokabel. \n\nTap auf Bildschirm: Du weißt die Vokabel nicht.</string>
-
     <!-- Result AlertDialog -->
     <string name="result">Ergebnis</string>
     <string name="finished">OK</string>
