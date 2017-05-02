@@ -8,10 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.example.puppetmaster.vokabeltrainer.Activities.ExerciseActivity;
-import com.example.puppetmaster.vokabeltrainer.Activities.StartScreen;
+import com.example.puppetmaster.vokabeltrainer.Activities.StartActivity;
 import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.SRSDataBaseCommunicator;
 import com.example.puppetmaster.vokabeltrainer.R;
 
@@ -66,7 +65,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             } else {
                 // @Flo: Erklärung meiner Absicht: wenn keine Vokabeln wiederholt werden müssen, soll eine Notification geschickt werden, die anregen soll, etwas Neues zu lernen (soll die Seite mit den Topics zeigen)
                 //TODO: Richtiges Fragment aufrufen: http://stackoverflow.com/a/36064344
-                Intent learnIntent = new Intent(context, StartScreen.class);
+                Intent learnIntent = new Intent(context, StartActivity.class);
                 learnIntent.putExtra("frgToLoad", R.id.action_topics);
                 //Wird immer und immer wieder aufgerufen…aber warum?
                 //exerciseIntent.putExtra("WORD_LIST", new SpacedRepititionSystem(context).pickListOfNewWords());
