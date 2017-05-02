@@ -15,9 +15,8 @@ import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 import java.util.ArrayList;
 
 /**
- * Created by Benedikt on 06.02.17.
+ * Listenansicht für eine Vokabel, beinhaltet Deutsch/Englisch und SRS-Level
  */
-
 public class VocabAdapter extends ArrayAdapter<Vocab> {
 
     public VocabAdapter(Context context, ArrayList<Vocab> vocabs) {

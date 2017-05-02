@@ -18,13 +18,15 @@ import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 
 import java.util.ArrayList;
 
-/*Die Exercise-Activity wird angezeigt, wenn der Nutzer Wörter einer Unit lernen möchte oder Wörter wiederholt, die vom SRS-Hintergrundservice vorgeschlagen werden. Die Activity zeigt aufeinanderfolgend folgende 4 Fragments an:
-- ExerciseLearnFragment: Neue Wörter werden eingeblendet, damit der Nutzer sie sich einprägen kann, es findet keine Abfrage statt
-- ExerciseInputFragment: Hier muss der Nutzer die richtige Übersetzung eintippen
-- ExerciseSolutionFragment: Ob die Vokabel richtig übersetzt wurde, wird in diesem Fragment angezeigt
-- ExerciseFinalScoreFragment: Zu Ende eines Sets erhält der Nutzer eine Auswertung seiner Gesamtleistung in dieser Runde
+/**
+ * Die Exercise-Activity wird angezeigt, wenn der Nutzer Wörter einer Unit lernen möchte oder Wörter wiederholt, die vom SRS-Hintergrundservice vorgeschlagen werden. Die Activity zeigt aufeinanderfolgend folgende 4 Fragments an:
+ - ExerciseLearnFragment: Neue Wörter werden eingeblendet, damit der Nutzer sie sich einprägen kann, es findet keine Abfrage statt
+ - ExerciseInputFragment: Hier muss der Nutzer die richtige Übersetzung eintippen
+ - ExerciseSolutionFragment: Ob die Vokabel richtig übersetzt wurde, wird in diesem Fragment angezeigt
+ - ExerciseFinalScoreFragment: Zu Ende eines Sets erhält der Nutzer eine Auswertung seiner Gesamtleistung in dieser Runde
 
-Die rundenbasierte Logik wird durch ExerciseLogic geregelt. */
+ Die rundenbasierte Logik wird durch ExerciseLogic geregelt.
+ */
 
 
 public class ExerciseActivity extends AppCompatActivity {
@@ -39,11 +41,9 @@ public class ExerciseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
-        progressBar = (ProgressBar) findViewById(R.id.pb_exercise);
 
         // SRS wird später für die Auswertung und Aktualisierung in der DB benötigt
         srs = new SpacedRepititionSystem(this);
-
 
         if (getIntent().hasExtra("WORD_LIST")) { //Null Checking
             // Wenn der Nutzer (manuell) eine Unit auswählt, die er/sie lernen möchte
@@ -55,26 +55,35 @@ public class ExerciseActivity extends AppCompatActivity {
             exercise = new ExerciseLogic(new SpacedRepititionSystem(getApplicationContext()).getCurrentRequestList());
         }
 
+        progressBar = (ProgressBar) findViewById(R.id.pb_exercise);
+        progressBar.setMax(exercise.getNumTurns());
+
         fragmentManager = getFragmentManager();
         startNextTurn();
     }
 
+    /**
+     * Wählt passende Ansicht bei einer neuen Runde
+     */
     private void startNextTurn() {
         ft = fragmentManager.beginTransaction();
         ft.setCustomAnimations(R.animator.flight_left_in, R.animator.flip_right_out);
-
+        progressBar.setProgress(exercise.getNextTurn() + 2);
 
         if (exercise.nextVocab().getSrsLevel() == 0) {
             // Ansicht laden, in der der Nutzer neue, unbekannte Vokabeln erlernt (allg. Wörter auf SRS-Level 0)
             ft.replace(R.id.container_exercise, new ExerciseLearnFragment()).commit();
         } else {
             // Ansicht laden, in dem das Wort direkt abgefragt wird
-            progressBar.setProgress(exercise.getNextTurn());
             ft.replace(R.id.container_exercise, new ExerciseInputFragment()).commit();
         }
     }
 
-    // Diese Funktion wird im ExerciseSolutionFragement aufgerufen
+    /**
+     * Steuert Auswertung am Ende einer Runde und wählt die richtige Ansicht für die nächste Runde
+     * Diese Funktion wird im ExerciseSolutionFragement aufgerufen
+     * @param isCorrect Vokabel wurde richtig übersetzt
+     */
     public void evaluateResult(boolean isCorrect) {
         exercise.evaluate(isCorrect);
         if (exercise.hasNextTurn()) {
@@ -87,7 +96,9 @@ public class ExerciseActivity extends AppCompatActivity {
         }
     }
 
-    // Sorgt dafür, dass nachdem ein unbekanntes Wort zum ersten Mal angezeigt wurde, direkt danach eine Abfrage stattfindet
+    /**
+     * Sorgt dafür, dass, nachdem ein unbekanntes Wort zum ersten Mal angezeigt wurde, direkt danach eine Abfrage stattfindet
+     */
     public void markAsLearned() {
         ft = fragmentManager.beginTransaction();
         ft.setCustomAnimations(R.animator.flight_left_in, R.animator.flip_right_out);

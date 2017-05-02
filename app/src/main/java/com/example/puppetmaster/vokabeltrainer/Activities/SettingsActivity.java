@@ -3,10 +3,7 @@ package com.example.puppetmaster.vokabeltrainer.Activities;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -15,10 +12,12 @@ import android.widget.Switch;
 import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
 import com.example.puppetmaster.vokabeltrainer.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Activity zeigt Einstellungsoptionen an
+ */
 public class SettingsActivity extends AppCompatActivity {
     private MyDatabase db;
     private SharedPreferences prefs;
@@ -28,7 +27,7 @@ public class SettingsActivity extends AppCompatActivity {
     private int startTime;
     private int endTime;
     private int workload;
-    // Ersatz für Booleans, die von SQLite nicht unterstützt werden
+    // Int als Ersatz für Booleans, die von SQLite nicht unterstützt werden
     private int inputRequiresArticle;
     private int inputRequiresCapitalisation;
 
@@ -45,10 +44,15 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        // TODO: Die DB-Anbindung braucht man gar nicht mehr,
         db = new MyDatabase(this);
         loadSettings();
+        setupUI();
     }
 
+    /**
+     * Einstellungen werden aus der Datenbank gelesen
+     */
     private void loadSettings() {
         ArrayList<Object> settings = db.getSettings();
         workload = (int) settings.get(0);
@@ -56,17 +60,17 @@ public class SettingsActivity extends AppCompatActivity {
         endTime = (int) settings.get(2) + TIMESLOT_DURATION;
         inputRequiresArticle = (int) settings.get(3);
         inputRequiresCapitalisation = (int) settings.get(4);
-        initSpinner();
-        initWorkload();
-        initInputMode();
     }
 
-    private void initWorkload() {
+    /**
+     * UI wird aufgebaut
+     */
+    private void setupUI() {
+        // Workload
         etWorkload = (EditText) findViewById(R.id.et_workload);
         etWorkload.setText(workload + "");
-    }
 
-    private void initSpinner() {
+        //Spinner
         spinnerStart = (Spinner) findViewById(R.id.spinner_start);
         spinnerEnd = (Spinner) findViewById(R.id.spinner_end);
         ArrayAdapter<String> adapter;
@@ -81,12 +85,11 @@ public class SettingsActivity extends AppCompatActivity {
         spinnerStart.setAdapter(adapter);
         spinnerEnd.setAdapter(adapter);
 
+        //Aktueller Wert als Auswahl setzen
         setSpinnerValue(spinnerStart, startTime);
         setSpinnerValue(spinnerEnd, endTime);
-    }
 
-    // TODO: Muss noch umgesetzt werden im Abfragemodus
-    private void initInputMode() {
+        // Eingabe erfordert Artikel / korrekte Groß-/Kleinschriebung
         switchArticle = (Switch) findViewById(R.id.switch_article);
         switchCapitalisation = (Switch) findViewById(R.id.switch_case_sensitive);
 
@@ -103,8 +106,24 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
-    //Einstellungen werden in den SharedPreferences und der DB gespeichert
-    //TODO: Warum wird das nochmals doppelt gemacht - Weil wir uns nicht sicher sind, ob/wann die SharedPreferences zurückgesetzt werden
+    /**
+     * Wählt den momentanen Wert im Spinner aus
+     * @param spinner Spinner, bei dem der momentane Wert (hour) gesetzt werden soll
+     * @param hour Die Stunde, die als Selection angezeigt werden soll
+     */
+    private void setSpinnerValue(Spinner spinner, int hour) {
+        int index = 0;
+        for (int i = 0; i < spinner.getCount(); i++) {
+            if (spinner.getItemAtPosition(i).toString().equals(String.format("%02d:00", hour))) {
+                spinner.setSelection(i);
+                break;
+            }
+        }
+    }
+
+    /**
+     * Liest Einstellungsfelder aus und speichert sie in den SharedPreferences und der DB gespeichert.
+     */
     private void saveSettings() {
         this.prefs = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this);
 
@@ -128,21 +147,12 @@ public class SettingsActivity extends AppCompatActivity {
         System.out.println("####### WORKLOAD:  " + prefs.getInt("workload", 0));
         System.out.println("####### HOURSTART:  " + prefs.getInt("hourStart", 0));
         System.out.println("####### HOUREND:  " + prefs.getInt("hourEnd", 0));
-
-        }
-
-    // Spinner zeigt die Stunden an, in denen Notifications eingeblendet werden können
-    private void setSpinnerValue(Spinner spinner, int hour) {
-        int index = 0;
-        for(int i = 0; i < spinner.getCount(); i++){
-            if(spinner.getItemAtPosition(i).toString().equals(String.format("%02d:00", hour))){
-                spinner.setSelection(i);
-                break;
-            }
-        }
     }
 
-    // Einstellungen werden beim Drücken des Zurück-Buttons gespeichert
+
+    /**
+     * Einstellungen werden beim Drücken des Zurück-Buttons gespeichert
+     */
     @Override
     public void onBackPressed() {
         saveSettings();

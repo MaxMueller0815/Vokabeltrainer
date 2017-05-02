@@ -20,7 +20,7 @@
         <receiver android:name=".SpacedRepititionSystem.AlarmReceiver" />
 
         <activity
-            android:name=".Activities.StartScreen"
+            android:name=".Activities.StartActivity"
             android:theme="@style/AppTheme.NoActionBar">
             >
             <intent-filter>
@@ -32,19 +32,19 @@
         <activity
             android:name=".Activities.UnitsActivity"
             android:label="@string/title_activity_units"
-            android:parentActivityName=".Activities.StartScreen"/>
+            android:parentActivityName=".Activities.StartActivity"/>
         <activity android:name=".Activities.SRSTesterActivity" />
         <activity
             android:name=".Activities.SettingsActivity"
             android:label="@string/action_settings"
-            android:parentActivityName=".Activities.StartScreen">
+            android:parentActivityName=".Activities.StartActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.puppetmaster.vokabeltrainer.Activities.StartScreen" />
+                android:value="com.example.puppetmaster.vokabeltrainer.Activities.StartActivity" />
         </activity>
         <activity
             android:name=".Activities.AllVocabsActivity"
-            android:parentActivityName=".Activities.StartScreen" />
+            android:parentActivityName=".Activities.StartActivity" />
         <activity android:name=".Activities.ExerciseActivity"
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/AppTheme.NoActionBar"></activity>

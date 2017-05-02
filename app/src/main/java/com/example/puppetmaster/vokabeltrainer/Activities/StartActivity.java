@@ -1,9 +1,7 @@
 package com.example.puppetmaster.vokabeltrainer.Activities;
 
 import android.app.AlarmManager;
-import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +13,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,19 +34,12 @@ import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.SpacedRepi
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
-public class StartScreen extends AppCompatActivity {
+public class StartActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private BottomNavigationView bottomNavigationView;
-
-    public ArrayList<Topic> getTopics() {
-        return topics;
-    }
-
     private ArrayList<Topic> topics = new ArrayList<Topic>();
     private static FragmentManager fragmentManager;
-    private boolean firstVisit = true;
 
     /*
     *   Vorschlag: beim Appstart einmal die Settings aus der Datenbank laden und nochmal in die
@@ -63,7 +53,7 @@ public class StartScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(StartScreen.this);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.this);
 
         if(!prefs.getBoolean("firstTime", false)){
             // Max du kannst hier deine Anweisungen für die introscreens einbauen
@@ -96,15 +86,19 @@ public class StartScreen extends AppCompatActivity {
             editor.apply();
         }
 
-        SpacedRepititionSystem srs = new SpacedRepititionSystem(StartScreen.this);
-        fragmentManager = this.getFragmentManager();
         GetTask getTask = new GetTask(getApplicationContext());
         getTask.execute();
+        fragmentManager = this.getFragmentManager();
     }
 
-    private void initBottomNavigation() {
+    /**
+     * Versieht BottomNavigation mit OnClickListener
+     */
+    private void setupBottomNavigation() {
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        // Verhindert, dass Icons sich in der Toolbar bewegen, wenn mehr als 3 Elemente vorhanden sind
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
+        //OnClickListener
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -112,22 +106,15 @@ public class StartScreen extends AppCompatActivity {
                         switch (item.getItemId()) {
                             case R.id.action_start:
                                 fragmentManager.beginTransaction().replace(R.id.container_start, new HomeFragment()).addToBackStack("HOME_FRAGMENT").commit();
-                                //fragmentManager.beginTransaction().replace(R.id.container_start, new HomeFragment(), "HOME_FRAGMENT").commit();
                                 break;
                             case R.id.action_topics:
                                 fragmentManager.beginTransaction().replace(R.id.container_start, new TopicsFragment()).addToBackStack("TOPICS_FRAGMENT").commit();
-
-                                //fragmentManager.beginTransaction().replace(R.id.container_start, new TopicsFragment(), "TOPICS_FRAGMENT").commit();
                                 break;
                             case R.id.action_game:
-                                fragmentManager.beginTransaction()
-                                        .replace(R.id.container_start, new GameFragment())
-                                        .commit();
+                                fragmentManager.beginTransaction().replace(R.id.container_start, new GameFragment()).commit();
                                 break;
                             case R.id.action_profile:
-                                fragmentManager.beginTransaction()
-                                        .replace(R.id.container_start, new ProfileFragment())
-                                        .commit();
+                                fragmentManager.beginTransaction().replace(R.id.container_start, new ProfileFragment()).commit();
                                 break;
                             default:
                         }
@@ -137,12 +124,10 @@ public class StartScreen extends AppCompatActivity {
         bottomNavigationView.setVisibility(View.VISIBLE);
     }
 
-    public void initToolBar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar_start);
-        setSupportActionBar(toolbar);
-        toolbar.setVisibility(View.VISIBLE);
-    }
-
+    /**
+     * Funktion ermöglicht es, das richtige Fragment aus einer anderen Klasse aufzurufen mithilfe eines Intent-Extras ("frgToLoad")
+     * @param intentFragment Sollte den R.id.xy-Werten der Elementen der BottomNavigationBar entsprechen, wie bspw. R.id.action_start
+     */
     public void loadFragment(int intentFragment) {
             switch (intentFragment) {
                 case R.id.action_start:
@@ -164,18 +149,18 @@ public class StartScreen extends AppCompatActivity {
     }
 
 
-
+    // Eigene Elemente in Toolbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_start, menu);
         return true;
     }
 
+    // OnClickListener für die Toolbar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_settings:
-                Log.d("debug", "activity: action home has clicked");
                 startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                 break;
             case R.id.menu_list_of_vocabs:
@@ -186,13 +171,24 @@ public class StartScreen extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    public void onRestart() {
-//        super.onRestart();
-//            GetTask getTask = new GetTask(getApplicationContext());
-//            getTask.execute();
-//    }
+    /**
+     * Getter, der im HomeFragment benötigt wird
+     * @return Liste aller Topics. Die Topics beinhalten Units, die wiederum Vokabeln enthalten
+     */
+    public ArrayList<Topic> getTopics() {
+        return topics;
+    }
 
+    @Override
+    public void onRestart() {
+        super.onRestart();
+            GetTask getTask = new GetTask(getApplicationContext());
+            getTask.execute();
+    }
+
+    /**
+     * Liest Topics, Units und Vokabeln aus Datenbank
+     */
     private class GetTask extends AsyncTask<Object, Void, Void> {
         Context context;
 
@@ -202,7 +198,9 @@ public class StartScreen extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Object... params) {
+            // Die Topics beinhalten Units, die wiederum Vokabeln enthalten
             topics = new MyDatabase(context).getTopics();
+            SpacedRepititionSystem srs = new SpacedRepititionSystem(StartActivity.this);
             return null;
         }
 
@@ -210,10 +208,16 @@ public class StartScreen extends AppCompatActivity {
         protected void onPostExecute(Void v) {
             super.onPostExecute(v);
 
-            initToolBar();
-            initBottomNavigation();
 
-            //Hide Splash Screen
+            // Toolbar
+            toolbar = (Toolbar) findViewById(R.id.toolbar_start);
+            setSupportActionBar(toolbar);
+            toolbar.setVisibility(View.VISIBLE);
+
+
+            setupBottomNavigation();
+
+            //Splash Screen verstecken
             ImageView loadingImage = (ImageView) findViewById(R.id.iv_loading);
             loadingImage.setVisibility(View.GONE);
 

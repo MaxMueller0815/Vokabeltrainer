@@ -7,14 +7,12 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -27,19 +25,15 @@ import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.util.ArrayList;
 import java.util.Locale;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Fragment wird angezeigt, wenn das Wort sich auf dem SRS-Level 0 befindet, so dass der Nutzer die neue Vokabel lernen kann. Hier findet keine Abfrage statt.
  */
+
 public class ExerciseLearnFragment extends Fragment {
     private View view;
     private Vocab currentVocab;
-    private ArrayList<String> translations;
-    private String userAnswer = "";
-    private String alternativeSolution = "";
-    ImageView ivIndicator;
     Context context;
     WebView webView;
     TextToSpeech tts;
@@ -53,34 +47,23 @@ public class ExerciseLearnFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_learn, container, false);
         context = getContext();
         currentVocab = ((ExerciseActivity) this.getActivity()).getExercise().getCurrentVocab();
-        translations = currentVocab.getGerman();
 
-        initUI();
+        setupUI();
         initTTS();
         searchWiktionary();
 
         return view;
     }
 
-    private void searchWiktionary() {
-        try {
-            ExerciseLearnFragment.SiteFetcher sf = new ExerciseLearnFragment.SiteFetcher();
-            sf.execute(translations.get(0));
-        } catch (Exception e) {
-            System.out.print(e);
-        }
-    }
-
-    private void initUI() {
-        TextView tvUserAnswer = (TextView) view.findViewById(R.id.tv_user_answer);
-        ivIndicator = (ImageView) view.findViewById(R.id.iv_solution);
-
+    /**
+     * Baut UI auf
+     */
+    private void setupUI() {
         TextView tvBestSolution = (TextView) view.findViewById(R.id.tv_best_solution);
-        tvBestSolution.setText(translations.get(0));
+        tvBestSolution.setText(currentVocab.getGerman().get(0));
 
         TextView tvTerm = (TextView) view.findViewById(R.id.tv_term);
         tvTerm.setText(currentVocab.getEnglish());
@@ -102,6 +85,9 @@ public class ExerciseLearnFragment extends Fragment {
         });
     }
 
+    /**
+     * Initialisiert Text-to-Speech-Funktion
+     */
     private void initTTS() {
         tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
             @Override
@@ -113,10 +99,26 @@ public class ExerciseLearnFragment extends Fragment {
         });
     }
 
+    /**
+     * Beginnt AsyncTask, um Wiktionary-Website abzurufen
+     */
+    private void searchWiktionary() {
+        try {
+            WikiFetcher sf = new WikiFetcher();
+            sf.execute(currentVocab.getGerman().get(0));
+        } catch (Exception e) {
+            System.out.print(e);
+        }
+    }
+
+    /**
+     * Text-to-Speech-Funktion spricht dt. Wort aus
+     */
     public void playTTS() {
         String phrase = currentVocab.getGerman().get(0);
 
         if (WordHelper.isNoun(phrase)) {
+            // Setzt Artikel vor Nomen ("die Lehrerin" statt "Lehrerin (die, -nen)
             phrase = WordHelper.getArticle(phrase) + " " + WordHelper.getNoun(phrase);
         } else {
             phrase = WordHelper.cleanString(phrase);
@@ -124,14 +126,16 @@ public class ExerciseLearnFragment extends Fragment {
         tts.speak(phrase, TextToSpeech.QUEUE_FLUSH, null, this.hashCode() + "");
     }
 
-    private class SiteFetcher extends AsyncTask<String, Void, WiktionaryHelper> {
+    /**
+     * AsyncTask, der die Wiktionary-Seite abrufen soll
+     */
+    private class WikiFetcher extends AsyncTask<String, Void, WiktionaryHelper> {
         @Override
         protected WiktionaryHelper doInBackground(String... strings) {
             try {
                 Document doc = Jsoup.connect(WiktionaryHelper.makeUrl(strings[0]))
                         .get();
                 WiktionaryHelper wikiHelper = new WiktionaryHelper(doc);
-                Log.i("wiki", wikiHelper.toString());
                 return wikiHelper;
             } catch (Exception e) {
                 System.out.print(e);
@@ -162,9 +166,11 @@ public class ExerciseLearnFragment extends Fragment {
         }
     }
 
+    /**
+     * Erweitert, damit Text-to-Speech ordnungsgemäß beendet wird
+     */
     @Override
     public void onDestroy() {
-        //Close the Text to Speech Library
         if(tts != null) {
             tts.stop();
             tts.shutdown();

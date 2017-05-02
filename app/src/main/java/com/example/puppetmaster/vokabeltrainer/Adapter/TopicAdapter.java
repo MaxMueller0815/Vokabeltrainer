@@ -18,6 +18,9 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Wird für die Übersicht aller Topics im TopicsFragment verwendet
+ */
 public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHolder> {
 
     private List<Topic> topicList;
@@ -25,7 +28,6 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
     public TopicAdapter(ArrayList<Topic> topicList) {
         this.topicList = topicList;
     }
-
 
     @Override
     public int getItemCount() {
@@ -41,6 +43,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
         topicViewHolder.vTitle.setText(topic.getTitle());
         topicViewHolder.vProgress.setText(topic.getProgress() + "%");
 
+        // Informationen wird im JSON-Format übergeben
         topicViewHolder.vCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,13 +66,6 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
 
         return new TopicViewHolder(itemView);
     }
-
-    public void updateData(ArrayList<Topic> updatedList){
-        topicList.clear();
-        this.topicList = updatedList;
-        notifyDataSetChanged();
-    }
-
 
     public static class TopicViewHolder extends RecyclerView.ViewHolder {
         protected CardView vCard;

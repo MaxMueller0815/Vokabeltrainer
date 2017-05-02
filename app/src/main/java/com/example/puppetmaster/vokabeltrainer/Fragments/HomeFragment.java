@@ -15,14 +15,13 @@ import android.widget.TextView;
 
 import com.example.puppetmaster.vokabeltrainer.Activities.ExerciseActivity;
 import com.example.puppetmaster.vokabeltrainer.Activities.SRSTesterActivity;
-import com.example.puppetmaster.vokabeltrainer.Activities.StartScreen;
+import com.example.puppetmaster.vokabeltrainer.Activities.StartActivity;
 import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
 import com.example.puppetmaster.vokabeltrainer.Entities.Topic;
 import com.example.puppetmaster.vokabeltrainer.Entities.Unit;
 import com.example.puppetmaster.vokabeltrainer.R;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 import com.github.lzyzsd.circleprogress.ArcProgress;
-import com.google.gson.Gson;
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
@@ -34,6 +33,9 @@ import java.util.Date;
 
 import static android.icu.text.DateFormat.getDateInstance;
 
+/**
+ * Fragment stellt die Startseite dar. Hier kann der Nutzer sein Fortschritt sehen
+ */
 public class HomeFragment extends Fragment {
     private View view;
     private ArrayList<Vocab> vocabs = new ArrayList<Vocab>();
@@ -52,8 +54,8 @@ public class HomeFragment extends Fragment {
         retrieveTopics();
         retrieveWorkload();
         calcStats();
-        initGraph();
-        initProgressBar();
+        setupGraph();
+        setupProgressBar();
 
         Button srsButton = (Button) view.findViewById(R.id.btn_srs_test);
         srsButton.setOnClickListener(new View.OnClickListener() {
@@ -74,28 +76,40 @@ public class HomeFragment extends Fragment {
                     startActivity(new Intent(getContext(), ExerciseActivity.class));
                 }
             });
-            learnButton.setVisibility(View.GONE);
+            repetitionButton.setVisibility(View.VISIBLE);
+
         } else {
-            learnButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((StartScreen) getActivity()).loadFragment(R.id.action_topics);
-                }
-            });
-            repetitionButton.setVisibility(View.GONE);
+            if (datapointsLearned[VISIBLE_DAYS - 1].getY() < workload) {
+                learnButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((StartActivity) getActivity()).loadFragment(R.id.action_topics);
+                    }
+                });
+                learnButton.setVisibility(View.VISIBLE);
+            } else {
+                TextView tvDone = (TextView) view.findViewById(R.id.tv_done);
+                tvDone.setVisibility(View.VISIBLE);
+            }
         }
 
         return view;
     }
 
+    /**
+     * Workload aus DB auslesen, sollte später aus den SharedPrefs gelesen werden
+     */
     private void retrieveWorkload() {
         workload = new MyDatabase(getContext()).getWorkload();
         TextView tvWorkload = (TextView) view.findViewById(R.id.tv_workload);
         tvWorkload.setText("" + workload + " words");
     }
 
+    /**
+     * Liefert die Liste aller Topics von StartActivity (Topics beinhalten Units. Units beinhalten Vokabeln)
+     */
     private void retrieveTopics() {
-        topics =  ((StartScreen)this.getActivity()).getTopics();
+        topics =  ((StartActivity)this.getActivity()).getTopics();
 
         for (Topic topic : topics) {
             ArrayList<Unit> units = topic.getUnitsOfTopic();
@@ -110,8 +124,11 @@ public class HomeFragment extends Fragment {
     }
 
 
-    private void initProgressBar() {
-        // ProgressBar for today
+    /**
+     * Setzt Fortschritt der runden Progessbars (basierend auf com.github.lzyzsd:circleprogress)
+     */
+    private void setupProgressBar() {
+        // Runde ProgressBar für heute
         ArcProgress progressDay = (ArcProgress) view.findViewById(R.id.arc_progress_today);
         TextView tvDay = (TextView) view.findViewById(R.id.tv_day);
         tvDay.setText((int) datapointsLearned[VISIBLE_DAYS - 1].getY() + "");
@@ -122,7 +139,7 @@ public class HomeFragment extends Fragment {
             progressDay.setProgress(100);
         }
 
-        // ProgressBar for yesterday
+        // Runde ProgressBar für gestern
         ArcProgress progressYesterday = (ArcProgress) view.findViewById(R.id.arc_progress_yesterday);
         TextView tvYesterday = (TextView) view.findViewById(R.id.tv_yesterday);
         tvYesterday.setText((int) datapointsLearned[VISIBLE_DAYS - 2].getY() + "");
@@ -133,7 +150,7 @@ public class HomeFragment extends Fragment {
             progressYesterday.setProgress(100);
         }
 
-        // ProgressBar for last 7 days
+        // Runde ProgressBar für die letzen sieben Tage
         ArcProgress progressWeek = (ArcProgress) view.findViewById(R.id.arc_progress_week);
         TextView tvWeek = (TextView) view.findViewById(R.id.tv_week);
         tvWeek.setText(counterWeek + "");
@@ -145,6 +162,9 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    /**
+     * Zählt Vokabeln die innerhalb eines Tages der letzen Woche bearbeitet wurden
+     */
     private void calcStats() {
         Calendar calendarPast = Calendar.getInstance();
         calendarPast.setTime(new Date());
@@ -166,7 +186,10 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void initGraph() {
+    /**
+     * Setzt Werte im Diagramm, dass die Anzahl der bearbeiteten Wörter in der letzten Woche anzeigt (basierend auf com.jjoe64:graphview:4.2.1)
+     */
+    private void setupGraph() {
         LineGraphSeries<DataPoint> seriesLearned = new LineGraphSeries<>(datapointsLearned);
         seriesLearned.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent3));
         seriesLearned.setThickness(15);

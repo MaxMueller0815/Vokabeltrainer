@@ -7,28 +7,20 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.puppetmaster.vokabeltrainer.Activities.ExerciseActivity;
-import com.example.puppetmaster.vokabeltrainer.Adapter.VocabAdapter;
-import com.example.puppetmaster.vokabeltrainer.DatabaseCommunication.MyDatabase;
-import com.example.puppetmaster.vokabeltrainer.Entities.ExerciseLogic;
-import com.example.puppetmaster.vokabeltrainer.Helper.WordHelper;
 import com.example.puppetmaster.vokabeltrainer.Helper.WiktionaryHelper;
+import com.example.puppetmaster.vokabeltrainer.Helper.WordHelper;
 import com.example.puppetmaster.vokabeltrainer.R;
-import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.SpacedRepititionSystem;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 
 import org.jsoup.Jsoup;
@@ -36,11 +28,11 @@ import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.StringTokenizer;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Fragment zeigt dem Nutzer an, ob die Vokabel korrekt übersetzt wurde
  */
+
 public class ExerciseSolutionFragment extends Fragment {
     private View view;
     private Vocab currentVocab;
@@ -70,24 +62,25 @@ public class ExerciseSolutionFragment extends Fragment {
             userAnswer = inputBundle.getString("user_answer");
         }
 
-
         compareSolution();
-        initUI();
-        initTTS();
+        setupUI();
         searchWiktionary();
+        initTTS();
+
         return view;
     }
 
-    private void searchWiktionary() {
-        try {
-            SiteFetcher sf = new SiteFetcher();
-            sf.execute(translations.get(0));
-        } catch (Exception e) {
-            System.out.print(e);
-        }
+    /**
+     * Vokabel und Antwort des Nutzers wird an das SRS übergeben, wo es ausgewertet wird
+     */
+    private void compareSolution() {
+        isCorrect = ((ExerciseActivity)this.getActivity()).getSrs().handleAnswer(2, currentVocab, userAnswer);
     }
 
-    private void initUI() {
+    /**
+     * UI
+     */
+    private void setupUI() {
         TextView tvUserAnswer = (TextView) view.findViewById(R.id.tv_user_answer);
         ivIndicator = (ImageView) view.findViewById(R.id.iv_solution);
         if (isCorrect) {
@@ -103,6 +96,7 @@ public class ExerciseSolutionFragment extends Fragment {
 
         TextView tvTerm = (TextView) view.findViewById(R.id.tv_term);
         tvTerm.setText(currentVocab.getEnglish());
+
         TextView tvAlternativeSolution = (TextView) view.findViewById(R.id.tv_alternative_solution);
         if (alternativeSolution.equals("")) {
             tvAlternativeSolution.setVisibility(View.GONE);
@@ -110,14 +104,7 @@ public class ExerciseSolutionFragment extends Fragment {
             tvAlternativeSolution.setText("Rarer: " + alternativeSolution);
         }
 
-        FloatingActionButton fabNext = (FloatingActionButton) view.findViewById(R.id.fab_exercise_solution);
-        fabNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((ExerciseActivity) getActivity()).evaluateResult(isCorrect);
-            }
-        });
-
+        // Audio-Button
         FloatingActionButton fabAudio = (FloatingActionButton) view.findViewById(R.id.fab_audio);
         fabAudio.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,8 +112,32 @@ public class ExerciseSolutionFragment extends Fragment {
                 playTTS();
             }
         });
+
+        // Next-Button
+        FloatingActionButton fabNext = (FloatingActionButton) view.findViewById(R.id.fab_exercise_solution);
+        fabNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ExerciseActivity) getActivity()).evaluateResult(isCorrect);
+            }
+        });
     }
 
+    /**
+     * Beginnt AsyncTask, um Wiktionary-Website abzurufen
+     */
+    private void searchWiktionary() {
+        try {
+            WikiFetcher sf = new WikiFetcher();
+            sf.execute(translations.get(0));
+        } catch (Exception e) {
+            System.out.print(e);
+        }
+    }
+
+    /**
+     * Initialisiert TTS
+     */
     private void initTTS() {
         tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
             @Override
@@ -138,10 +149,10 @@ public class ExerciseSolutionFragment extends Fragment {
         });
     }
 
-    private void compareSolution() {
-        SpacedRepititionSystem srs = ((ExerciseActivity)this.getActivity()).getSrs();
-        isCorrect = srs.handleAnswer(2, currentVocab, userAnswer);
-    }
+
+    /**
+     * Spielt Sound mithilfe der TTS-Funktion
+     */
     public void playTTS() {
         String phrase = currentVocab.getGerman().get(0);
 
@@ -153,14 +164,16 @@ public class ExerciseSolutionFragment extends Fragment {
         tts.speak(phrase, TextToSpeech.QUEUE_FLUSH, null, this.hashCode() + "");
     }
 
-    private class SiteFetcher extends AsyncTask<String, Void, WiktionaryHelper> {
+    /**
+     * AsyncTask, der die Wiktionary-Seite abrufen soll
+     */
+    private class WikiFetcher extends AsyncTask<String, Void, WiktionaryHelper> {
         @Override
         protected WiktionaryHelper doInBackground(String... strings) {
             try {
                 Document doc = Jsoup.connect(WiktionaryHelper.makeUrl(strings[0]))
                         .get();
                 WiktionaryHelper wikiHelper = new WiktionaryHelper(doc);
-                Log.i("wiki", wikiHelper.toString());
                 return wikiHelper;
             } catch (Exception e) {
                 System.out.print(e);
@@ -191,9 +204,12 @@ public class ExerciseSolutionFragment extends Fragment {
         }
     }
 
+    /**
+     * Die onDestroy-Methode soll zusätzlich noch das TTS beenden
+     */
     @Override
     public void onDestroy() {
-        //Close the Text to Speech Library
+
         if(tts != null) {
             tts.stop();
             tts.shutdown();

@@ -1,10 +1,5 @@
 package com.example.puppetmaster.vokabeltrainer.Entities;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-
-import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.SpacedRepititionSystem;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 
 import java.util.ArrayList;
@@ -13,79 +8,28 @@ import java.util.ArrayList;
  * Created by Benedikt on 18.04.17.
  */
 
+/**
+ * Stellt die Logik für ein Abfrage-Set bereit
+ */
 public class ExerciseLogic {
-    private int MAX_TURNS = 20;
     private ArrayList<Vocab> vocabsAll;
     private ArrayList<Vocab> vocabsCorrect;
     private ArrayList<Vocab> vocabsFalse;
     private int nextTurn;
-    private boolean fromSRS;
-    private SpacedRepititionSystem srs;
-    private Context context;
+    private int numTurns;
 
     public ExerciseLogic(ArrayList<Vocab> vocabsAll) {
         this.vocabsAll = vocabsAll;
         vocabsCorrect = new ArrayList<>();
         vocabsFalse = new ArrayList<>();
         this.nextTurn = -1;
-        this.fromSRS = false;
+        numTurns = vocabsAll.size();
     }
 
-    // FromSRS
-    public ExerciseLogic(Context context) {
-        this.vocabsAll = new ArrayList<>();
-        vocabsCorrect = new ArrayList<>();
-        vocabsFalse = new ArrayList<>();
-        this.nextTurn = -1;
-        this.fromSRS = true;
-        srs = new SpacedRepititionSystem(context);
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        MAX_TURNS = prefs.getInt("numberOfWordsInWorkload", 0);
-    }
-
-    public Vocab nextVocab() {
-        if (fromSRS) {
-            Vocab vocab = srs.getVocabRequest();
-            vocabsAll.add(vocab);
-            nextTurn++;
-            return vocab;
-        } else {
-            return vocabsAll.get(++nextTurn);
-        }
-    }
-
-    public Vocab getCurrentVocab() {
-        if (fromSRS) {
-            return vocabsAll.get(nextTurn);
-        } else {
-            return vocabsAll.get(nextTurn);
-        }
-
-    }
-
-    public boolean hasNextTurn() {
-        if (fromSRS) {
-            /*Vocab vocab;
-            vocab = srs.getVocabRequest();*/
-            if (nextTurn < MAX_TURNS - 1 && srs.getVocabRequest() != null) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            if (nextTurn < vocabsAll.size() - 1) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
-
-    public int getNextTurn() {
-        return nextTurn;
-    }
-
+    /**
+     * Abhängig vom Ergebnis wird die Vokabel in die Richtig/Falsch-Liste aufgenommen (für finale Übersicht)
+     * @param isCorrect Vokabel wurde richtig übersetzt
+     */
     public void evaluate(boolean isCorrect) {
         if (isCorrect) {
             vocabsCorrect.add(getCurrentVocab());
@@ -94,15 +38,68 @@ public class ExerciseLogic {
         }
     }
 
+
+    public Vocab nextVocab() {
+        return vocabsAll.get(++nextTurn);
+    }
+
+    /**
+     * Liefert die Vokabel der aktuellen Runde aus VocabsAll
+     * @return Aktuelle Vokabel
+     */
+    public Vocab getCurrentVocab() {
+        return vocabsAll.get(nextTurn);
+    }
+
+    /**
+     * Bestimmt, ob noch eine weitere Runde im Abfrageset möglich ist
+     * @return Weitere Runde ist möglich
+     */
+    public boolean hasNextTurn() {
+        if (nextTurn < vocabsAll.size() - 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Gibt Nummer der nächsten Runde zurück
+     * @return Aktuelle Runde + 1
+     */
+    public int getNextTurn() {
+        return nextTurn;
+    }
+
+    /**
+     * Gibt Liste aller Vokabeln im aktuellen Vokabelset zurück
+     * @return Liste aller Vokabel im aktuellen Vokabelset
+     */
     public ArrayList<Vocab> getVocabsAll() {
         return vocabsAll;
     }
 
+    /**
+     * Gibt Liste aller richtig beantworteten Vokabeln im aktuellen Vokabelset zurück
+     * @return Liste aller richtig beantworteten Vokabeln im aktuellen Vokabelset
+     */
     public ArrayList<Vocab> getVocabsCorrect() {
         return vocabsCorrect;
     }
 
+    /**
+     * Gibt Liste aller falsch beantworteten Vokabeln im aktuellen Vokabelset zurück
+     * @return Liste aller falsch beantworteten Vokabeln im aktuellen Vokabelset
+     */
     public ArrayList<Vocab> getVocabsFalse() {
         return vocabsFalse;
+    }
+
+    /**
+     * Gibt Anzahl der maximal möglichen Runden im Set zurück
+     * @return Maximal möglichen Runden im Set
+     */
+    public int getNumTurns() {
+        return numTurns;
     }
 }

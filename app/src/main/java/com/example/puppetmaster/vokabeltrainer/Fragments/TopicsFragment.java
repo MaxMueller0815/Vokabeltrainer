@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.puppetmaster.vokabeltrainer.Activities.StartScreen;
+import com.example.puppetmaster.vokabeltrainer.Activities.StartActivity;
 import com.example.puppetmaster.vokabeltrainer.Adapter.TopicAdapter;
 import com.example.puppetmaster.vokabeltrainer.Entities.Topic;
 import com.example.puppetmaster.vokabeltrainer.R;
@@ -25,7 +25,7 @@ public class TopicsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.v("TopicFragement","Has been resumed");
-        topics =  ((StartScreen)this.getActivity()).getTopics();
+        topics =  ((StartActivity)this.getActivity()).getTopics();
         adapter.notifyDataSetChanged();
     }
 
@@ -45,6 +45,6 @@ public class TopicsFragment extends Fragment {
     }
 
     private void retrieveTopics() {
-        topics =  ((StartScreen)this.getActivity()).getTopics();
+        topics =  ((StartActivity)this.getActivity()).getTopics();
     }
 }

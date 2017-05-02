@@ -15,9 +15,10 @@ import com.example.puppetmaster.vokabeltrainer.Activities.ExerciseActivity;
 import com.example.puppetmaster.vokabeltrainer.Adapter.VocabAdapter;
 import com.example.puppetmaster.vokabeltrainer.Entities.ExerciseLogic;
 import com.example.puppetmaster.vokabeltrainer.R;
-import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 
-import java.util.ArrayList;
+/**
+ * Fragment, das am Ende eines Abfrage-Sets angezeigt wird. Der Ansicht kann die Gesamtleistung, sowie eine Liste der richtig bzw. falsch beantworteten Fragen entnommen werden
+ */
 
 public class ExerciseFinalScoreFragment extends Fragment {
     View view;
@@ -33,29 +34,25 @@ public class ExerciseFinalScoreFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_exercise_final_score, container, false);
         ExerciseLogic exercise = ((ExerciseActivity)this.getActivity()).getExercise();
-        int counterCorrect = exercise.getVocabsCorrect().size();
-        int listSize = ((ExerciseActivity)this.getActivity()).getExercise().getVocabsAll().size();
 
-        ImageView ivSolution = (ImageView) view.findViewById(R.id.iv_solution);
-        double result = (double) counterCorrect / (double) listSize ;
-
-
-
-        // Set up tabs
+        // Tab-Ansicht initialisieren
         TabHost host = (TabHost) view.findViewById(R.id.tabHost);
         host.setup();
 
-        //Tab Overview
+        //Tab Overview (Gesamtleistung)
         TabHost.TabSpec spec = host.newTabSpec("Overview");
         spec.setContent(R.id.tab_overview);
         spec.setIndicator("Overview");
         host.addTab(spec);
+        int counterCorrect = exercise.getVocabsCorrect().size();
+        int counterSet = ((ExerciseActivity)this.getActivity()).getExercise().getNumTurns();
+        double result = (double) counterCorrect / (double) counterSet ;
         String title = "";
-        String description = "You translated " + counterCorrect +  " out of "  + listSize +  " vocabs correctly.";
-
+        String description = "You translated " + counterCorrect +  " out of "  + counterSet +  " vocabs correctly.";
+        ImageView ivSolution = (ImageView) view.findViewById(R.id.iv_solution);
+        // Bild-Ressource auswählen
         if(result >= 0.90){
             ivSolution.setImageResource(R.drawable.smiley_1);
             title = "Excellent!";
@@ -64,15 +61,16 @@ public class ExerciseFinalScoreFragment extends Fragment {
             title = "Good job!";
         } else if(result < 0.60 && result >= 0.20){
             ivSolution.setImageResource(R.drawable.smiley_3);
-            title = "There's room for improvement.";
+            title = "There is room for improvement.";
         } else if(result < 0.20 && result > 0.00){
             ivSolution.setImageResource(R.drawable.smiley_4);
             title = "Celebrate every tiny victory!";
         }else {
             ivSolution.setImageResource(R.drawable.smiley_5);
             title = "At least you tried";
-            description = "But you should work harder!";
+            description = "But you should learn more regularly!";
         }
+
         TextView tvTitle = (TextView) view.findViewById(R.id.tv_solution_title);
         tvTitle.setText(title);
         TextView tvDescription = (TextView) view.findViewById(R.id.tv_solution_description);
@@ -87,7 +85,12 @@ public class ExerciseFinalScoreFragment extends Fragment {
         });
 
 
-        //Tab False Words
+        //Tab mit Liste der falsch übersetzen Wörter
+        spec = host.newTabSpec("False");
+        spec.setContent(R.id.tab_false);
+        spec.setIndicator("False");
+        host.addTab(spec);
+
         ListView listViewFalse = (ListView) view.findViewById(R.id.list_false_vocabs);
         if (exercise.getVocabsCorrect().size() > 0) {
             VocabAdapter adapterFalse = new VocabAdapter(getContext(), exercise.getVocabsFalse());
@@ -96,12 +99,12 @@ public class ExerciseFinalScoreFragment extends Fragment {
             listViewFalse.setVisibility(View.GONE);
         }
 
-        spec = host.newTabSpec("False");
-        spec.setContent(R.id.tab_false);
-        spec.setIndicator("False");
+        //Tab mit Liste der richtig übersetzen Wörter
+        spec = host.newTabSpec("Correct");
+        spec.setContent(R.id.tab_correct);
+        spec.setIndicator("Correct");
         host.addTab(spec);
 
-        //Tab Correct Words
         ListView listViewCorrect = (ListView) view.findViewById(R.id.list_correct_vocabs);
         if (exercise.getVocabsCorrect().size() > 0) {
             VocabAdapter adapterCorrect = new VocabAdapter(getContext(), exercise.getVocabsCorrect());
@@ -110,10 +113,6 @@ public class ExerciseFinalScoreFragment extends Fragment {
             listViewCorrect.setVisibility(View.GONE);
         }
 
-        spec = host.newTabSpec("Correct");
-        spec.setContent(R.id.tab_correct);
-        spec.setIndicator("Correct");
-        host.addTab(spec);
         return view;
     }
 

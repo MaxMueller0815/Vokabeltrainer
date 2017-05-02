@@ -9,7 +9,9 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
- * Created by Benedikt on 10.03.17.
+ * Helper für den Abruf von Wiktionary-Artikeln
+ * Anmerkung: Wikitionary stellt eine API zur Verfügung mit diversen Ausgabeformaten, wie bspw. JSON (https://de.wiktionary.org/w/api.php?action=query&format=json&prop=revisions&rvprop=content&indexpageids&titles=Kartoffel).
+ * Der eigentliche Seiteninhalt ist jedoch immer im schwer zu parsenden WikiText-Markup. Einfachheitahalber wird deshalb die Mobil-Website aufgerufen und mit JSoup geparst, um unnötige Inhalte zu entfernen, wie bspw. Übersetzungen/Dialekt.
  */
 
 public class WiktionaryHelper {
@@ -21,11 +23,19 @@ public class WiktionaryHelper {
         addCustomCSS("main");
     }
 
+    /**
+     * Genannte CSS-Datei wird an das HTML-Doc angefügt
+     * @param cssFileName Gewünscht CSS-Datei
+     * @return Document, auf das die CSS-Datei angewendet wurde
+     */
     public Document addCustomCSS(String cssFileName) {
-        doc.head().appendElement("link").attr("rel", "stylesheet").attr("type", "text/css").attr("href", cssFileName+".css");
+        doc.head().appendElement("link").attr("rel", "stylesheet").attr("type", "text/css").attr("href", cssFileName + ".css");
         return doc;
     }
 
+    /**
+     * Unnötige Absätze und Knoten werden entfernt, so dass der Eintrag übersichtlich bleibt
+     */
     public void removeUnneededSegments() {
         doc.select("script, link, meta").remove();
         ArrayList<Element> segments = new ArrayList<>();
@@ -38,8 +48,8 @@ public class WiktionaryHelper {
         String[] relevantSegments = {"Trennungsmöglichkeiten am Zeilenumbruch", "Phonetik", "Sinn und Bezeichnetes (Semantik)", "Verwendungsbeispielsätze"};
 
         for (String relevantSegment : relevantSegments) {
-            segments.add(firstSegment.select("[title=" + relevantSegment+ "]").first());
-            segments.add(firstSegment.select("[title=" + relevantSegment+ "] + dl").first());
+            segments.add(firstSegment.select("[title=" + relevantSegment + "]").first());
+            segments.add(firstSegment.select("[title=" + relevantSegment + "] + dl").first());
         }
 
         doc.body().select("body>div").remove();
@@ -50,25 +60,22 @@ public class WiktionaryHelper {
         }
     }
 
+    /**
+     * Konvertiert JSoup Dokument zu String (HTML)
+     * @return HTML im String-Format
+     */
     public String toString() {
         return doc.outerHtml().replaceAll("(\n)", "");
     }
 
+    /**
+     * Enfternt unnötige Angaben im Suchbegriff und gibt eine Wiktionary-URL zurück
+     * @param searchTerm Ursprünglicher Begriff, wie bspw. "Lehrerin (die, -nen)"
+     * @return URL, mit bereinigtem Begriff, wie bspw. "https://de.m.wiktionary.org/wiki/Lehrerin"
+     */
     public static String makeUrl(String searchTerm) {
-        searchTerm = WordHelper.cleanString(searchTerm);
-
-//        Improves capitalisation
-        int countBlankSpaces = 0;
-        for(int i = 0; i < searchTerm.length(); i++) {
-            if(Character.isWhitespace(searchTerm.charAt(i))) countBlankSpaces++;
-        }
-        if (countBlankSpaces > 0) {
-            char c[] = searchTerm.toCharArray();
-            c[0] = Character.toLowerCase(c[0]);
-            searchTerm = new String(c);
-        }
-
         /*URL Encoding*/
+        searchTerm = WordHelper.cleanString(searchTerm);
         searchTerm = searchTerm.replace(" ", "_");
 
         String url = "https://de.m.wiktionary.org/wiki/" + searchTerm;
@@ -77,7 +84,9 @@ public class WiktionaryHelper {
     }
 
 
-
+    /**
+     *     Wiktionary liefert zu vielen Einträgen eine Audio-Datei zur Aussprache. Standardmäßig wird jedoch die Google TTS-Bibliothek zur Aussprache verwendet, da diese für jedes Wort/Phrase eine Vorlesefunktion bereitstellen kann (auch offline).
+     */
     /*private void playWikiSoundFile() {
         Element urlLink = doc.select("[href$=.ogg]").first();
         if (urlLink != null) {
@@ -96,6 +105,10 @@ public class WiktionaryHelper {
         }
     }*/
 
+    /**
+     * Gibt an, ob das Wort/Phrase in der Wiktionary enthalten ist
+     * @return Passender Wiki-Eintrag wurde gefunden
+     */
     public boolean hasBeenFound() {
         if (doc.toString().contains("noarticletext")) {
             return false;

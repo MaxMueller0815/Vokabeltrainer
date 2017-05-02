@@ -20,13 +20,12 @@ import com.example.puppetmaster.vokabeltrainer.R;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Fragment, in dem lediglich der englische Begriff angezeigt wird. Der Nutzer kann über ein Eingabefeld die deutsche Übersetzung eintippen
  */
 public class ExerciseInputFragment extends Fragment {
     private View view;
     private Vocab currentVocab;
-    private String userAnswer = "";
-    EditText solutionInput;
+    EditText etUserAnswer;
 
     public ExerciseInputFragment() {
     }
@@ -34,13 +33,18 @@ public class ExerciseInputFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_exercise_input, container, false);
+
         currentVocab = ((ExerciseActivity) this.getActivity()).getExercise().getCurrentVocab();
+
+        // Englischer Begriff
         TextView tvQuestion = (TextView) view.findViewById(R.id.tv_question);
         tvQuestion.setText(currentVocab.getEnglish());
-        solutionInput = (EditText) view.findViewById(R.id.et_user_answer);
 
+        // Eingabefeld für dt. Begriff
+        etUserAnswer = (EditText) view.findViewById(R.id.et_user_answer);
+
+        // Next-Button
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_exercise_input);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,10 +52,10 @@ public class ExerciseInputFragment extends Fragment {
                 removeKeyboard();
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction ft = fragmentManager.beginTransaction();
-                Fragment exerciseSolutionFragment = new ExerciseSolutionFragment();//Get Fragment Instance
+                Fragment exerciseSolutionFragment = new ExerciseSolutionFragment();
                 Bundle inputBundle = new Bundle();
-                inputBundle.putString("user_answer", String.valueOf(solutionInput.getText()));
-                exerciseSolutionFragment.setArguments(inputBundle);//Finally set argument bundle to fragment
+                inputBundle.putString("user_answer", String.valueOf(etUserAnswer.getText()));
+                exerciseSolutionFragment.setArguments(inputBundle);
                 ft.setCustomAnimations(R.animator.flight_left_in, R.animator.flip_right_out);
                 ft.replace(R.id.container_exercise, exerciseSolutionFragment);
                 ft.commit();
@@ -60,6 +64,9 @@ public class ExerciseInputFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Sobald die Flip-Animation zu Ende ist, wird automatisch die Tastatur ausgeklappt
+     */
     @Override
     public void onResume() {
         super.onResume();
@@ -67,21 +74,26 @@ public class ExerciseInputFragment extends Fragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                // Do something after 5s = 5000ms
                 showKeyboard();
             }
         }, 500);
 
     }
 
+    /**
+     * Klappt Tastatur ein
+     */
     private void removeKeyboard() {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(solutionInput.getWindowToken(), 0);
+        imm.hideSoftInputFromWindow(etUserAnswer.getWindowToken(), 0);
     }
 
+    /**
+     * Klappt Tastatur aus
+     */
     private void showKeyboard() {
-        solutionInput.requestFocus();
-        InputMethodManager imm =  (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(solutionInput, InputMethodManager.SHOW_IMPLICIT);
+        etUserAnswer.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(etUserAnswer, InputMethodManager.SHOW_IMPLICIT);
     }
 }

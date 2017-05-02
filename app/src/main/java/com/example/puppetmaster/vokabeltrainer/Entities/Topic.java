@@ -1,12 +1,11 @@
 package com.example.puppetmaster.vokabeltrainer.Entities;
 
 import com.example.puppetmaster.vokabeltrainer.R;
-import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 
 import java.util.ArrayList;
 
 /**
- * Created by Benedikt on 20.01.17.
+ * Repräsentiert ein Themengebiet, das mehrere Teilgebiete (Units) beinhaltet
  */
 
 public class Topic {
@@ -20,14 +19,26 @@ public class Topic {
         this.unitsOfTopic = unitsOfTopic;
     }
 
+    /**
+     * Gibt Topic-ID zurück
+     * @return Topic-ID
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Gibt Titel des Topics zurück
+     * @return Titel des Topics
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Gibt zugeordnetes Bild des Topics zurück
+     * @return Bild des Topics
+     */
     public int getImage() {
         int imageID = -1;
         switch(getId()) {
@@ -57,14 +68,26 @@ public class Topic {
         return imageID;
     }
 
+    /**
+     * Gibt Units des Topics zurück
+     * @return Units des Topics
+     */
     public ArrayList<Unit> getUnitsOfTopic() {
         return unitsOfTopic;
     }
 
+    /**
+     * Gibt Gesamtfortschritt des Topics über alle enthaltenen Units/Vokabeln zurück
+     * @return Titel des Topics
+     */
     public int getProgress() {
         return getNumOfLearnedVocabs() * 100 / getNumOfAllVocabs();
     }
 
+    /**
+     * Gibt Anzahl aller Vokabeln im Topic zurück
+     * @return Anzahl aller Vokabeln im Topic
+     */
     public int getNumOfAllVocabs() {
         int allVocabs = 0;
         for (Unit unit: unitsOfTopic) {
@@ -73,6 +96,10 @@ public class Topic {
         return allVocabs;
     }
 
+    /**
+     * Gibt Anzahl aller gelernten Vokabeln im Topic zurück (SRS > 0)
+     * @return Anzahl aller gelernten Vokabeln im Topic
+     */
     public int getNumOfLearnedVocabs() {
         int learnedVocabs = 0;
         for (Unit unit: unitsOfTopic) {

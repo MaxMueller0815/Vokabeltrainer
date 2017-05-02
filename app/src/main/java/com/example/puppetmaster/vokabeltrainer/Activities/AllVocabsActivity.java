@@ -11,7 +11,9 @@ import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 
 import java.util.ArrayList;
 
-// Activity zeigt sämtliche Vokabeln inklusive SRS-Level an, die in der Datenbank abgespeichert sind. So kann der Nutzer seinen Fortschritt überprüfen
+/**
+ * Activity zeigt sämtliche Vokabeln inklusive SRS-Level an, die in der Datenbank abgespeichert sind. So kann der Nutzer seinen Fortschritt überprüfen
+ */
 public class AllVocabsActivity extends AppCompatActivity {
 
     @Override

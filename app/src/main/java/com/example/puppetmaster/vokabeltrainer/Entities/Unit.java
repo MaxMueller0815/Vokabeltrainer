@@ -5,7 +5,7 @@ import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 import java.util.ArrayList;
 
 /**
- * Created by Benedikt on 20.01.17.
+ * Repräsentiert ein Teilgebiet, das einem Themenbereich (Topic) zugeordnet ist
  */
 
 public class Unit {
@@ -21,22 +21,50 @@ public class Unit {
         this.topicId = topicId;
     }
 
+    /**
+     * Gibt ID der Unit zurück
+     * @return ID der Unit
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Gibt Titel der Unit zurück
+     * @return Titel der Unit
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Gibt ID des Topics zurück, dem die aktuelle Unit zugeordnet ist
+     * @return ID des Topics
+     */
+    public int getTopicId() {
+        return topicId;
+    }
+
+    /**
+     * Gibt Liste aller Vokabeln der Unit zurück
+     * @return Liste aller Vokabeln der Unit
+     */
     public ArrayList<Vocab> getVocabsOfUnit() {
         return vocabsOfUnit;
     }
 
+    /**
+     * Gibt Anzahl aller Vokabeln in Unit zurück
+     * @return Anzahl aller Vokabeln in Unit
+     */
     public int getNumOfAllVocabs() {
         return vocabsOfUnit.size();
     }
 
+    /**
+     * Gibt Anzahl aller bereits gelernten Vokabeln in Unit zurück
+     * @return Anzahl aller bereits gelernten Vokabeln in Unit
+     */
     public int getNumOfLearnedVocabs() {
         int learnedVocabs = 0;
         for (Vocab vocab : vocabsOfUnit) {
@@ -45,9 +73,5 @@ public class Unit {
             }
         }
         return learnedVocabs;
-    }
-
-    public int getTopicId() {
-        return topicId;
     }
 }

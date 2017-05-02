@@ -6,7 +6,6 @@ package com.example.puppetmaster.vokabeltrainer.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,11 +18,14 @@ import android.widget.TextView;
 import com.example.puppetmaster.vokabeltrainer.Activities.ExerciseActivity;
 import com.example.puppetmaster.vokabeltrainer.Entities.Unit;
 import com.example.puppetmaster.vokabeltrainer.R;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Wird für die Übersicht aller Units im UnitsActivity verwendet (Kartenansicht)
+ */
 public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.UnitViewHolder> {
     private Context context;
     private List<Unit> unitList;
