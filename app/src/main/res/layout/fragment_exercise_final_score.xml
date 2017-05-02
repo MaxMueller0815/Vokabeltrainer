@@ -11,9 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@mipmap/motivation"
-        android:backgroundTint="@color/colorAccent3Dark"
-        android:backgroundTintMode="multiply"
+        android:background="@color/colorAccent"
         android:elevation="4dp">
 
         <ImageView

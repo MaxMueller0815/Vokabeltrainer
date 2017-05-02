@@ -9,89 +9,90 @@
     android:tag="fragment_home">
 
     <RelativeLayout
+        android:id="@+id/rl_screen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/arc_progress"
+        android:layout_marginTop="50dp"
         android:orientation="vertical"
         android:padding="16dp">
 
         <com.github.lzyzsd.circleprogress.ArcProgress
             android:id="@+id/arc_progress_week"
-            android:layout_width="230dp"
-            android:layout_height="230dp"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
+            android:layout_marginBottom="50dp"
             android:paddingBottom="10dp"
             app:arc_bottom_text=""
             app:arc_finished_color="@color/colorAccent3"
             app:arc_max="100"
             app:arc_progress="90"
-            app:arc_stroke_width="20dp"
+            app:arc_stroke_width="28dp"
             app:arc_suffix_text_padding="0dp"
             app:arc_text_color="@color/bg"
-            app:arc_unfinished_color="@color/colorAccent3Light"
-            android:layout_marginBottom="50dp"
-            android:layout_alignParentTop="true" />
+            app:arc_unfinished_color="@color/colorAccent3Light" />
 
         <com.github.lzyzsd.circleprogress.ArcProgress
             android:id="@+id/arc_progress_yesterday"
-            android:layout_width="180dp"
+            android:layout_width="240dp"
+            android:layout_height="240dp"
+            android:layout_alignParentTop="true"
+            android:layout_below="@+id/ll_stats"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="75dp"
+            android:layout_marginTop="30dp"
             android:paddingBottom="10dp"
             app:arc_bottom_text=""
             app:arc_finished_color="@color/colorAccent2"
             app:arc_max="100"
             app:arc_progress="80"
-            app:arc_stroke_width="20dp"
+            app:arc_stroke_width="28dp"
             app:arc_suffix_text_padding="0dp"
             app:arc_text_color="@color/bg"
-            app:arc_unfinished_color="@color/colorAccent2Light"
-            android:layout_height="180dp"
-            android:layout_below="@+id/ll_stats"
-            android:layout_alignParentTop="true" />
+            app:arc_unfinished_color="@color/colorAccent2Light" />
 
         <com.github.lzyzsd.circleprogress.ArcProgress
             android:id="@+id/arc_progress_today"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_alignParentTop="true"
+            android:layout_below="@+id/ll_stats"
             android:layout_centerHorizontal="false"
             android:layout_centerInParent="true"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="60dp"
             android:paddingBottom="10dp"
-            app:arc_text_size="30dp"
             app:arc_finished_color="@color/colorAccent"
             app:arc_max="100"
             app:arc_progress="70"
-            app:arc_stroke_width="20dp"
+            app:arc_stroke_width="28dp"
             app:arc_suffix_text_padding="0dp"
             app:arc_text_color="@color/colorAccentDark"
-            app:arc_unfinished_color="@color/colorAccentLight"
-            android:layout_below="@+id/ll_stats"
-            android:layout_alignParentTop="true" />
+            app:arc_text_size="30dp"
+            app:arc_unfinished_color="@color/colorAccentLight" />
 
         <LinearLayout
             android:id="@+id/ll_stats"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/arc_progress_week"
             android:orientation="horizontal"
-            android:weightSum="3"
-            android:layout_below="@+id/arc_progress_week">
+            android:weightSum="3">
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginRight="2dp"
                 android:layout_weight="1"
                 android:elevation="0dp"
                 android:padding="10dp"
-                app:cardUseCompatPadding="true"
                 app:cardBackgroundColor="@color/colorAccentLight"
-                android:layout_marginRight="2dp">
+                app:cardUseCompatPadding="true">
 
                 <View
                     android:layout_width="4dp"
-                    android:background="@color/colorAccentDark"
-                    android:layout_height="match_parent"></View>
+                    android:layout_height="match_parent"
+                    android:background="@color/colorAccentDark"></View>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -127,17 +128,17 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
                 android:layout_weight="1"
                 android:padding="10dp"
-                app:cardUseCompatPadding="true"
                 app:cardBackgroundColor="@color/colorAccent2Light"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp">
+                app:cardUseCompatPadding="true">
 
                 <View
                     android:layout_width="4dp"
-                    android:background="@color/colorAccent2Dark"
-                    android:layout_height="match_parent"></View>
+                    android:layout_height="match_parent"
+                    android:background="@color/colorAccent2Dark"></View>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -173,16 +174,16 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="2dp"
                 android:layout_weight="1"
                 android:padding="10dp"
-                app:cardUseCompatPadding="true"
                 app:cardBackgroundColor="@color/colorAccent3Light"
-                android:layout_marginLeft="2dp">
+                app:cardUseCompatPadding="true">
 
                 <View
                     android:layout_width="4dp"
-                    android:background="@color/colorAccent3Dark"
-                    android:layout_height="match_parent"></View>
+                    android:layout_height="match_parent"
+                    android:background="@color/colorAccent3Dark"></View>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -224,8 +225,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/ll_stats"
             android:layout_centerHorizontal="true"
+            android:layout_marginBottom="48dp"
             android:text="Repeat learned words"
-            android:textColor="@color/colorWhite" />
+            android:textColor="@color/colorWhite"
+            android:visibility="invisible" />
 
         <Button
             android:id="@+id/btn_learn"
@@ -234,16 +237,30 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/ll_stats"
             android:layout_centerHorizontal="true"
+            android:layout_marginBottom="48dp"
             android:text="Learn something new"
-            android:textColor="@color/colorWhite" />
+            android:textColor="@color/colorWhite"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/tv_done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_stats"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="48dp"
+            android:layout_marginTop="16dp"
+            android:text="All done for today! Come back tomorrow."
+            android:textAlignment="center"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/tv_stats"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/btn_srs_repetition"
+            android:layout_below="@+id/ll_stats"
             android:layout_marginBottom="16dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="96dp"
             android:gravity="center"
             android:text="Daily Progress"
             android:textAppearance="@android:style/TextAppearance.Material.Large" />
@@ -261,13 +278,14 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/graph"
             android:onClick="openSRSTest"
-            android:text="SRS Test" />
+            android:text="SRS Test"
+            android:visibility="invisible" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="400dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"></View>
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"></View>
 
         <TextView
             android:id="@+id/tv_workload"

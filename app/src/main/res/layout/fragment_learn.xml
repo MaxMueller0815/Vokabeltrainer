@@ -33,18 +33,9 @@
                     android:id="@+id/textView9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
                     android:text="New word"
                     android:textColor="@color/colorAccentLight"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_best_solution"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="4dp"
-                    android:text="TextView"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="24sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -55,6 +46,16 @@
                     android:text="TextView"
                     android:textColor="@color/colorWhite"
                     android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_best_solution"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="4dp"
+                    android:text="TextView"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
                 <android.support.design.widget.FloatingActionButton
                     android:id="@+id/fab_audio"
