@@ -12,16 +12,15 @@ import com.example.puppetmaster.vokabeltrainer.Entities.Unit;
 import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.Vocab;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
-import java.lang.reflect.Array;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 public class MyDatabase extends SQLiteAssetHelper {
 
     private static final String DATABASE_NAME = "vocabDB.db";
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 9;
     private SQLiteDatabase db;
     private SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
@@ -45,7 +44,7 @@ public class MyDatabase extends SQLiteAssetHelper {
     *
     *       <key, [countDeclined, countAccepted, countManual, multiplier]>
     * */
-    public HashMap<Integer, Double[]> getCountInformationForEveryTimeBlock(){
+    public HashMap<Integer, Double[]> getCountInformationForEveryTimeBlock() {
 
         HashMap<Integer, Double[]> resultHashMap = new HashMap<Integer, Double[]>();
 
@@ -60,37 +59,37 @@ public class MyDatabase extends SQLiteAssetHelper {
         try {
             c.moveToFirst();
             while (!c.isAfterLast()) {
-                    Double[] countArray = new Double[4];
-                    countArray[0] = (double)c.getInt(1);
-                    countArray[1] = (double)c.getInt(2);
-                    countArray[2] = (double)c.getInt(3);
-                    countArray[3] = (double)c.getFloat(4);
+                Double[] countArray = new Double[4];
+                countArray[0] = (double) c.getInt(1);
+                countArray[1] = (double) c.getInt(2);
+                countArray[2] = (double) c.getInt(3);
+                countArray[3] = (double) c.getFloat(4);
 
-                    resultHashMap.put(c.getInt(0), countArray);
+                resultHashMap.put(c.getInt(0), countArray);
 
-                    c.moveToNext();
+                c.moveToNext();
             }
-            } finally {
-                c.close();
-            }
+        } finally {
+            c.close();
+        }
         return resultHashMap;
     }
 
-    public void updateLogForHour(double [] logInfo){
+    public void updateLogForHour(double[] logInfo) {
         db = this.getWritableDatabase();
-        String whereClause = "timeSlot=" + (int)logInfo[0];
+        String whereClause = "timeSlot=" + (int) logInfo[0];
 
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put("counterDeclined", (int)logInfo[1]);
-        contentValues.put("counterAccepted", (int)logInfo[2]);
-        contentValues.put("counterManual", (int)logInfo[3]);
-        contentValues.put("multiplier", (float)logInfo[4]);
+        contentValues.put("counterDeclined", (int) logInfo[1]);
+        contentValues.put("counterAccepted", (int) logInfo[2]);
+        contentValues.put("counterManual", (int) logInfo[3]);
+        contentValues.put("multiplier", (float) logInfo[4]);
 
         db.update("pushNotificationLog", contentValues, whereClause, null);
     }
 
-    public double [] getLogInfoForHour (int hour){
+    public double[] getLogInfoForHour(int hour) {
         db = getReadableDatabase();
 
         String[] sqlSelect = {"*"};
@@ -101,17 +100,17 @@ public class MyDatabase extends SQLiteAssetHelper {
         Cursor c = queryBuilder.query(db, sqlSelect, null, null,
                 null, null, null);
 
-        double [] logInfo = new double[5];
+        double[] logInfo = new double[5];
 
         try {
             c.moveToFirst();
             while (!c.isAfterLast()) {
 
-                logInfo[0] = (double)c.getInt(0);
-                logInfo[1] = (double)c.getInt(1);
-                logInfo[2] = (double)c.getInt(2);
-                logInfo[3] = (double)c.getInt(3);
-                logInfo[4] = (double)c.getInt(4);
+                logInfo[0] = (double) c.getInt(0);
+                logInfo[1] = (double) c.getInt(1);
+                logInfo[2] = (double) c.getInt(2);
+                logInfo[3] = (double) c.getInt(3);
+                logInfo[4] = (double) c.getInt(4);
 
                 c.moveToNext();
             }
@@ -122,10 +121,10 @@ public class MyDatabase extends SQLiteAssetHelper {
         return logInfo;
     }
 
-    public ArrayList<double []> getLogInfoWithoutHour (int hour){
+    public ArrayList<double[]> getLogInfoWithoutHour(int hour) {
         db = getReadableDatabase();
 
-        ArrayList<double []> resultList = new ArrayList<double[]>();
+        ArrayList<double[]> resultList = new ArrayList<double[]>();
 
         String[] sqlSelect = {"*"};
         String sqlTables = "pushNotificationLog";
@@ -139,13 +138,13 @@ public class MyDatabase extends SQLiteAssetHelper {
             c.moveToFirst();
             while (!c.isAfterLast()) {
 
-                double [] logInfo = new double[5];
+                double[] logInfo = new double[5];
 
-                logInfo[0] = (double)c.getInt(0);
-                logInfo[1] = (double)c.getInt(1);
-                logInfo[2] = (double)c.getInt(2);
-                logInfo[3] = (double)c.getInt(3);
-                logInfo[4] = (double)c.getInt(4);
+                logInfo[0] = (double) c.getInt(0);
+                logInfo[1] = (double) c.getInt(1);
+                logInfo[2] = (double) c.getInt(2);
+                logInfo[3] = (double) c.getInt(3);
+                logInfo[4] = (double) c.getInt(4);
 
                 resultList.add(logInfo);
                 c.moveToNext();
@@ -227,7 +226,7 @@ public class MyDatabase extends SQLiteAssetHelper {
             while (!c.isAfterLast()) {
                 try {
                     translations = getTranslations(c.getInt(0));
-                    vocabList.add(new Vocab(c.getInt(0), c.getString(1), translations, c.getInt(2), c.getInt(3), (long)c.getDouble(4), (long)c.getDouble(5), c.getInt(6), c.getInt(7)));
+                    vocabList.add(new Vocab(c.getInt(0), c.getString(1), translations, c.getInt(2), c.getInt(3), (long) c.getDouble(4), (long) c.getDouble(5), c.getInt(6), c.getInt(7)));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -275,7 +274,7 @@ public class MyDatabase extends SQLiteAssetHelper {
             contentValues.put("lastRevision", updatedVocab.getLastRevision());
             contentValues.put("nextRevision", updatedVocab.getNextRevision());
             db.update("srs", contentValues, whereClause, null);
-            Log.i("MyDatabase", updatedVocab.getGerman()+ ": "+contentValues.toString());
+            Log.i("MyDatabase", updatedVocab.getGerman() + ": " + contentValues.toString());
         } finally {
             db.close();
         }
@@ -300,7 +299,7 @@ public class MyDatabase extends SQLiteAssetHelper {
             while (!c.isAfterLast()) {
                 try {
                     translations = getTranslations(c.getInt(0));
-                    listOfAllVocab.add(new Vocab(c.getInt(0), c.getString(1), translations, c.getInt(2), c.getInt(3), (long)c.getDouble(4), (long)c.getDouble(5), c.getInt(6), c.getInt(7)));
+                    listOfAllVocab.add(new Vocab(c.getInt(0), c.getString(1), translations, c.getInt(2), c.getInt(3), (long) c.getDouble(4), (long) c.getDouble(5), c.getInt(6), c.getInt(7)));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -405,7 +404,8 @@ public class MyDatabase extends SQLiteAssetHelper {
                 withArticle = false;
             } else {
                 withArticle = true;
-            };
+            }
+            ;
 
             if (c.getInt(1) == 0) {
                 caseSensitve = false;
@@ -420,4 +420,60 @@ public class MyDatabase extends SQLiteAssetHelper {
         return inputMode;
     }
 
+    public void updateProgressLog() {
+        // Auf Mitternacht setzen
+        Calendar date = Calendar.getInstance();
+        date.set(Calendar.HOUR_OF_DAY, 0);
+        date.set(Calendar.MINUTE, 0);
+        date.set(Calendar.SECOND, 0);
+        date.set(Calendar.MILLISECOND, 0);
+
+        db = this.getWritableDatabase();
+        String whereClause = "date=" + date.getTimeInMillis();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("vocabsPractised", getNumVocabsPractisedForDate(date.getTimeInMillis()) + 1);
+        try {
+            if (hasProgressEntryForDate(date.getTimeInMillis())) {
+                db.update("progressLog", contentValues, whereClause, null);
+            } else {
+                contentValues.put("date", date.getTimeInMillis());
+                db.insert("progressLog", null, contentValues);
+            }
+        } finally {
+            db.close();
+        }
+    }
+
+    private boolean hasProgressEntryForDate(long date) {
+        db = this.getReadableDatabase();
+        String[] sqlSelect = {"date"};
+        String sqlTables = "progressLog";
+
+        qb.setTables(sqlTables);
+        Cursor c = qb.query(db, sqlSelect, "date=" + date, null,
+                null, null, null);
+        boolean exist = (c.getCount() > 0);
+        c.close();
+        return exist;
+    }
+
+    public int getNumVocabsPractisedForDate(long date) {
+        db = this.getReadableDatabase();
+        String[] sqlSelect = {"*"};
+        String sqlTables = "progressLog";
+        qb.setTables(sqlTables);
+        Cursor c = qb.query(db, sqlSelect, "date=" + date, null,
+                null, null, null);
+
+        int numVocabs;
+
+        if (c.getCount() > 0) {
+            c.moveToFirst();
+            numVocabs = c.getInt(1);
+        } else {
+            numVocabs = 0;
+        }
+        c.close();
+        return numVocabs;
+    }
 }

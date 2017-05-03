@@ -51,7 +51,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
-        retrieveTopics();
+        topics =  ((StartActivity)this.getActivity()).getTopics();
+
         retrieveWorkload();
         calcStats();
         setupGraph();
@@ -106,25 +107,6 @@ public class HomeFragment extends Fragment {
     }
 
     /**
-     * Liefert die Liste aller Topics von StartActivity (Topics beinhalten Units. Units beinhalten Vokabeln)
-     */
-    private void retrieveTopics() {
-        topics =  ((StartActivity)this.getActivity()).getTopics();
-
-        for (Topic topic : topics) {
-            ArrayList<Unit> units = topic.getUnitsOfTopic();
-            for (Unit unit : units) {
-                ArrayList<Vocab> vocabsOfUnit = unit.getVocabsOfUnit();
-                for (Vocab vocab : vocabsOfUnit) {
-                    vocabs.add(vocab);
-                }
-            }
-        }
-        Log.i("Length of vocabs", vocabs.size() + " items");
-    }
-
-
-    /**
      * Setzt Fortschritt der runden Progessbars (basierend auf com.github.lzyzsd:circleprogress)
      */
     private void setupProgressBar() {
@@ -166,23 +148,21 @@ public class HomeFragment extends Fragment {
      * Zählt Vokabeln die innerhalb eines Tages der letzen Woche bearbeitet wurden
      */
     private void calcStats() {
-        Calendar calendarPast = Calendar.getInstance();
-        calendarPast.setTime(new Date());
+        MyDatabase db = new MyDatabase(getContext());
+        Calendar date = Calendar.getInstance();
+        date.set(Calendar.HOUR_OF_DAY, 0);
+        date.set(Calendar.MINUTE, 0);
+        date.set(Calendar.SECOND, 0);
+        date.set(Calendar.MILLISECOND, 0);
+
         for (int i = VISIBLE_DAYS - 1; i >= 0; i--) {
             double counterDay = 0;
-            for (Vocab vocab : vocabs) {
-                Calendar calenderOfVocab = Calendar.getInstance();
-                calenderOfVocab.setTimeInMillis(vocab.getLastRevision());
-                if (calenderOfVocab.get(Calendar.YEAR) == calendarPast.get(Calendar.YEAR) &&
-                        calenderOfVocab.get(Calendar.DAY_OF_YEAR) == calendarPast.get(Calendar.DAY_OF_YEAR)) {
-                    counterDay++;
-                    counterWeek++;
-                }
-            }
-            datapointsLearned[i] = new DataPoint(calendarPast.getTime(), counterDay);
-            datapointsWorkload[i] = new DataPoint(calendarPast.getTime(), workload);
+            counterDay = db.getNumVocabsPractisedForDate(date.getTimeInMillis());
+            datapointsLearned[i] = new DataPoint(date.getTime(), counterDay);
+            datapointsWorkload[i] = new DataPoint(date.getTime(), workload);
+            counterWeek = counterWeek + (int) counterDay;
             Log.i("Datapoint added", getDateInstance().format(datapointsLearned[i].getX()) + ", " + datapointsLearned[i].getY());
-            calendarPast.add(Calendar.DATE, -1);
+            date.add(Calendar.DATE, -1);
         }
     }
 
@@ -216,7 +196,7 @@ public class HomeFragment extends Fragment {
                             Calendar cal = Calendar.getInstance();
                             cal.setTime(new Date(totalSeconds));
                             int day = cal.get(Calendar.DAY_OF_MONTH);
-                            int month = cal.get(Calendar.MONTH);
+                            int month = cal.get(Calendar.MONTH) + 1;
 
                             return String.format(day + "." + month);
                         } else {

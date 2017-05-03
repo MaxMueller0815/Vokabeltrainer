@@ -28,6 +28,7 @@ public class SRSDataBaseCommunicator {
 
     public void updateVocab(Vocab vocab){
         myDatabase.updateSingleVocab(vocab);
+        myDatabase.updateProgressLog();
     }
 
     public void handleAcceptedInHour(int hourOfTheDay){
