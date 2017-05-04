@@ -197,26 +197,25 @@ public class SpacedRepititionSystem {
     /*
     *       check if the given answer is right or wrong
     *       use int parameter to select the language of the GIVEN ANSWER
-     *
-     *       1 = ENGLISH
-     *       2 = GERMAN
     *
-    *
+    *       1 = ENGLISH
+    *       2 = GERMAN
     * */
     public boolean checkAnswer(int language, Vocab vocab, String answer) {
-
-        if (language == 1) {
-            return vocab.getEnglish().equals(answer);
-        } else if (language == 2) {
-            boolean isCorrect = false;
-            for (int i = 0; i < vocab.getGerman().size(); i++) {
-                if (WordHelper.cleanString(answer.toLowerCase()).equals(WordHelper.cleanString(vocab.getGerman().get(i).toLowerCase()))) {
-                    isCorrect = true;
+        switch (language) {
+            case 1:
+                return vocab.getEnglish().equals(answer);
+            case 2:
+                boolean isCorrect = false;
+                // Eine Vokabel hat teils mehrere deutsche Übersetzungsmöglichkeiten
+                for (int i = 0; i < vocab.getGerman().size(); i++) {
+                    if (WordHelper.cleanString(answer.toLowerCase()).equals(WordHelper.cleanString(vocab.getGerman().get(i).toLowerCase()))) {
+                        isCorrect = true;
+                    }
                 }
-            }
-            return isCorrect;
-        } else {
-            return false;
+                return isCorrect;
+            default:
+                return false;
         }
     }
     

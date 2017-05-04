@@ -15,7 +15,6 @@ import java.util.Locale;
 
 public class Vocab implements Serializable {
 
-  //  private String dateFormatString = "yyyy-MM-dd'T'HH:mm";
     private int id;
     private String english;
     private ArrayList<String> german;
@@ -28,8 +27,6 @@ public class Vocab implements Serializable {
 
     public Vocab(int id, String english, ArrayList<String> german, int unitId, int srsLevel,
                       long lastRevision, long nextRevision, int countCorrect, int countFalse) throws ParseException {
-
-       // DateFormat format = new SimpleDateFormat(dateFormatString, Locale.ENGLISH);
 
         this.id = id;
         this.english = english;
@@ -67,9 +64,7 @@ public class Vocab implements Serializable {
 
         Calendar calendar = Calendar.getInstance();
 
-        Date currentDate = new Date();
         calendar.add(Calendar.HOUR, 5);
-      //  this.nextRevision = new Date(currentDate.getTime() - 2 * 24 * 3600 * 1000);
         this.nextRevision = calendar.getTimeInMillis();
 
     }

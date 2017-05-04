@@ -67,8 +67,6 @@ public class AlarmReceiver extends BroadcastReceiver {
                 //TODO: Richtiges Fragment aufrufen: http://stackoverflow.com/a/36064344
                 Intent learnIntent = new Intent(context, StartActivity.class);
                 learnIntent.putExtra("frgToLoad", R.id.action_topics);
-                //Wird immer und immer wieder aufgerufen…aber warum?
-                //exerciseIntent.putExtra("WORD_LIST", new SpacedRepititionSystem(context).pickListOfNewWords());
                 PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, learnIntent, PendingIntent.FLAG_ONE_SHOT);
                 builder.setContentIntent(pendingIntent);
                 builder.setContentText("Time to learn something new.");

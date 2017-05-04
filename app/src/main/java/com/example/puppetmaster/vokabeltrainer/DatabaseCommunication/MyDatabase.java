@@ -17,25 +17,19 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
+/**
+ * Diese Klasse erbt von SQLiteAssetHelper (https://github.com/jgilfelt/android-sqlite-asset-helper). Der Helper vereinfacht den Import von mitgelieferten Datenbanken (Vokabeln)
+ */
 public class MyDatabase extends SQLiteAssetHelper {
 
     private static final String DATABASE_NAME = "vocabDB.db";
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 11;
     private SQLiteDatabase db;
     private SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
     public MyDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         setForcedUpgrade();
-        // you can use an alternate constructor to specify a database location
-        // (such as a folder on the sd card)
-        // you must ensure that this folder is available and you have permission
-        // to write to it
-        //super(context, DATABASE_NAME, context.getExternalFilesDir(null).getAbsolutePath(), null, DATABASE_VERSION);
-        // call this method to force a database overwrite every time the version number increments:
-        // call this method to force a database overwrite if the version number
-        // is below a certain threshold:
-        //setForcedUpgrade(2);
     }
 
 
@@ -319,16 +313,19 @@ public class MyDatabase extends SQLiteAssetHelper {
         String sqlTables = "userPreferences";
 
         qb.setTables(sqlTables);
-        Cursor c = qb.query(db, sqlSelect, null, null,
-                null, null, null);
-
+        Cursor c = qb.query(db, sqlSelect, null, null, null, null, null);
 
         try {
             c.moveToFirst();
+            //Workload
             settings.add(c.getInt(0));
+            //exerciseStart
             settings.add(c.getInt(1));
+            //exerciseEnd
             settings.add(c.getInt(2));
+            //inputRequiresArticle
             settings.add(c.getInt(3));
+            //inputRequiresCapitalisation
             settings.add(c.getInt(4));
         } finally {
             c.close();
