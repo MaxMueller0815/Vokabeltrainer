@@ -13,20 +13,33 @@
     <string name="action_settings">Settings</string>
 
 
-    <!-- Sample String -->
-    <string name="sample_string">Beispieltext</string>
-
-    <!-- Result AlertDialog -->
-    <string name="result">Ergebnis</string>
-    <string name="finished">OK</string>
-
     <!-- Exit AlertDialog -->
-    <string name="exit_title">Verlassen</string>
-    <string name="exit_message">Willst du die Abfrage wirklich verlassen?</string>
-    <string name="exit_positive_button">Verlassen</string>
-    <string name="exit_negative_button">Abbrechen</string>
-    <string name="language_positive_button">Erstellen</string>
-    <string name="language_negative_button">Abbrechen</string>
+    <string name="exit_title">Quit</string>
+    <string name="exit_message">Do you really want to quit this exercise?</string>
+    <string name="exit_positive_button">Quit</string>
+    <string name="exit_negative_button">Cancel</string>
+    <string name="language_positive_button">Create</string>
+    <string name="language_negative_button">Cancel</string>
+    <string name="str_credits"><b>Icons:</b> \n
+        Icons in Topic View by Gregor Cresnar:\n thenounproject.com/grega.cresnar\n\n
+        Smileys in Final Score View by Paul F.:\n thenounproject.com/paulfeltoe\n\n
+        Wrong/Right Icons in Exercise Activity by ProSymbols:\n thenounproject.com/prosymbols\n\n
+        Toolbar and BottomNavigationBar Icons by Google:\n material.io/icons\n\n
+        \n\n\n
+        <b>Libaries:</b>\n
+        Android SQLiteAssetHelper by jgilfelt:\n github.com/jgilfelt/android-sqlite-asset-helper\n\n
+        Android Carousel LayoutManager by Azoft:\n github.com/Azoft/CarouselLayoutManager\n\n
+        GraphView by Jonas Gehring:\n android-graphview.org\n\n
+        Gson by Google:\n github.com/google/gson\n\n
+        CircleProgress by lzyzsd:\n github.com/lzyzsd/CircleProgress\n\n
+        Jsoup by Jonathan Hedley:\n jsoup.org
+    </string>
+
+    <!-- Bottom Navigation Bar -->
+    <string name="bnb_start">Home</string>
+    <string name="bnb_topics">Topics</string>
+    <string name="bnb_game">Game</string>
+    <string name="bnb_profile">Profile</string>
 
 
 </resources>

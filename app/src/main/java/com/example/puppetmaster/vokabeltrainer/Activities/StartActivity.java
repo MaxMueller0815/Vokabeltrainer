@@ -35,6 +35,8 @@ import com.example.puppetmaster.vokabeltrainer.SpacedRepititionSystem.SpacedRepi
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import static com.example.puppetmaster.vokabeltrainer.R.string.bnb_topics;
+
 public class StartActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private BottomNavigationView bottomNavigationView;
@@ -106,15 +108,19 @@ public class StartActivity extends AppCompatActivity {
                         switch (item.getItemId()) {
                             case R.id.action_start:
                                 fragmentManager.beginTransaction().replace(R.id.container_start, new HomeFragment()).addToBackStack("HOME_FRAGMENT").commit();
+                                toolbar.setTitle(R.string.app_name);
                                 break;
                             case R.id.action_topics:
                                 fragmentManager.beginTransaction().replace(R.id.container_start, new TopicsFragment()).addToBackStack("TOPICS_FRAGMENT").commit();
+                                toolbar.setTitle(R.string.bnb_topics);
                                 break;
                             case R.id.action_game:
                                 fragmentManager.beginTransaction().replace(R.id.container_start, new GameFragment()).commit();
+                                toolbar.setTitle(R.string.bnb_game);
                                 break;
                             case R.id.action_profile:
                                 fragmentManager.beginTransaction().replace(R.id.container_start, new ProfileFragment()).commit();
+                                toolbar.setTitle(R.string.bnb_profile);
                                 break;
                             default:
                         }
@@ -179,12 +185,12 @@ public class StartActivity extends AppCompatActivity {
         return topics;
     }
 
-    @Override
-    public void onRestart() {
-        super.onRestart();
-            GetTask getTask = new GetTask(getApplicationContext());
-            getTask.execute();
-    }
+//    @Override
+//    public void onRestart() {
+//        super.onRestart();
+//            GetTask getTask = new GetTask(getApplicationContext());
+//            getTask.execute();
+//    }
 
     /**
      * Liest Topics, Units und Vokabeln aus Datenbank

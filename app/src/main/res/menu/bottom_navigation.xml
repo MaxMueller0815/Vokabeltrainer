@@ -5,32 +5,28 @@
         android:id="@+id/action_start"
         android:enabled="true"
         android:icon="@drawable/ic_home"
-        android:title="Start"
         android:textSize="3sp"
-        app:showAsAction="always"
-        />
+        android:title="@string/bnb_start"
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_topics"
         android:enabled="true"
         android:icon="@drawable/ic_book"
-        android:title="Vokabeln"
         android:textSize="3sp"
-        app:showAsAction="always"
-        />
+        android:title="@string/bnb_topics"
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_game"
         android:enabled="true"
         android:icon="@drawable/ic_casino"
-        android:title="Spiel"
         android:textSize="3sp"
-        app:showAsAction="always"
-         />
+        android:title="@string/bnb_game"
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_profile"
         android:enabled="true"
         android:icon="@drawable/ic_account_circle"
-        android:title="Profil"
         android:textSize="3sp"
-        app:showAsAction="always"
-         />
+        android:title="@string/bnb_profile"
+        app:showAsAction="always" />
 </menu>
