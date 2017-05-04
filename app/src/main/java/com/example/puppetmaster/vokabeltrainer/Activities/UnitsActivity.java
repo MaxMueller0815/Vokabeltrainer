@@ -24,7 +24,7 @@ public class UnitsActivity extends AppCompatActivity {
     ArrayList<Unit> listOfUnits;
     private CarouselLayoutManager layoutManager;
     private RecyclerView recyclerView;
-
+    private boolean datasetChanged;
     private int topicID;
 
 
@@ -35,6 +35,7 @@ public class UnitsActivity extends AppCompatActivity {
         readIntent();
         calcStats();
         setupCarousel();
+        setTitle(topic.getTitle());
     }
 
     /**
@@ -102,6 +103,7 @@ public class UnitsActivity extends AppCompatActivity {
         listOfUnits = topic.getUnitsOfTopic();
         calcStats();
         recyclerView.setAdapter(new UnitAdapter(listOfUnits, topicID));
+        datasetChanged = true;
     }
 
     /**
@@ -109,8 +111,13 @@ public class UnitsActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed() {
-        Intent topicsIntent = new Intent(getApplicationContext(), StartActivity.class);
-        topicsIntent.putExtra("frgToLoad", R.id.action_topics);
-        startActivity(topicsIntent);
+        if (datasetChanged) {
+            Intent topicsIntent = new Intent(getApplicationContext(), StartActivity.class);
+            topicsIntent.putExtra("frgToLoad", R.id.action_topics);
+            startActivity(topicsIntent);
+        } else {
+            finish();
+        }
+
     }
 }
