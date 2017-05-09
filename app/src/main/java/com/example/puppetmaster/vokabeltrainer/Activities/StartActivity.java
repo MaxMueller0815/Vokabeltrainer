@@ -57,7 +57,8 @@ public class StartActivity extends AppCompatActivity {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.this);
 
-        if(!prefs.getBoolean("firstTime", false)){
+        //if(!prefs.getBoolean("firstTime", false)){
+        if(true){
             // Max du kannst hier deine Anweisungen für die introscreens einbauen
 
             Intent permanentAlarmIntent = new Intent(this, PermanentAlarmReceiver.class);
