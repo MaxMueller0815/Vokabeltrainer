@@ -61,7 +61,7 @@ public class Notifier {
         //set alarm every two hours on every day
         for(int i = 0; i<12; i++){
             calendar.set(Calendar.HOUR_OF_DAY, (i*2));
-            this.pendingIntent = PendingIntent.getBroadcast(context, (i*2), this.alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            this.pendingIntent = PendingIntent.getBroadcast(context, (100+(i*2)), this.alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             this.manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, this.pendingIntent);
         }
 
