@@ -108,7 +108,7 @@
                 android:id="@+id/textView14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Change the way this app evaluates your translation"
+                android:text="Change the way this app evaluates your translation (NON-FUNCTIONAL)"
                 android:textSize="10sp" />
 
             <Switch

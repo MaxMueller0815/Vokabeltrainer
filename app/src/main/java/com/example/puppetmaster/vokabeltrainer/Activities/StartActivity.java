@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -58,7 +59,7 @@ public class StartActivity extends AppCompatActivity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.this);
 
         //if(!prefs.getBoolean("firstTime", false)){
-        if(true){
+        if (true) {
             // Max du kannst hier deine Anweisungen für die introscreens einbauen
 
             Intent permanentAlarmIntent = new Intent(this, PermanentAlarmReceiver.class);
@@ -88,6 +89,14 @@ public class StartActivity extends AppCompatActivity {
             editor.putBoolean("firstTime", true);
             editor.apply();
         }
+
+        // Toolbar
+        toolbar = (Toolbar) findViewById(R.id.toolbar_start);
+        setSupportActionBar(toolbar);
+        toolbar.setVisibility(View.VISIBLE);
+
+        // Bottom Navigation
+        setupBottomNavigation();
 
         GetTask getTask = new GetTask(getApplicationContext());
         getTask.execute();
@@ -136,23 +145,23 @@ public class StartActivity extends AppCompatActivity {
      * @param intentFragment Sollte den R.id.xy-Werten der Elementen der BottomNavigationBar entsprechen, wie bspw. R.id.action_start
      */
     public void loadFragment(int intentFragment) {
-            switch (intentFragment) {
-                case R.id.action_start:
-                    bottomNavigationView.setSelectedItemId(R.id.action_start);
-                    break;
-                case R.id.action_topics:
-                    bottomNavigationView.setSelectedItemId(R.id.action_topics);
-                    break;
-                case R.id.action_game:
-                    bottomNavigationView.setSelectedItemId(R.id.action_game);
-                    break;
-                case R.id.action_profile:
-                    bottomNavigationView.setSelectedItemId(R.id.action_profile);
-                    break;
-                default:
-                    bottomNavigationView.setSelectedItemId(R.id.action_topics);
-                    break;
-            }
+        switch (intentFragment) {
+            case R.id.action_start:
+                bottomNavigationView.setSelectedItemId(R.id.action_start);
+                break;
+            case R.id.action_topics:
+                bottomNavigationView.setSelectedItemId(R.id.action_topics);
+                break;
+            case R.id.action_game:
+                bottomNavigationView.setSelectedItemId(R.id.action_game);
+                break;
+            case R.id.action_profile:
+                bottomNavigationView.setSelectedItemId(R.id.action_profile);
+                break;
+            default:
+                bottomNavigationView.setSelectedItemId(R.id.action_topics);
+                break;
+        }
     }
 
 
@@ -186,13 +195,6 @@ public class StartActivity extends AppCompatActivity {
         return topics;
     }
 
-//    @Override
-//    public void onRestart() {
-//        super.onRestart();
-//            GetTask getTask = new GetTask(getApplicationContext());
-//            getTask.execute();
-//    }
-
     /**
      * Liest Topics, Units und Vokabeln aus Datenbank
      */
@@ -214,16 +216,6 @@ public class StartActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void v) {
             super.onPostExecute(v);
-
-
-            // Toolbar
-            toolbar = (Toolbar) findViewById(R.id.toolbar_start);
-            setSupportActionBar(toolbar);
-            toolbar.setVisibility(View.VISIBLE);
-
-
-            setupBottomNavigation();
-
             //Splash Screen verstecken
             ImageView loadingImage = (ImageView) findViewById(R.id.iv_loading);
             loadingImage.setVisibility(View.GONE);

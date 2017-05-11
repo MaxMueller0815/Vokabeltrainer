@@ -1,6 +1,7 @@
 package com.example.puppetmaster.vokabeltrainer.Fragments;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.example.puppetmaster.vokabeltrainer.Activities.ExerciseActivity;
+import com.example.puppetmaster.vokabeltrainer.Activities.StartActivity;
 import com.example.puppetmaster.vokabeltrainer.Adapter.VocabAdapter;
 import com.example.puppetmaster.vokabeltrainer.Entities.ExerciseLogic;
 import com.example.puppetmaster.vokabeltrainer.R;
@@ -22,6 +24,7 @@ import com.example.puppetmaster.vokabeltrainer.R;
 
 public class ExerciseFinalScoreFragment extends Fragment {
     View view;
+
     public ExerciseFinalScoreFragment() {
         // Required empty public constructor
     }
@@ -35,7 +38,7 @@ public class ExerciseFinalScoreFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_exercise_final_score, container, false);
-        ExerciseLogic exercise = ((ExerciseActivity)this.getActivity()).getExercise();
+        ExerciseLogic exercise = ((ExerciseActivity) this.getActivity()).getExercise();
 
         // Tab-Ansicht initialisieren
         TabHost host = (TabHost) view.findViewById(R.id.tabHost);
@@ -47,25 +50,25 @@ public class ExerciseFinalScoreFragment extends Fragment {
         spec.setIndicator("Overview");
         host.addTab(spec);
         int counterCorrect = exercise.getVocabsCorrect().size();
-        int counterSet = ((ExerciseActivity)this.getActivity()).getExercise().getNumTurns();
-        double result = (double) counterCorrect / (double) counterSet ;
+        int counterSet = ((ExerciseActivity) this.getActivity()).getExercise().getNumTurns();
+        double result = (double) counterCorrect / (double) counterSet;
         String title = "";
-        String description = "You translated " + counterCorrect +  " out of "  + counterSet +  " vocabs correctly.";
+        String description = "You translated " + counterCorrect + " out of " + counterSet + " vocabs correctly.";
         ImageView ivSolution = (ImageView) view.findViewById(R.id.iv_solution);
         // Bild-Ressource auswählen
-        if(result >= 0.90){
+        if (result >= 0.90) {
             ivSolution.setImageResource(R.drawable.smiley_1);
             title = "Excellent!";
-        }else if(result < 0.90 && result >= 0.60){
+        } else if (result < 0.90 && result >= 0.60) {
             ivSolution.setImageResource(R.drawable.smiley_2);
             title = "Good job!";
-        } else if(result < 0.60 && result >= 0.20){
+        } else if (result < 0.60 && result >= 0.20) {
             ivSolution.setImageResource(R.drawable.smiley_3);
             title = "There is room for improvement.";
-        } else if(result < 0.20 && result > 0.00){
+        } else if (result < 0.20 && result > 0.00) {
             ivSolution.setImageResource(R.drawable.smiley_4);
             title = "Celebrate every tiny victory!";
-        }else {
+        } else {
             ivSolution.setImageResource(R.drawable.smiley_5);
             title = "At least you tried";
             description = "But you should learn more regularly!";
@@ -80,7 +83,14 @@ public class ExerciseFinalScoreFragment extends Fragment {
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().finish();
+                if (getActivity().getIntent().hasExtra("RETURN_TO")) {
+                    if (getActivity().getIntent().getStringExtra("RETURN_TO").equals("START_ACTIVITY")) {
+                        Intent intent = new Intent(getActivity(), StartActivity.class);
+                        startActivity(intent);
+                    }
+                } else {
+                    getActivity().finish();
+                }
             }
         });
 

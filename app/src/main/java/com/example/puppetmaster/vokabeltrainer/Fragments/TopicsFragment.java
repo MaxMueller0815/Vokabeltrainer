@@ -24,7 +24,6 @@ public class TopicsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.v("TopicFragement","Has been resumed");
         topics =  ((StartActivity)this.getActivity()).getTopics();
         adapter.notifyDataSetChanged();
     }

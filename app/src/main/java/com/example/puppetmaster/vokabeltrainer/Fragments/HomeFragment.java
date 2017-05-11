@@ -119,7 +119,7 @@ public class HomeFragment extends Fragment {
         ArcProgress progressWeek = (ArcProgress) view.findViewById(R.id.arc_progress_week);
         TextView tvWeek = (TextView) view.findViewById(R.id.tv_week);
         tvWeek.setText(counterWeek + "");
-        double percentWeek = counterWeek / 140.0 * 100.0;
+        double percentWeek = counterWeek / (workload * 7.0) * 100.0;
         if (percentWeek <= 100) {
             progressWeek.setProgress((int) percentWeek);
         } else {
@@ -133,27 +133,33 @@ public class HomeFragment extends Fragment {
     private void setupRecommendedAction() {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getContext());
         int wordsInSRS = settings.getInt("numberOfWordsInWorkload", 0);
+        //Wenn es Wörter zu wiederholen gibt
         if (wordsInSRS > 0) {
-            Button repetitionButton = (Button) view.findViewById(R.id.btn_srs_repetition);
+            final Button repetitionButton = (Button) view.findViewById(R.id.btn_srs_repetition);
+            repetitionButton.setVisibility(View.VISIBLE);
             repetitionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(getContext(), ExerciseActivity.class));
+                    Intent intent = new Intent(getContext(), ExerciseActivity.class);
+                    intent.putExtra("RETURN_TO","START_ACTIVITY");
+                    startActivity(intent);
                 }
             });
-            repetitionButton.setVisibility(View.VISIBLE);
 
         } else {
+            // Wenn es gerade keine Wörter zu wiederholen gibt, aber das tägliche Soll noch nicht geschafft hat
             if (datapointsLearned[VISIBLE_DAYS - 1].getY() < workload) {
-                Button learnButton = (Button) view.findViewById(R.id.btn_learn);
+                final Button learnButton = (Button) view.findViewById(R.id.btn_learn);
                 learnButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ((StartActivity) getActivity()).loadFragment(R.id.action_topics);
+                        learnButton.setVisibility(View.INVISIBLE);
                     }
                 });
                 learnButton.setVisibility(View.VISIBLE);
             } else {
+                // Wenn es gerade keine Wörter zu wiederholen gibt und das tägliche Soll bereits geschafft ist
                 TextView tvDone = (TextView) view.findViewById(R.id.tv_done);
                 tvDone.setVisibility(View.VISIBLE);
             }
