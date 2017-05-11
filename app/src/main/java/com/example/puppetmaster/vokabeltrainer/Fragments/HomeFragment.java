@@ -136,6 +136,15 @@ public class HomeFragment extends Fragment {
         //Wenn es Wörter zu wiederholen gibt
         if (wordsInSRS > 0) {
             final Button repetitionButton = (Button) view.findViewById(R.id.btn_srs_repetition);
+            String btnTxt;
+            if (wordsInSRS == 1) {
+                //Singular
+                btnTxt = getResources().getString(R.string.btn_repetition_sg, wordsInSRS);
+            } else {
+                //Plural
+                btnTxt = getResources().getString(R.string.btn_repetition_pl, wordsInSRS);
+            }
+            repetitionButton.setText(btnTxt);
             repetitionButton.setVisibility(View.VISIBLE);
             repetitionButton.setOnClickListener(new View.OnClickListener() {
                 @Override

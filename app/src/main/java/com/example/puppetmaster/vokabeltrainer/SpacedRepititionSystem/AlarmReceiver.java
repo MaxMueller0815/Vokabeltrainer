@@ -55,7 +55,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             Notification.Builder builder = new Notification.Builder(context);
             builder.setContentTitle("lEarned push notification")
                     .setContentTitle("lEarned")
-                    .setSmallIcon(R.drawable.ic_launcher)
+                    .setSmallIcon(R.mipmap.ic_launcher)
                     .setAutoCancel(true);
 
             if (wordsWaitingForRevision > 0) {

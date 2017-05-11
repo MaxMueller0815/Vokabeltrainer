@@ -41,5 +41,10 @@
     <string name="bnb_game">Game</string>
     <string name="bnb_profile">Profile</string>
 
+    <!--Home Fragment-->
+    <string name="btn_learn">Learn something new</string>
+    <string name="btn_repetition_sg">Repeat %1$d word</string>
+    <string name="btn_repetition_pl">Repeat %1$d words</string>
+
 
 </resources>
