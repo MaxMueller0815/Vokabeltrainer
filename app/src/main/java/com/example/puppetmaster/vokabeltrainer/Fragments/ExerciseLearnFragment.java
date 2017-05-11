@@ -2,11 +2,14 @@ package com.example.puppetmaster.vokabeltrainer.Fragments;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +66,15 @@ public class ExerciseLearnFragment extends Fragment {
      */
     private void setupUI() {
         TextView tvBestSolution = (TextView) view.findViewById(R.id.tv_best_solution);
-        tvBestSolution.setText(currentVocab.getGerman().get(0));
+        String germanTranslation = currentVocab.getGerman().get(0);
+        if (WordHelper.isNoun(germanTranslation)) {
+            SpannableString text = new SpannableString(germanTranslation);
+            text.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.md_cyan_600, null)), germanTranslation.indexOf("("), germanTranslation.indexOf(")") + 1, 0);
+            tvBestSolution.setText(text);
+        } else {
+            tvBestSolution.setText(germanTranslation);
+        }
+
 
         TextView tvTerm = (TextView) view.findViewById(R.id.tv_term);
         tvTerm.setText(currentVocab.getEnglish());
